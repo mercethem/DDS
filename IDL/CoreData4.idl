@@ -1,0 +1,22 @@
+//domain=1
+module CoreData {
+
+    // CoreData modülündeki tüm yapılar (Timestamp, Coordinates, Location)
+    // 'FlatCoreData' adında tek bir struct içinde birleştirildi.
+    struct FlatCoreData {
+        
+        // Orijinal 'Coordinates' yapısından gelen alanlar
+        double latitude;
+        double longitude;
+        float altitude;
+        
+        // Orijinal 'Timestamp' yapısından gelen alanlar
+        long time_seconds;
+        unsigned long time_nano_seconds;
+        
+        // Orijinal 'Location' yapısından gelen alanlar
+        float speed_mps;
+        short orientation_degrees;
+    };
+
+}; // module CoreData

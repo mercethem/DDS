@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Military Command Control System - DDS Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .traffic-banner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; padding: 10px 16px; text-align: center; background: #7f1d1d; color: #fff; font-weight: 600; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .traffic-banner.visible { display: block; }
+    </style>
+</head>
+<body>
+    <div id="trafficBanner" class="traffic-banner">No traffic in DDS</div>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-fighter-jet"></i>
+                    <span>MILITARY COMMAND CONTROL SYSTEM</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="system-status">
+                    <span class="status-indicator" id="systemStatus"></span>
+                    <span>SYSTEM STATUS</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="time-display" id="currentTime"></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel - Map -->
+            <div class="left-panel">
+                <div class="map-container">
+                    <div id="map"></div>
+                    
+                    <!-- Map Controls -->
+                    <div class="map-controls">
+                        <button class="map-btn active" id="satelliteBtn" title="Satellite View">
+                            <i class="fas fa-satellite"></i>
+                            <span>SATELLITE</span>
+                        </button>
+                        <button class="map-btn" id="streetBtn" title="Road Map">
+                            <i class="fas fa-road"></i>
+                            <span>ROAD</span>
+                        </button>
+                        <button class="map-btn" id="dayNightBtn" title="Day/Night">
+                            <i class="fas fa-sun"></i>
+                            <span>DAY</span>
+                        </button>
+
+                        
+                    </div>
+
+                    <!-- Aircraft Group Flyout (aligned next to right panel) -->
+                    <div class="aircraft-group-flyout">
+                        <div class="group-header">
+                            <i class="fas fa-fighter-jet"></i>
+                            <span>AIRCRAFT GROUP DATA</span>
+                            <div class="status-dot" id="aircraftGroupStatus"></div>
+                        </div>
+                        <div class="group-content" id="aircraftGroupFlyoutContent">
+                            <div class="aircraft-tabs">
+                                <button class="aircraft-tab active" data-aircraft="1">Aircraft-1 (Main)</button>
+                                <button class="aircraft-tab" data-aircraft="2">Aircraft-2</button>
+                                <button class="aircraft-tab" data-aircraft="3">Aircraft-3</button>
+                                <button class="aircraft-tab" data-aircraft="4">Aircraft-4</button>
+                            </div>
+                            <div class="aircraft-data-container" id="aircraftGroupContent">
+                                <div class="aircraft-data active" id="aircraftData1">
+                                    <div class="no-data">Waiting for Aircraft-1 data...</div>
+                                </div>
+                                <div class="aircraft-data" id="aircraftData2">
+                                    <div class="no-data">Waiting for Aircraft-2 data...</div>
+                                </div>
+                                <div class="aircraft-data" id="aircraftData3">
+                                    <div class="no-data">Waiting for Aircraft-3 data...</div>
+                                </div>
+                                <div class="aircraft-data" id="aircraftData4">
+                                    <div class="no-data">Waiting for Aircraft-4 data...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Data Streams -->
+            <div class="right-panel">
+
+                <!-- Intelligence Panel -->
+                <div class="data-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-eye"></i>
+                        <span>INTELLIGENCE DATA</span>
+                        <div class="status-dot" id="intelligenceStatus"></div>
+                    </div>
+                    <div class="panel-content" id="intelligenceContent">
+                        <div class="no-data">Waiting for data...</div>
+                    </div>
+                </div>
+
+                <!-- Messaging Panel -->
+                <div class="data-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-comments"></i>
+                        <span>MESSAGING SYSTEM</span>
+                        <div class="status-dot" id="messagingStatus"></div>
+                    </div>
+                    <div class="panel-content" id="messagingContent">
+                        <div class="no-data">Waiting for data...</div>
+                    </div>
+                </div>
+
+                <!-- Targets Panel -->
+                <div class="data-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>TARGET LIST</span>
+                        <div class="status-dot active"></div>
+                    </div>
+                    <div class="panel-content" id="targetsContent">
+                        <div class="target-list" id="targetList">
+                            <div class="no-data">No target detected</div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

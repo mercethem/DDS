@@ -1,0 +1,91 @@
+//domain=3
+module Messaging {
+
+    // Orijinal 'IntelligencePacket' union'ı ve tüm mesaj tipleri (StatusReport,
+    // CriticalDetection, TaskCommand) 'FlatMessagingPacket' adında 
+    // tek bir struct'ta birleştirildi.
+    //
+    // Bu yapı, bir union'ı taklit eder:
+    // 1. 'message_type' alanı, hangi veri setinin geçerli olduğunu söyler.
+    // 2. Alan adları çakışmayı önlemek için ön ek almıştır:
+    //    sr_ -> StatusReport
+    //    cd_ -> CriticalDetection
+    //    tc_ -> TaskCommand
+    //
+    struct FlatMessagingPacket {
+    
+        // Union'ın 'switch' alanı (discriminator).
+        // Hangi mesaj türünün geçerli olduğunu belirtir:
+        // 1 = StatusReport, 2 = CriticalDetection, 3 = TaskCommand
+        short message_type; 
+
+        // --- Case 1: StatusReport Alanları (sr_) ---
+        
+        // sr_ MessageHeader
+        string sr_header_sender_id; // 'DeviceID' (typedef) -> 'string'
+        long sr_header_time_seconds;
+        unsigned long sr_header_time_nano_seconds;
+        
+        // sr_ current_location_data (Düzleştirilmiş Location)
+        double sr_location_latitude;
+        double sr_location_longitude;
+        float sr_location_altitude;
+        long sr_location_time_seconds;
+        unsigned long sr_location_time_nano_seconds;
+        float sr_location_speed_mps;
+        short sr_location_orientation_degrees;
+        
+        // sr_ status (Düzleştirilmiş VehicleStatus)
+        short sr_status_task_status; // enum TaskStatus -> short
+        unsigned short sr_status_battery_percentage;
+        float sr_status_signal_strength_dbm;
+        boolean sr_status_system_error;
+
+        // --- Case 2: CriticalDetection Alanları (cd_) ---
+        
+        // cd_ MessageHeader
+        string cd_header_sender_id; // 'DeviceID' (typedef) -> 'string'
+        long cd_header_time_seconds;
+        unsigned long cd_header_time_nano_seconds;
+        
+        // cd_ detection (Düzleştirilmiş TargetDetection)
+        string cd_detection_target_ID;
+        short cd_detection_target_type; // enum TargetType -> short
+        
+        // cd_ detection.location_data (Düzleştirilmiş Location)
+        double cd_detection_loc_latitude;
+        double cd_detection_loc_longitude;
+        float cd_detection_loc_altitude;
+        long cd_detection_loc_time_seconds;
+        unsigned long cd_detection_loc_time_nano_seconds;
+        float cd_detection_loc_speed_mps;
+        short cd_detection_loc_orientation_degrees;
+        
+        float cd_detection_confidence_level;
+        string cd_detection_description;
+        string cd_detection_raw_data_link;
+
+        // --- Case 3: TaskCommand Alanları (tc_) ---
+        
+        // tc_ MessageHeader
+        string tc_header_sender_id; // 'DeviceID' (typedef) -> 'string'
+        long tc_header_time_seconds;
+        unsigned long tc_header_time_nano_seconds;
+        
+        // tc_ receiver_id
+        string tc_receiver_id; // 'DeviceID' (typedef) -> 'string'
+        
+        // tc_ assignment (Düzleştirilmiş TaskAssignment)
+        string tc_assignment_command;
+        
+        // tc_ assignment.target_location_data (Düzleştirilmiş Location)
+        double tc_assignment_loc_latitude;
+        double tc_assignment_loc_longitude;
+        float tc_assignment_loc_altitude;
+        long tc_assignment_loc_time_seconds;
+        unsigned long tc_assignment_loc_time_nano_seconds;
+        float tc_assignment_loc_speed_mps;
+        short tc_assignment_loc_orientation_degrees;
+    };
+
+}; // module Messaging

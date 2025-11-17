@@ -1,0 +1,62 @@
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+dir               = ./secure_dds/CA
+certs             = $dir/certs
+crl_dir           = $dir/crl
+new_certs_dir     = $dir/newcerts
+database          = $dir/index.txt
+serial            = $dir/serial
+RANDFILE          = $dir/private/.rand
+
+private_key       = $dir/private/mainca_key.pem
+certificate       = $dir/mainca_cert.pem
+
+crlnumber         = $dir/crlnumber
+crl               = $dir/crl/mainca_crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+
+default_md       = sha256
+name_opt         = ca_default
+cert_opt         = ca_default
+default_days     = 99999
+preserve         = no
+policy           = policy_strict
+
+[ policy_strict ]
+countryName             = match
+stateOrProvinceName     = match
+organizationName        = match
+organizationalUnitName = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ req ]
+default_bits        = 4096
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+default_md          = sha256
+x509_extensions     = v3_ca
+
+[ req_distinguished_name ]
+countryName                     = Country Name (2 letter code) [US]
+stateOrProvinceName             = State or Province Name [California]
+localityName                    = Locality Name [San Francisco]
+0.organizationName              = Organization Name [DDS Security System]
+organizationalUnitName          = Organizational Unit Name [Military Applications]
+commonName                      = Common Name [DDS Root CA]
+emailAddress                     = Email Address [admin@dds-security.local]
+
+[ v3_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = DDS Root CA
+DNS.2 = dds-security.local
+DNS.3 = *.dds-security.local

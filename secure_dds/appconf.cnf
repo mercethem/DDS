@@ -1,0 +1,28 @@
+[ req ]
+default_bits        = 4096
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+default_md          = sha256
+x509_extensions     = v3_req
+prompt              = no
+
+[ req_distinguished_name ]
+countryName                     = TR
+stateOrProvinceName             = Istanbul
+localityName                    = Istanbul
+0.organizationName              = DDS Security System
+organizationalUnitName          = Military Applications
+commonName                      = DDS Participant
+emailAddress                     = participant@dds-security.local
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = DDS Participant
+DNS.2 = participant.dds-security.local
+DNS.3 = *.participant.dds-security.local
+IP.1 = 127.0.0.1
+IP.2 = ::1

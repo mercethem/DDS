@@ -1,0 +1,53 @@
+//domain=2
+module Intelligence {
+
+    // Intelligence modülündeki tüm yapılar (VehicleStatus, TargetDetection, 
+    // TaskAssignment ve bunların bağımlılıkları) 'FlatIntelligence' 
+    // adında tek bir struct'ta birleştirildi.
+    //
+    // Alan adları çakışmayı önlemek için ön ek almıştır:
+    // vs_ -> VehicleStatus
+    // td_ -> TargetDetection
+    // ta_ -> TaskAssignment
+    //
+    struct FlatIntelligence {
+        
+        // --- VehicleStatus Alanları (vs_) ---
+        // enum TaskStatus -> short
+        short vs_task_status; 
+        unsigned short vs_battery_percentage;
+        float vs_signal_strength_dbm;
+        boolean vs_system_error;
+        
+        // --- TargetDetection Alanları (td_) ---
+        string td_target_ID;
+        // enum TargetType -> short
+        short td_target_type; 
+        
+        // TargetDetection.location_data (Düzleştirilmiş Location)
+        double td_location_latitude;
+        double td_location_longitude;
+        float td_location_altitude;
+        long td_location_time_seconds;
+        unsigned long td_location_time_nano_seconds;
+        float td_location_speed_mps;
+        short td_location_orientation_degrees;
+        
+        float td_confidence_level;
+        string td_description;
+        string td_raw_data_link;
+        
+        // --- TaskAssignment Alanları (ta_) ---
+        string ta_command;
+        
+        // TaskAssignment.target_location_data (Düzleştirilmiş Location)
+        double ta_location_latitude;
+        double ta_location_longitude;
+        float ta_location_altitude;
+        long ta_location_time_seconds;
+        unsigned long ta_location_time_nano_seconds;
+        float ta_location_speed_mps;
+        short ta_location_orientation_degrees;
+    };
+
+}; // module Intelligence
