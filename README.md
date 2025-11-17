@@ -95,11 +95,11 @@ The system includes:
 Clone the project repository to your local machine:
 
 ```bash
-git clone <repository-url>
+git clone "https://github.com/mercethem/DDS"
 cd DDS
 ```
 
-Replace `<repository-url>` with the actual repository URL.
+Replace `https://github.com/mercethem/DDS` with the actual repository URL.
 
 ### Step 2: Install System Dependencies
 
