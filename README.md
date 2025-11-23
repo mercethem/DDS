@@ -7,9 +7,8 @@
 3. [Installation](#installation)
 4. [Project Setup](#project-setup)
 5. [Running the System](#running-the-system)
-6. [Project Structure](#project-structure)
-7. [Troubleshooting](#troubleshooting)
-8. [Additional Documentation](#additional-documentation)
+6. [Troubleshooting](#troubleshooting)
+7. [Additional Documentation](#additional-documentation)
 
 <a id="project-overview"></a>
 ## Project Overview
@@ -577,77 +576,6 @@ For a complete system demonstration:
    ```
 
 4. Observe real-time data visualization on the dashboard.
-
-<a id="project-structure"></a>
-## Project Structure
-
-Understanding the project structure helps with navigation and troubleshooting:
-
-```
-DDS/
-├── IDL/                          # IDL definitions and generated code
-│   ├── *.idl                     # IDL source files
-│   └── *_idl_generated/         # Generated C++ code
-│       ├── build/                # Build output
-│       │   ├── lib*_lib.a       # Static libraries
-│       │   └── *main            # Executables
-│       ├── *PublisherApp.cxx    # Publisher application
-│       ├── *SubscriberApp.cxx   # Subscriber application
-│       └── CMakeLists.txt       # Build configuration
-│
-├── scripts/                      # Automation scripts
-│   ├── py/                      # Python scripts
-│   │   ├── certificate.py       # Certificate generation
-│   │   ├── idl_patcher.py       # IDL code patching
-│   │   ├── json_patcher.py      # JSON reading injection
-│   │   ├── security.py          # Security configuration
-│   │   └── ...                  # Other patching scripts
-│   └── sh/                      # Shell scripts
-│       ├── dynamic_ALL.sh      # Complete workflow
-│       ├── IDL_GENERATOR.sh     # IDL code generation
-│       ├── IDL_BUILDER.sh       # Build all modules
-│       └── ...                  # Other utility scripts
-│
-├── secure_dds/                   # Security certificates
-│   ├── CA/                      # Certificate Authority
-│   │   ├── mainca_cert.pem      # Root CA certificate
-│   │   └── private/             # CA private key
-│   └── participants/            # Participant certificates
-│       └── <hostname>/         # PC-specific certificates
-│
-├── monitoring/                   # Monitoring system
-│   ├── monitor.cpp              # Monitor application source
-│   ├── monitor.sh               # Launch script
-│   ├── build.sh                # Build script
-│   └── build/                  # Build output
-│       └── monitor             # Monitor executable
-│
-├── demo/                        # Demo dashboard
-│   ├── server.js               # Node.js backend server
-│   ├── demo.sh                # Launch script
-│   ├── package.json           # Node.js dependencies
-│   └── public/                # Frontend files
-│       ├── index.html         # HTML interface
-│       ├── app.js            # JavaScript logic
-│       └── style.css         # Styling
-│
-├── scenarios/                   # JSON scenario files
-│   ├── CoreData.json          # CoreData scenario data
-│   ├── Intelligence.json      # Intelligence scenario data
-│   └── Messaging.json         # Messaging scenario data
-│
-├── docs/                       # Documentation
-│   ├── demo.md               # Demo system documentation
-│   ├── IDL.md               # IDL system documentation
-│   ├── monitoring.md         # Monitoring documentation
-│   ├── scenarios.md         # Scenarios documentation
-│   ├── secure_dds.md        # Security documentation
-│   └── scripts/             # Script documentation
-│
-├── setup.sh                   # Automated setup script
-├── install_dependencies_ubuntu.sh  # Dependency installer
-└── README.md                  # This file
-```
 
 <a id="troubleshooting"></a>
 ## Troubleshooting
