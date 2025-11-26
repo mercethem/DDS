@@ -1,4 +1,0 @@
-/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/CMakeFiles/CoreData_lib.dir
-/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/CMakeFiles/CoreDatamain.dir
-/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/CMakeFiles/edit_cache.dir
-/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/CMakeFiles/rebuild_cache.dir

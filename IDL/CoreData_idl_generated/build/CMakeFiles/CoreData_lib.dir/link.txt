@@ -1,2 +1,0 @@
-/usr/bin/ar qc libCoreData_lib.a CMakeFiles/CoreData_lib.dir/CoreDataApplication.cxx.o CMakeFiles/CoreData_lib.dir/CoreDataPubSubTypes.cxx.o CMakeFiles/CoreData_lib.dir/CoreDataPublisherApp.cxx.o CMakeFiles/CoreData_lib.dir/CoreDataSubscriberApp.cxx.o CMakeFiles/CoreData_lib.dir/CoreDataTypeObjectSupport.cxx.o CMakeFiles/CoreData_lib.dir/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.cpp.o
-/usr/bin/ranlib libCoreData_lib.a

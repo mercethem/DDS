@@ -1,2 +1,0 @@
-/usr/bin/ar qc libMessaging_lib.a CMakeFiles/Messaging_lib.dir/MessagingApplication.cxx.o CMakeFiles/Messaging_lib.dir/MessagingPubSubTypes.cxx.o CMakeFiles/Messaging_lib.dir/MessagingPublisherApp.cxx.o CMakeFiles/Messaging_lib.dir/MessagingSubscriberApp.cxx.o CMakeFiles/Messaging_lib.dir/MessagingTypeObjectSupport.cxx.o CMakeFiles/Messaging_lib.dir/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.cpp.o
-/usr/bin/ranlib libMessaging_lib.a
