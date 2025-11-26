@@ -77,7 +77,7 @@ pqos.properties().properties().emplace_back("dds.sec.auth.builtin.PKI-DH.identit
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During security setup phase
+- `init/sh/project_setup.sh` - During security setup phase
 - `scripts/sh/setup_security_certificates.sh` - Security workflow
 - `scripts/sh/run_complete_workflow.sh` - Complete workflow
 

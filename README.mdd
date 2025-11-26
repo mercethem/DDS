@@ -63,11 +63,11 @@ DDS/
 │
 ├── init/                        # Initialization scripts
 │   ├── sh/                      # Linux shell scripts
-│   │   ├── setup.sh           # Automated setup script
-│   │   ├── install_dependencies_ubuntu.sh  # Dependency installer
+│   │   ├── project_setup.sh           # Automated setup script
+│   │   ├── install_system_dependencies.sh  # Dependency installer
 │   │   └── ...                 # Other init scripts
 │   └── bat/                     # Windows batch scripts
-│       ├── setup.bat          # Automated setup script
+│       ├── project_setup.bat          # Automated setup script
 │       └── ...                 # Other init scripts
 │
 ├── docs/                       # Documentation
@@ -86,81 +86,156 @@ DDS/
 ```mermaid
 graph TD
     DDS["DDS/"]
+    IDL["IDL/"]
+    IDL_IDL["*.idl"]
+    IDL_GEN["*_idl_generated/"]
+    IDL_BUILD["build/"]
+    IDL_LIB["lib*_lib.a"]
+    IDL_MAIN["*main"]
+    IDL_PUB["*PublisherApp.cxx"]
+    IDL_SUB["*SubscriberApp.cxx"]
+    IDL_CMAKE["CMakeLists.txt"]
     
-    DDS --> IDL["IDL/"]
-    DDS --> SCRIPTS["scripts/"]
-    DDS --> SECURE["secure_dds/"]
-    DDS --> MONITORING["monitoring/"]
-    DDS --> DEMO["demo/"]
-    DDS --> SCENARIOS["scenarios/"]
-    DDS --> INIT["init/"]
-    DDS --> DOCS["docs/"]
-    DDS --> README["README.md"]
+    SCRIPTS["scripts/"]
+    SCRIPTS_PY["py/"]
+    SCRIPTS_PY_GEN["generate_security_certificates.py"]
+    SCRIPTS_PY_IDL["idl_default_data_patcher.py"]
+    SCRIPTS_PY_JSON["json_reading_patcher.py"]
+    SCRIPTS_PY_SEC["apply_security_settings.py"]
+    SCRIPTS_SH["sh/"]
+    SCRIPTS_SH_WORK["run_complete_workflow.sh"]
+    SCRIPTS_SH_GEN["generate_idl_code.sh"]
+    SCRIPTS_SH_BUILD["build_idl_modules.sh"]
     
-    IDL --> IDL_IDL["*.idl"]
-    IDL --> IDL_GEN["*_idl_generated/"]
-    IDL_GEN --> IDL_PUB["*PublisherApp.cxx"]
-    IDL_GEN --> IDL_SUB["*SubscriberApp.cxx"]
-    IDL_GEN --> IDL_CMAKE["CMakeLists.txt"]
-    IDL_GEN --> IDL_BUILD["build/"]
-    IDL_BUILD --> IDL_LIB["lib*_lib.a"]
-    IDL_BUILD --> IDL_MAIN["*main"]
+    SECURE["secure_dds/"]
+    SECURE_CA["CA/"]
+    SECURE_CA_CERT["mainca_cert.pem"]
+    SECURE_CA_PRIV["private/"]
+    SECURE_PART["participants/"]
+    SECURE_HOST["<hostname>/"]
     
-    SCRIPTS --> SCRIPTS_PY["py/"]
-    SCRIPTS --> SCRIPTS_SH["sh/"]
-    SCRIPTS_PY --> SCRIPTS_PY_GEN["generate_security_certificates.py"]
-    SCRIPTS_PY --> SCRIPTS_PY_IDL["idl_default_data_patcher.py"]
-    SCRIPTS_PY --> SCRIPTS_PY_JSON["json_reading_patcher.py"]
-    SCRIPTS_PY --> SCRIPTS_PY_SEC["apply_security_settings.py"]
-    SCRIPTS_SH --> SCRIPTS_SH_WORK["run_complete_workflow.sh"]
-    SCRIPTS_SH --> SCRIPTS_SH_GEN["generate_idl_code.sh"]
-    SCRIPTS_SH --> SCRIPTS_SH_BUILD["build_idl_modules.sh"]
+    MONITORING["monitoring/"]
+    MONITORING_CPP["monitor.cpp"]
+    MONITORING_BUILD["build_monitoring/"]
+    MONITORING_BUILD_SH["build_monitoring.sh"]
+    MONITORING_BUILD_BAT["build_monitoring.bat"]
+    MONITORING_RUN["run_monitoring/"]
+    MONITORING_RUN_SH["run_monitoring.sh"]
+    MONITORING_RUN_BAT["run_monitoring.bat"]
+    MONITORING_CMAKE["CMakeLists.txt"]
+    MONITORING_BUILD_OUT["build/"]
+    MONITORING_EXE["monitor"]
     
-    SECURE --> SECURE_CA["CA/"]
-    SECURE --> SECURE_PART["participants/"]
-    SECURE_CA --> SECURE_CA_CERT["mainca_cert.pem"]
-    SECURE_CA --> SECURE_CA_PRIV["private/"]
-    SECURE_PART --> SECURE_HOST["<hostname>/"]
+    DEMO["demo/"]
+    DEMO_SERVER["server.js"]
+    DEMO_BUILD["build_demo/"]
+    DEMO_BUILD_SH["build_demo.sh"]
+    DEMO_BUILD_BAT["build_demo.bat"]
+    DEMO_RUN["run_demo/"]
+    DEMO_RUN_SH["run_demo.sh"]
+    DEMO_RUN_BAT["run_demo.bat"]
+    DEMO_PKG["package.json"]
+    DEMO_PUBLIC["public/"]
+    DEMO_HTML["index.html"]
+    DEMO_JS["app.js"]
+    DEMO_CSS["style.css"]
     
-    MONITORING --> MONITORING_CPP["monitor.cpp"]
-    MONITORING --> MONITORING_CMAKE["CMakeLists.txt"]
-    MONITORING --> MONITORING_BUILD["build_monitoring/"]
-    MONITORING --> MONITORING_RUN["run_monitoring/"]
-    MONITORING --> MONITORING_BUILD_OUT["build/"]
-    MONITORING_BUILD --> MONITORING_BUILD_SH["build_monitoring.sh"]
-    MONITORING_BUILD --> MONITORING_BUILD_BAT["build_monitoring.bat"]
-    MONITORING_RUN --> MONITORING_RUN_SH["run_monitoring.sh"]
-    MONITORING_RUN --> MONITORING_RUN_BAT["run_monitoring.bat"]
-    MONITORING_BUILD_OUT --> MONITORING_EXE["monitor"]
+    SCENARIOS["scenarios/"]
+    SCENARIOS_CORE["CoreData.json"]
+    SCENARIOS_INT["Intelligence.json"]
+    SCENARIOS_MSG["Messaging.json"]
     
-    DEMO --> DEMO_SERVER["server.js"]
-    DEMO --> DEMO_PKG["package.json"]
-    DEMO --> DEMO_BUILD["build_demo/"]
-    DEMO --> DEMO_RUN["run_demo/"]
-    DEMO --> DEMO_PUBLIC["public/"]
-    DEMO_BUILD --> DEMO_BUILD_SH["build_demo.sh"]
-    DEMO_BUILD --> DEMO_BUILD_BAT["build_demo.bat"]
-    DEMO_RUN --> DEMO_RUN_SH["run_demo.sh"]
-    DEMO_RUN --> DEMO_RUN_BAT["run_demo.bat"]
-    DEMO_PUBLIC --> DEMO_HTML["index.html"]
-    DEMO_PUBLIC --> DEMO_JS["app.js"]
-    DEMO_PUBLIC --> DEMO_CSS["style.css"]
+    INIT["init/"]
+    INIT_SH["sh/"]
+    INIT_SH_SETUP["project_setup.sh"]
+    INIT_SH_INSTALL["install_system_dependencies.sh"]
+    INIT_BAT["bat/"]
+    INIT_BAT_SETUP["project_setup.bat"]
     
-    SCENARIOS --> SCENARIOS_CORE["CoreData.json"]
-    SCENARIOS --> SCENARIOS_INT["Intelligence.json"]
-    SCENARIOS --> SCENARIOS_MSG["Messaging.json"]
+    DOCS["docs/"]
+    DOCS_DEMO["demo.md"]
+    DOCS_IDL["IDL.md"]
+    DOCS_MON["monitoring.md"]
+    DOCS_SCEN["scenarios.md"]
+    DOCS_SEC["secure_dds.md"]
+    DOCS_SCRIPTS["scripts/"]
     
-    INIT --> INIT_SH["sh/"]
-    INIT --> INIT_BAT["bat/"]
-    INIT_SH --> INIT_SH_SETUP["setup.sh"]
-    INIT_SH --> INIT_SH_INSTALL["install_dependencies_ubuntu.sh"]
-    INIT_BAT --> INIT_BAT_SETUP["setup.bat"]
+    README["README.md"]
     
-    DOCS --> DOCS_DEMO["demo.md"]
-    DOCS --> DOCS_IDL["IDL.md"]
-    DOCS --> DOCS_MON["monitoring.md"]
-    DOCS --> DOCS_SCEN["scenarios.md"]
-    DOCS --> DOCS_SEC["secure_dds.md"]
-    DOCS --> DOCS_SCRIPTS["scripts/"]
+    DDS --> IDL
+    DDS --> SCRIPTS
+    DDS --> SECURE
+    DDS --> MONITORING
+    DDS --> DEMO
+    DDS --> SCENARIOS
+    DDS --> INIT
+    DDS --> DOCS
+    DDS --> README
+    
+    IDL --> IDL_IDL
+    IDL --> IDL_GEN
+    IDL_GEN --> IDL_BUILD
+    IDL_GEN --> IDL_PUB
+    IDL_GEN --> IDL_SUB
+    IDL_GEN --> IDL_CMAKE
+    IDL_BUILD --> IDL_LIB
+    IDL_BUILD --> IDL_MAIN
+    
+    SCRIPTS --> SCRIPTS_PY
+    SCRIPTS --> SCRIPTS_SH
+    SCRIPTS_PY --> SCRIPTS_PY_GEN
+    SCRIPTS_PY --> SCRIPTS_PY_IDL
+    SCRIPTS_PY --> SCRIPTS_PY_JSON
+    SCRIPTS_PY --> SCRIPTS_PY_SEC
+    SCRIPTS_SH --> SCRIPTS_SH_WORK
+    SCRIPTS_SH --> SCRIPTS_SH_GEN
+    SCRIPTS_SH --> SCRIPTS_SH_BUILD
+    
+    SECURE --> SECURE_CA
+    SECURE --> SECURE_PART
+    SECURE_CA --> SECURE_CA_CERT
+    SECURE_CA --> SECURE_CA_PRIV
+    SECURE_PART --> SECURE_HOST
+    
+    MONITORING --> MONITORING_CPP
+    MONITORING --> MONITORING_BUILD
+    MONITORING --> MONITORING_RUN
+    MONITORING --> MONITORING_CMAKE
+    MONITORING --> MONITORING_BUILD_OUT
+    MONITORING_BUILD --> MONITORING_BUILD_SH
+    MONITORING_BUILD --> MONITORING_BUILD_BAT
+    MONITORING_RUN --> MONITORING_RUN_SH
+    MONITORING_RUN --> MONITORING_RUN_BAT
+    MONITORING_BUILD_OUT --> MONITORING_EXE
+    
+    DEMO --> DEMO_SERVER
+    DEMO --> DEMO_BUILD
+    DEMO --> DEMO_RUN
+    DEMO --> DEMO_PKG
+    DEMO --> DEMO_PUBLIC
+    DEMO_BUILD --> DEMO_BUILD_SH
+    DEMO_BUILD --> DEMO_BUILD_BAT
+    DEMO_RUN --> DEMO_RUN_SH
+    DEMO_RUN --> DEMO_RUN_BAT
+    DEMO_PUBLIC --> DEMO_HTML
+    DEMO_PUBLIC --> DEMO_JS
+    DEMO_PUBLIC --> DEMO_CSS
+    
+    SCENARIOS --> SCENARIOS_CORE
+    SCENARIOS --> SCENARIOS_INT
+    SCENARIOS --> SCENARIOS_MSG
+    
+    INIT --> INIT_SH
+    INIT --> INIT_BAT
+    INIT_SH --> INIT_SH_SETUP
+    INIT_SH --> INIT_SH_INSTALL
+    INIT_BAT --> INIT_BAT_SETUP
+    
+    DOCS --> DOCS_DEMO
+    DOCS --> DOCS_IDL
+    DOCS --> DOCS_MON
+    DOCS --> DOCS_SCEN
+    DOCS --> DOCS_SEC
+    DOCS --> DOCS_SCRIPTS
 ```
 

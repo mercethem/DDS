@@ -90,7 +90,7 @@ sample_.speed_mps(15.5f);
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During IDL patcher setup phase (STEP 5)
+- `init/sh/project_setup.sh` - During IDL patcher setup phase (STEP 5)
 - `scripts/sh/patch_idl_defaults.sh` - Standalone execution
 - `scripts/sh/run_complete_workflow.sh` - Complete workflow
 

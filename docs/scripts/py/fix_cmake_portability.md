@@ -86,7 +86,7 @@ set_target_properties(${EXEC_NAME} PROPERTIES
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During CMake portability fix phase (STEP 2b)
+- `init/sh/project_setup.sh` - During CMake portability fix phase (STEP 2b)
 
 ## Notes
 

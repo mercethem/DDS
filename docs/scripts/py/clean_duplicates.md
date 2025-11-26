@@ -61,7 +61,7 @@ const std::filesystem::path dds_root = resolve_dds_root();
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During cleanup phase (STEP 2a)
+- `init/sh/project_setup.sh` - During cleanup phase (STEP 2a)
 
 ## Notes
 

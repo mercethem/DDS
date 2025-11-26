@@ -94,7 +94,7 @@ std::ifstream json_file("scenarios/ModuleName.json");
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During patching phase
+- `init/sh/project_setup.sh` - During patching phase
 - `scripts/sh/patch_json_reading.sh` - Standalone execution
 - `scripts/sh/run_complete_workflow.sh` - Complete workflow
 

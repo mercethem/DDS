@@ -215,7 +215,7 @@ Certificates are automatically renewed if:
 2. **Expired Certificates**: Certificates created before last year's January 1st
 3. **System Time Issues**: Fallback to 1-year age check if date calculation fails
 
-**Renewal Process** (`setup.sh`):
+**Renewal Process** (`project_setup.sh`):
 1. Checks certificate existence
 2. Calculates certificate age
 3. Compares with renewal threshold
@@ -266,9 +266,9 @@ Certificates are automatically renewed if:
 
 Certificates are created automatically by:
 
-**init/sh/setup.sh**:
+**init/sh/project_setup.sh**:
 ```bash
-bash init/sh/setup.sh
+bash init/sh/project_setup.sh
 ```
 
 This script:
@@ -349,18 +349,9 @@ openssl verify -CAfile secure_dds/CA/mainca_cert.pem \
     secure_dds/participants/<hostname>/<hostname>_cert.pem
 ```
 
-<<<<<<< HEAD
 ## Folder Structure
 
 See `secure_dds.mdd` for the complete folder structure diagram.
-=======
-<<<<<<< HEAD
-=======
-## Folder Structure
-
-See `secure_dds.mdd` for the complete folder structure diagram.
->>>>>>> 4094b194 (directory managemend upgraded, scripts renamed, docs updated)
->>>>>>> 9f27b6be (directory managemend upgraded, scripts renamed, docs updated)
 
 ## Security Configuration Details
 
@@ -389,7 +380,7 @@ See `secure_dds.mdd` for the complete folder structure diagram.
 
 ### With Setup System
 
-- `init/sh/setup.sh` checks and creates certificates automatically
+- `init/sh/project_setup.sh` checks and creates certificates automatically
 - Certificate renewal logic integrated into setup process
 - Security configuration applied during setup
 

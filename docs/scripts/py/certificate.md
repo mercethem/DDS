@@ -80,7 +80,7 @@ Certificates are automatically renewed if:
 ## Integration
 
 This script is called by:
-- `init/sh/setup.sh` - During initial project setup
+- `init/sh/project_setup.sh` - During initial project setup
 - `scripts/sh/setup_security_certificates.sh` - For security setup workflow
 
 ## Notes

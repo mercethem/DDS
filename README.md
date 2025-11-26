@@ -108,7 +108,7 @@ Replace `<repository-url>` with the actual repository URL.
 Run the automated dependency installer:
 
 ```bash
-bash init/sh/install_dependencies_ubuntu.sh
+bash init/sh/install_system_dependencies.sh
 ```
 
 This script will:
@@ -222,7 +222,7 @@ After installing dependencies, you must set up the project. The setup process co
 Run the automated setup script:
 
 ```bash
-bash init/sh/setup.sh
+bash init/sh/project_setup.sh
 ```
 
 This script performs all setup steps automatically:
@@ -255,6 +255,7 @@ This creates environment configuration files (`export_dds_environment.sh` and `s
 Generate C++ code from IDL files:
 
 ```bash
+cd scripts/sh
 bash generate_idl_code.sh
 ```
 
@@ -271,6 +272,7 @@ This script:
 Update domain IDs in generated code based on IDL file comments:
 
 ```bash
+cd scripts/sh
 bash update_domain_ids.sh
 ```
 
@@ -281,6 +283,7 @@ This ensures that generated applications use the correct DDS domain IDs specifie
 Create security certificates and apply security configuration:
 
 ```bash
+cd scripts/sh
 bash setup_security_certificates.sh
 ```
 
@@ -333,6 +336,7 @@ python3 scripts/py/fix_cmake_rpath.py
 Build all IDL modules:
 
 ```bash
+cd scripts/sh
 bash build_idl_modules.sh
 ```
 
