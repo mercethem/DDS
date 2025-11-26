@@ -1,8 +1,8 @@
-# fix_cmake_portability.py
+# fix_cmake_rpath.py
 
 ## Overview
 
-`fix_cmake_portability.py` makes CMakeLists.txt files portable by removing hardcoded paths and adding RPATH settings. This ensures that binaries work correctly when the project is moved to different locations.
+`fix_cmake_rpath.py` makes CMakeLists.txt files portable by removing hardcoded paths and adding RPATH settings. This ensures that binaries work correctly when the project is moved to different locations.
 
 ## Purpose
 
@@ -24,18 +24,18 @@
 
 ```bash
 cd scripts/py
-python3 fix_cmake_portability.py
+python3 fix_cmake_rpath.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/fix_cmake_portability.py
+python3 scripts/py/fix_cmake_rpath.py
 ```
 
 ### Via Setup Script
 
-Automatically called by `setup.sh` during CMake portability fix phase.
+Automatically called by `init/sh/project_setup.sh` during CMake portability fix phase.
 
 ## Changes Made
 
@@ -86,7 +86,7 @@ set_target_properties(${EXEC_NAME} PROPERTIES
 ## Integration
 
 This script is called by:
-- `setup.sh` - During CMake portability fix phase (STEP 2b)
+- `init/sh/setup.sh` - During CMake portability fix phase (STEP 2b)
 
 ## Notes
 

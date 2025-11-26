@@ -1,20 +1,20 @@
-# dynamic_qos_patcher.sh
+# patch_qos_settings.sh
 
 ## Overview
 
-`dynamic_qos_patcher.sh` launches the QoS Patcher GUI application. It detects Python and starts the graphical interface for configuring QoS settings.
+`patch_qos_settings.sh` launches the QoS Patcher GUI application. It detects Python and starts the graphical interface for configuring QoS settings.
 
 ## Purpose
 
 - Launches QoS Patcher GUI
 - Detects Python installation dynamically
 - Provides easy access to QoS configuration
-- Wrapper script for `qos_patcher_gui.py`
+- Wrapper script for `qos_settings_patcher_gui.py`
 
 ## How It Works
 
-1. **Python Detection**: Runs `dynamic_finder.sh` to find Python
-2. **File Check**: Verifies `qos_patcher_gui.py` exists
+1. **Python Detection**: Runs `find_tools.sh` to find Python
+2. **File Check**: Verifies `qos_settings_patcher_gui.py` exists
 3. **GUI Launch**: Starts the GUI application
 4. **Status Report**: Shows exit status
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/sh
-bash dynamic_qos_patcher.sh
+bash patch_qos_settings.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/dynamic_qos_patcher.sh
+bash scripts/sh/patch_qos_settings.sh
 ```
 
 ## GUI Features
@@ -46,7 +46,7 @@ The GUI allows:
 
 - Python 3.x
 - tkinter library (for GUI)
-- `qos_patcher_gui.py` must exist
+- `qos_settings_patcher_gui.py` must exist
 - GUI environment (X11 on Linux)
 
 ## Integration

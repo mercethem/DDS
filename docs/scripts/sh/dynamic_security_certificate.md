@@ -1,8 +1,8 @@
-# dynamic_security_certificate.sh
+# setup_security_certificates.sh
 
 ## Overview
 
-`dynamic_security_certificate.sh` sets up DDS security by creating certificates and applying security patches. It orchestrates the complete security setup process.
+`setup_security_certificates.sh` sets up DDS security by creating certificates and applying security patches. It orchestrates the complete security setup process.
 
 ## Purpose
 
@@ -15,8 +15,8 @@
 
 1. **Portability Check**: Verifies project structure
 2. **Python Detection**: Finds Python installation
-3. **Certificate Creation**: Runs `certificate.py` to create certificates
-4. **Security Patching**: Runs `security.py` to apply security settings
+3. **Certificate Creation**: Runs `generate_security_certificates.py` to create certificates
+4. **Security Patching**: Runs `apply_security_settings.py` to apply security settings
 
 ## Usage
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/sh
-bash dynamic_security_certificate.sh
+bash setup_security_certificates.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/dynamic_security_certificate.sh
+bash scripts/sh/setup_security_certificates.sh
 ```
 
 ## Execution Steps
@@ -57,8 +57,8 @@ bash scripts/sh/dynamic_security_certificate.sh
 ## Integration
 
 This script is called by:
-- `setup.sh` - During security setup phase
-- `dynamic_ALL.sh` - As STEP 4
+- `init/sh/project_setup.sh` - During security setup phase
+- `run_complete_workflow.sh` - As STEP 4
 
 ## Notes
 

@@ -1,8 +1,8 @@
-# cmake_generator.py
+# generate_cmake_files.py
 
 ## Overview
 
-`cmake_generator.py` generates cross-platform CMakeLists.txt files for IDL modules. It creates standardized CMake configuration files that work on both Windows and Linux systems.
+`generate_cmake_files.py` generates cross-platform CMakeLists.txt files for IDL modules. It creates standardized CMake configuration files that work on both Windows and Linux systems.
 
 ## Purpose
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/py
-python3 cmake_generator.py
+python3 generate_cmake_files.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/cmake_generator.py
+python3 scripts/py/generate_cmake_files.py
 ```
 
 ## Template Location
@@ -51,7 +51,7 @@ If template doesn't exist, generates standard CMakeLists.txt.
 ## Requirements
 
 - Python 3.x
-- IDL modules must be generated first (via `IDL_GENERATOR.sh`)
+- IDL modules must be generated first (via `generate_idl_code.sh`)
 
 ## Notes
 

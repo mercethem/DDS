@@ -52,7 +52,7 @@ The demo dashboard serves as the primary visualization and monitoring interface 
 
 #### Launch Infrastructure
 
-1. **demo.sh** - Linux launch script
+1. **run_demo.sh** - Linux launch script
    - Dependency checking (Node.js, npm)
    - Automatic dependency installation
    - Process initialization and tracking
@@ -118,34 +118,7 @@ Upon startup, the server:
 
 ### 3. Data Flow Architecture
 
-```
-┌─────────────────┐
-│ DDS Publishers │  (CoreData, Intelligence, Messaging)
-└────────┬────────┘
-         │ DDS Topics (RTPS)
-         │
-         ▼
-┌─────────────────┐
-│ Unified Monitor │  (monitoring/build/monitor)
-│  or Individual  │  Subscribes to multiple domains/topics
-│  Subscribers    │
-└────────┬────────┘
-         │ stdout (formatted text)
-         │
-         ▼
-┌─────────────────┐
-│  server.js      │  Parses stdout with regex
-│  (Parser)       │  Extracts domain, topic, data fields
-└────────┬────────┘
-         │ WebSocket Events
-         │ (aircraftData, intelligence, messaging)
-         │
-         ▼
-┌─────────────────┐
-│  Frontend       │  Receives events via Socket.IO
-│  (app.js)       │  Updates map markers and data panels
-└─────────────────┘
-```
+See `demo.mdd` for the complete data flow architecture diagram.
 
 ### 4. Data Parsing Mechanism
 
@@ -242,6 +215,13 @@ The server uses sophisticated regex-based parsing to extract structured data fro
 #### 1. Install Dependencies
 
 ```bash
+cd demo/build_demo
+bash build_demo.sh
+```
+
+Or manually:
+
+```bash
 cd demo
 npm install
 ```
@@ -253,10 +233,10 @@ This installs all required Node.js packages listed in `package.json`.
 Ensure DDS components are built:
 ```bash
 # Build IDL modules
-bash scripts/sh/IDL_BUILDER.sh
+bash scripts/sh/build_idl_modules.sh
 
 # Build monitor
-bash monitoring/build.sh
+bash monitoring/build_monitoring/build_monitoring.sh
 ```
 
 ### Running the Dashboard
@@ -264,13 +244,13 @@ bash monitoring/build.sh
 #### Method 1: Using Launch Script (Recommended)
 
 ```bash
-cd demo
-bash demo.sh
+cd demo/run_demo
+bash run_demo.sh
 ```
 
 The script will:
 1. Check Node.js availability
-2. Install dependencies if needed
+2. Install dependencies if needed (via `demo/build_demo/build_demo.sh`)
 3. Start the backend server
 4. Display instructions for starting publishers
 
@@ -358,8 +338,8 @@ cd IDL/Messaging_idl_generated/build
 
 Or use the unified monitor (recommended):
 ```bash
-cd monitoring
-bash monitor.sh
+cd monitoring/run_monitoring
+bash run_monitoring.sh
 ```
 
 The monitor subscribes to all topics across specified domains.
@@ -524,54 +504,7 @@ When `DDS_ONLY=false`, the server can:
 
 ## Project Structure
 
-```
-demo/
-├── server.js              # Backend server (Express + Socket.IO)
-├── demo.sh                # Linux launch script
-├── package.json           # Node.js dependencies and scripts
-├── processes.pid          # Process tracking file (auto-generated)
-└── public/                # Frontend files
-    ├── index.html         # Main HTML structure
-    ├── app.js             # Frontend JavaScript logic
-    └── style.css          # Styling and theming
-```
-
-## Operation Diagram
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    DDS Infrastructure                        │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐                  │
-│  │Publisher │  │Publisher │  │Publisher │                  │
-│  │CoreData  │  │Intelligence│ │Messaging │                  │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘                  │
-│       │             │             │                         │
-│       └─────────────┴─────────────┘                         │
-│                    │ DDS Topics                             │
-│                    ▼                                         │
-│         ┌──────────────────────┐                            │
-│         │  Unified Monitor     │                            │
-│         │  (monitoring/monitor)│                            │
-│         └──────────┬───────────┘                            │
-└────────────────────┼────────────────────────────────────────┘
-                     │ stdout (parsed)
-                     ▼
-         ┌──────────────────────┐
-         │   Demo Server        │
-         │   (server.js)        │
-         │   - Parse stdout     │
-         │   - WebSocket emit   │
-         └──────────┬───────────┘
-                    │ WebSocket Events
-                    ▼
-         ┌──────────────────────┐
-         │   Web Browser        │
-         │   (Frontend)         │
-         │   - Map visualization│
-         │   - Data panels     │
-         │   - Real-time updates│
-         └──────────────────────┘
-```
+See `demo.mdd` for the complete project structure and operation diagrams.
 
 ## Notes
 

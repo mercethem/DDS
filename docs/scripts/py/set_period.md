@@ -1,8 +1,8 @@
-# set_period.py
+# set_publisher_period.py
 
 ## Overview
 
-`set_period.py` is an interactive tool for modifying the `period_ms_` value in all DDS Publisher application header files (`*PublisherApp.hpp`). It allows you to set different period values for each publisher or apply the same value to all publishers.
+`set_publisher_period.py` is an interactive tool for modifying the `period_ms_` value in all DDS Publisher application header files (`*PublisherApp.hpp`). It allows you to set different period values for each publisher or apply the same value to all publishers.
 
 ## Purpose
 
@@ -29,19 +29,19 @@ Allows setting different period values for each publisher:
 
 ```bash
 cd scripts/py
-python3 set_period.py
+python3 set_publisher_period.py
 ```
 
 Or from project root:
 
 ```bash
-python3 scripts/py/set_period.py
+python3 scripts/py/set_publisher_period.py
 ```
 
 Or via shell script:
 
 ```bash
-bash scripts/sh/set_period.sh
+bash scripts/sh/set_publisher_period.sh
 ```
 
 ### Batch Mode
@@ -49,13 +49,13 @@ bash scripts/sh/set_period.sh
 Apply the same period value to all publishers:
 
 ```bash
-python3 scripts/py/set_period.py 200
+python3 scripts/py/set_publisher_period.py 200
 ```
 
 Or via shell script:
 
 ```bash
-bash scripts/sh/set_period.sh 200
+bash scripts/sh/set_publisher_period.sh 200
 ```
 
 ## Interactive Mode Workflow
@@ -179,6 +179,6 @@ Can be used:
 
 ## Related Scripts
 
-- `set_period.sh` - Shell wrapper for easier execution
+- `set_publisher_period.sh` - Shell wrapper for easier execution
 - Other patcher scripts modify different aspects of publisher applications
 

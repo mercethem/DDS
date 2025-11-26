@@ -1,12 +1,12 @@
-# set_period.sh
+# set_publisher_period.sh
 
 ## Overview
 
-`set_period.sh` is a wrapper script that runs the `set_period.py` Python script. It provides a convenient interface for setting publisher period values, handling both interactive and batch modes.
+`set_publisher_period.sh` is a wrapper script that runs the `set_publisher_period.py` Python script. It provides a convenient interface for setting publisher period values, handling both interactive and batch modes.
 
 ## Purpose
 
-- Convenient wrapper for `set_period.py`
+- Convenient wrapper for `set_publisher_period.py`
 - Sets correct working directory (project root)
 - Validates command-line arguments
 - Provides user-friendly error messages
@@ -19,7 +19,7 @@
 3. **Mode Selection**: 
    - No argument → Interactive mode
    - With argument → Batch mode (applies same value to all)
-4. **Script Execution**: Runs `python3 scripts/py/set_period.py` with appropriate arguments
+4. **Script Execution**: Runs `python3 scripts/py/set_publisher_period.py` with appropriate arguments
 5. **Status Display**: Shows completion message and waits for user input
 
 ## Usage
@@ -30,13 +30,13 @@ Set different period values for each publisher:
 
 ```bash
 cd scripts/sh
-bash set_period.sh
+bash set_publisher_period.sh
 ```
 
 Or from project root:
 
 ```bash
-bash scripts/sh/set_period.sh
+bash scripts/sh/set_publisher_period.sh
 ```
 
 ### Batch Mode
@@ -44,7 +44,7 @@ bash scripts/sh/set_period.sh
 Apply the same period value to all publishers:
 
 ```bash
-bash scripts/sh/set_period.sh 200
+bash scripts/sh/set_publisher_period.sh 200
 ```
 
 ## Command-Line Arguments
@@ -52,7 +52,7 @@ bash scripts/sh/set_period.sh 200
 ### No Arguments (Interactive Mode)
 
 ```bash
-./set_period.sh
+./set_publisher_period.sh
 ```
 
 - Starts interactive mode
@@ -62,12 +62,12 @@ bash scripts/sh/set_period.sh 200
 ### With Period Argument (Batch Mode)
 
 ```bash
-./set_period.sh <period_in_ms>
+./set_publisher_period.sh <period_in_ms>
 ```
 
 - Applies the same period value to all publishers
 - Period must be a positive integer (> 0)
-- Example: `./set_period.sh 200` sets all to 200ms
+- Example: `./set_publisher_period.sh 200` sets all to 200ms
 
 ## Argument Validation
 
@@ -91,56 +91,21 @@ The script validates the period argument:
 ### Interactive Mode
 
 1. Displays "Starting interactive mode..." message
-2. Executes `python3 scripts/py/set_period.py`
+2. Executes `python3 scripts/py/set_publisher_period.py`
 3. User interacts with Python script to set individual values
 4. Shows completion status
 
 ### Batch Mode
 
 1. Validates period argument
-2. Displays "Running: set_period.py (period=X ms)..." message
-3. Executes `python3 scripts/py/set_period.py X`
+2. Displays "Running: set_publisher_period.py (period=X ms)..." message
+3. Executes `python3 scripts/py/set_publisher_period.py X`
 4. All files updated with same value
 5. Shows completion status
 
 ## Directory Structure
 
-The script assumes this structure:
-```
-project_root/
-├── scripts/
-│   ├── py/
-│   │   └── set_period.py
-│   └── sh/
-│       └── set_period.sh
-├── IDL/
-│   └── *_idl_generated/
-│       └── *PublisherApp.hpp
-└── scenarios/
-```
-
-## Execution Flow
-
-```
-User runs script
-    ↓
-Navigate to project root
-    ↓
-Check arguments
-    ↓
-┌─────────────────┬─────────────────┐
-│ No arguments    │ With argument    │
-│ (Interactive)   │ (Batch)          │
-└─────────────────┴─────────────────┘
-    ↓                    ↓
-Run Python script    Validate argument
-    ↓                    ↓
-User interaction    Run Python script
-    ↓                    ↓
-Show status         Show status
-    ↓                    ↓
-Wait for Enter      Wait for Enter
-```
+The script assumes this structure. See `set_publisher_period.mdd` for the complete directory structure and execution flow diagrams.
 
 ## Error Handling
 
@@ -165,7 +130,7 @@ After execution:
 
 - Bash shell
 - Python 3.x installed
-- `set_period.py` must exist at `scripts/py/set_period.py`
+- `set_publisher_period.py` must exist at `scripts/py/set_publisher_period.py`
 - Project structure with `IDL/` directory
 
 ## Integration
@@ -190,14 +155,14 @@ Can be used:
 
 ```bash
 # Set all publishers to 200ms
-./set_period.sh 200
+./set_publisher_period.sh 200
 ```
 
 ### Scenario 2: Individual Configuration
 
 ```bash
 # Interactive mode - set different values
-./set_period.sh
+./set_publisher_period.sh
 # Then follow prompts for each file
 ```
 
@@ -206,7 +171,7 @@ Can be used:
 ```bash
 # Works from any location
 cd /some/other/directory
-/path/to/project/scripts/sh/set_period.sh 150
+/path/to/project/scripts/sh/set_publisher_period.sh 150
 ```
 
 ## Notes
@@ -220,6 +185,6 @@ cd /some/other/directory
 
 ## Related Scripts
 
-- `set_period.py` - The Python script that does the actual work
+- `set_publisher_period.py` - The Python script that does the actual work
 - Other shell scripts follow similar patterns
 

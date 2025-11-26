@@ -1,0 +1,46 @@
+# Generate IDL Code Generated Structure Diagram
+
+```
+IDL/CoreData_idl_generated/
+├── CoreData.h
+├── CoreData.cxx
+├── CoreDataPubSubTypes.h
+├── CoreDataPubSubTypes.cxx
+├── CoreDataPublisherApp.h
+├── CoreDataPublisherApp.cxx
+├── CoreDataSubscriberApp.h
+├── CoreDataSubscriberApp.cxx
+├── CoreDatamain.cxx
+└── CMakeLists.txt
+```
+
+# DIAGRAM KODU
+
+## Generated Structure Diagram
+
+```mermaid
+graph TD
+    GEN["IDL/CoreData_idl_generated/"]
+    H["CoreData.h"]
+    CXX["CoreData.cxx"]
+    PUBTYPES_H["CoreDataPubSubTypes.h"]
+    PUBTYPES_CXX["CoreDataPubSubTypes.cxx"]
+    PUBAPP_H["CoreDataPublisherApp.h"]
+    PUBAPP_CXX["CoreDataPublisherApp.cxx"]
+    SUBAPP_H["CoreDataSubscriberApp.h"]
+    SUBAPP_CXX["CoreDataSubscriberApp.cxx"]
+    MAIN["CoreDatamain.cxx"]
+    CMAKE["CMakeLists.txt"]
+    
+    GEN --> H
+    GEN --> CXX
+    GEN --> PUBTYPES_H
+    GEN --> PUBTYPES_CXX
+    GEN --> PUBAPP_H
+    GEN --> PUBAPP_CXX
+    GEN --> SUBAPP_H
+    GEN --> SUBAPP_CXX
+    GEN --> MAIN
+    GEN --> CMAKE
+```
+

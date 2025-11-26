@@ -225,11 +225,12 @@ bool IntelligencePublisherApp::publish()
         static bool json_loaded = false;
         
         if (!json_loaded) {
-            // Try multiple possible paths for the JSON file
+            // Try multiple possible paths for the JSON file (relative to executable location)
+            // Paths are tried in order: from build/, from generated/, from project root
             std::vector<std::string> possible_paths = {
-                "scenarios/Intelligence.json",
-                "../../scenarios/Intelligence.json",
-                "../../../scenarios/Intelligence.json"
+                "../../../scenarios/Intelligence.json",  // From IDL/<Module>_idl_generated/build/
+                "../../scenarios/Intelligence.json",      // From IDL/<Module>_idl_generated/
+                "scenarios/Intelligence.json"            // From project root
             };
             
             bool file_found = false;

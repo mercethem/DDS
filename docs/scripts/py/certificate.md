@@ -1,8 +1,8 @@
-# certificate.py
+# generate_security_certificates.py
 
 ## Overview
 
-`certificate.py` is a Secure DDS Certificate Manager that creates and manages PC-specific PKI (Public Key Infrastructure) certificates for DDS security. It automatically detects the PC name and creates unique certificates for each machine.
+`generate_security_certificates.py` is a Secure DDS Certificate Manager that creates and manages PC-specific PKI (Public Key Infrastructure) certificates for DDS security. It automatically detects the PC name and creates unique certificates for each machine.
 
 ## Purpose
 
@@ -27,18 +27,18 @@
 
 ```bash
 cd scripts/py
-python3 certificate.py
+python3 generate_security_certificates.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/certificate.py
+python3 scripts/py/generate_security_certificates.py
 ```
 
 ### Via Setup Script
 
-The certificate creation is automatically handled by `setup.sh` during initial setup.
+The certificate creation is automatically handled by `init/sh/project_setup.sh` during initial setup.
 
 ## Output Files
 
@@ -80,8 +80,8 @@ Certificates are automatically renewed if:
 ## Integration
 
 This script is called by:
-- `setup.sh` - During initial project setup
-- `scripts/sh/dynamic_security_certificate.sh` - For security setup workflow
+- `init/sh/setup.sh` - During initial project setup
+- `scripts/sh/setup_security_certificates.sh` - For security setup workflow
 
 ## Notes
 

@@ -25,12 +25,12 @@ The monitoring system provides:
    - Security configuration
    - Output formatting
 
-2. **monitor.sh** - Launch script
+2. **run_monitoring.sh** - Launch script (located in `monitoring/run_monitoring/`)
    - Build verification and execution
    - Environment variable handling
    - Process management
 
-3. **build.sh** - Build script
+3. **build_monitoring.sh** - Build script (located in `monitoring/build_monitoring/`)
    - CMake configuration
    - Dependency detection
    - Compilation and linking
@@ -221,7 +221,7 @@ The demo server (`demo/server.js`) parses this output using regex patterns:
 - **Fast-DDS**: Installed and discoverable by CMake
 - **Fast-CDR**: Installed and discoverable by CMake
 - **OpenSSL**: Development libraries
-- **Generated IDL Libraries**: Must be built first (`IDL_BUILDER.sh`)
+- **Generated IDL Libraries**: Must be built first (`build_idl_modules.sh`)
 
 ### Runtime Requirements
 
@@ -235,19 +235,19 @@ The demo server (`demo/server.js`) parses this output using regex patterns:
 
 ### Building
 
-#### Using build.sh (Recommended)
+#### Using build_monitoring.sh (Recommended)
 
 ```bash
-cd monitoring
-bash build.sh
+cd monitoring/build_monitoring
+bash build_monitoring.sh
 ```
 
 **What it does:**
-1. Creates `build/` directory
+1. Creates `build/` directory in `monitoring/`
 2. Detects Fast-DDS installation paths
 3. Configures CMake
 4. Builds monitor executable
-5. Outputs to `build/monitor`
+5. Outputs to `monitoring/build/monitor`
 
 #### Using CMake Directly
 
@@ -269,12 +269,13 @@ make -j$(nproc)
 #### Basic Usage
 
 ```bash
-cd monitoring
-bash monitor.sh
+cd monitoring/run_monitoring
+bash run_monitoring.sh
 ```
 
 Or directly:
 ```bash
+cd monitoring
 ./build/monitor
 ```
 
@@ -301,9 +302,10 @@ Or directly:
 MONITOR_DOMAINS="0,1,2" ./build/monitor
 ```
 
-Or via monitor.sh:
+Or via run_monitoring.sh:
 ```bash
-MONITOR_DOMAINS="0-3" bash monitor.sh
+cd monitoring/run_monitoring
+MONITOR_DOMAINS="0-3" bash run_monitoring.sh
 ```
 
 ### Integration with Demo Dashboard
@@ -330,20 +332,7 @@ Monitor (stdout) → Demo Server (stdin parsing) → WebSocket → Dashboard
 
 ### Certificate Structure
 
-```
-secure_dds/
-├── CA/
-│   ├── mainca_cert.pem          # Root CA certificate
-│   └── private/
-│       └── mainca_key.pem        # Root CA private key
-└── participants/
-    └── <hostname>/
-        ├── <hostname>_cert.pem  # Participant certificate
-        ├── <hostname>_key.pem   # Participant private key
-        └── security/
-            ├── governance.xml    # Governance document
-            └── permissions.p7s  # Signed permissions
-```
+See `monitoring.mdd` for the complete certificate structure diagram.
 
 ### Certificate Requirements
 
@@ -355,9 +344,9 @@ secure_dds/
 ### Certificate Creation
 
 Certificates are created automatically by:
-- `setup.sh` - During project setup
-- `certificate.py` - Standalone certificate generation
-- `dynamic_security_certificate.sh` - Security setup workflow
+- `init/sh/project_setup.sh` - During project setup
+- `scripts/py/generate_security_certificates.py` - Standalone certificate generation
+- `scripts/sh/setup_security_certificates.sh` - Security setup workflow
 
 ## Path Detection
 
@@ -435,7 +424,7 @@ Monitor output can be parsed by:
 
 **Solutions**:
 1. **Missing Fast-DDS**: Install Fast-DDS libraries
-2. **Missing IDL Libraries**: Build IDL modules first (`IDL_BUILDER.sh`)
+2. **Missing IDL Libraries**: Build IDL modules first (`build_idl_modules.sh`)
 3. **CMake Errors**: Check `CMAKE_PREFIX_PATH` for Fast-DDS location
 4. **Compiler Issues**: Verify C++17 support
 5. **Library Paths**: Check library paths in CMakeLists.txt
@@ -445,7 +434,7 @@ Monitor output can be parsed by:
 **Symptoms**: Security initialization fails
 
 **Solutions**:
-1. **Missing Certificates**: Run `certificate.py` to create certificates
+1. **Missing Certificates**: Run `generate_security_certificates.py` to create certificates
 2. **Wrong Hostname**: Certificates are PC-specific, ensure hostname matches
 3. **Path Issues**: Check `secure_dds/participants/<hostname>/` exists
 4. **Certificate Validity**: Verify certificates are not expired
@@ -486,59 +475,7 @@ Monitor output can be parsed by:
 
 ## Project Structure
 
-```
-monitoring/
-├── monitor.cpp          # Main application source
-├── monitor.sh           # Launch script
-├── build.sh             # Build script
-├── CMakeLists.txt       # CMake configuration
-└── build/               # Build output directory
-    ├── CMakeFiles/      # CMake generated files
-    ├── CMakeCache.txt   # CMake cache
-    └── monitor          # Executable
-```
-
-## Operation Diagram
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│              DDS Publishers                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐                 │
-│  │CoreData  │  │Intelligence│ │Messaging │                 │
-│  │Publisher │  │Publisher  │  │Publisher │                 │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘                 │
-│       │             │             │                        │
-│       └─────────────┴─────────────┘                        │
-│                    │ DDS Topics                            │
-│                    │ (RTPS/UDP Multicast)                  │
-└────────────────────┼────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Monitor Application                            │
-│  ┌────────────────────────────────────────┐              │
-│  │  Domain 0 Participant                   │              │
-│  │  - CoreDataTopic DataReader             │              │
-│  │  - IntelligenceTopic DataReader         │              │
-│  │  - MessagingTopic DataReader            │              │
-│  └────────────────────────────────────────┘              │
-│  ┌────────────────────────────────────────┐              │
-│  │  Domain 1 Participant                   │              │
-│  │  - CoreDataTopic DataReader             │              │
-│  │  - IntelligenceTopic DataReader         │              │
-│  │  - MessagingTopic DataReader            │              │
-│  └────────────────────────────────────────┘              │
-│  ... (more domains)                                       │
-└────────────────────┬────────────────────────────────────────┘
-                     │ stdout (formatted output)
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Output Processing                             │
-│  - Demo Server (parses stdout)                             │
-│  - Custom scripts                                           │
-│  - Log analysis tools                                       │
-└─────────────────────────────────────────────────────────────┘
-```
+See `monitoring.mdd` for the complete project structure and operation diagrams.
 
 ## Notes
 

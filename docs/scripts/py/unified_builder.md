@@ -1,8 +1,8 @@
-# unified_builder.py
+# unified_build_system.py
 
 ## Overview
 
-`unified_builder.py` provides a cross-platform build system for the DDS project. It automatically detects the platform (Windows/Linux) and uses appropriate build tools (CMake, Make/Ninja, MSBuild).
+`unified_build_system.py` provides a cross-platform build system for the DDS project. It automatically detects the platform (Windows/Linux) and uses appropriate build tools (CMake, Make/Ninja, MSBuild).
 
 ## Purpose
 
@@ -25,13 +25,13 @@
 
 ```bash
 cd scripts/py
-python3 unified_builder.py
+python3 unified_build_system.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/unified_builder.py
+python3 scripts/py/unified_build_system.py
 ```
 
 ## Platform Support
@@ -80,7 +80,7 @@ For each `*_idl_generated` directory:
 ## Integration
 
 Can be used as an alternative to:
-- `scripts/sh/IDL_BUILDER.sh` - Linux build script
+- `scripts/sh/build_idl_modules.sh` - Linux build script
 - Manual CMake builds
 
 ## Notes

@@ -1,8 +1,8 @@
-# security.py
+# apply_security_settings.py
 
 ## Overview
 
-`security.py` applies DDS security settings to C++ Publisher and Subscriber applications. It configures authentication (PKI-DH), encryption (AES-GCM-GMAC), and access control using PC-specific certificates.
+`apply_security_settings.py` applies DDS security settings to C++ Publisher and Subscriber applications. It configures authentication (PKI-DH), encryption (AES-GCM-GMAC), and access control using PC-specific certificates.
 
 ## Purpose
 
@@ -25,19 +25,19 @@
 
 ```bash
 cd scripts/py
-python3 security.py
+python3 apply_security_settings.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/security.py
+python3 scripts/py/apply_security_settings.py
 ```
 
 ### Via Shell Script
 
 ```bash
-bash scripts/sh/dynamic_security_certificate.sh
+bash scripts/sh/setup_security_certificates.sh
 ```
 
 ## Security Configuration
@@ -70,16 +70,16 @@ pqos.properties().properties().emplace_back("dds.sec.auth.builtin.PKI-DH.identit
 ## Requirements
 
 - Python 3.x
-- Certificates must exist (created by `certificate.py`)
+- Certificates must exist (created by `generate_security_certificates.py`)
 - Read access to `secure_dds/` directory
 - Write access to `IDL/*_idl_generated/` directories
 
 ## Integration
 
 This script is called by:
-- `setup.sh` - During security setup phase
-- `scripts/sh/dynamic_security_certificate.sh` - Security workflow
-- `scripts/sh/dynamic_ALL.sh` - Complete workflow
+- `init/sh/setup.sh` - During security setup phase
+- `scripts/sh/setup_security_certificates.sh` - Security workflow
+- `scripts/sh/run_complete_workflow.sh` - Complete workflow
 
 ## Notes
 

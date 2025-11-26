@@ -1,8 +1,8 @@
-# update_domain_ids_dynamic.md
+# update_domain_ids.md
 
 ## Overview
 
-`update_domain_ids_dynamic.sh` updates domain IDs in generated C++ code based on domain IDs specified in IDL file comments. It reads the domain ID from the first line of each IDL file and updates the corresponding generated code.
+`update_domain_ids.sh` updates domain IDs in generated C++ code based on domain IDs specified in IDL file comments. It reads the domain ID from the first line of each IDL file and updates the corresponding generated code.
 
 ## Purpose
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/sh
-bash update_domain_ids_dynamic.sh
+bash update_domain_ids.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/update_domain_ids_dynamic.sh
+bash scripts/sh/update_domain_ids.sh
 ```
 
 ## IDL File Format
@@ -63,8 +63,8 @@ int domain_id = 5;
 ## Integration
 
 This script is called by:
-- `setup.sh` - During domain ID update phase
-- `dynamic_ALL.sh` - As STEP 3
+- `init/sh/project_setup.sh` - During domain ID update phase
+- `run_complete_workflow.sh` - As STEP 3
 
 ## Notes
 

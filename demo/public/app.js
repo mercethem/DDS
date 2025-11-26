@@ -144,9 +144,12 @@ class MilitaryDashboard {
     }
 
     initMap() {
-        // Initialize map centered on aircraft operational area (Elazığ region)
-        // Using coordinates from CoreData scenario (38.67, 39.22)
-        this.map = L.map('map').setView([38.67, 39.22], 12);
+        // Default coordinates (Ankara) - used if geolocation is not available
+        const defaultCoords = [39.9334, 32.8597];
+        const defaultZoom = 12;
+        
+        // Initialize map with default coordinates first
+        this.map = L.map('map').setView(defaultCoords, defaultZoom);
         
         // Default satellite layer
         this.satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -160,6 +163,27 @@ class MilitaryDashboard {
 
         // Add default layer
         this.satelliteLayer.addTo(this.map);
+        
+        // Try to get user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Success: Use user's location
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    this.map.setView([userLat, userLon], defaultZoom);
+                },
+                (error) => {
+                    // Error: Use default location (Ankara)
+                    console.log('Geolocation not available, using default location (Ankara)');
+                    this.map.setView(defaultCoords, defaultZoom);
+                }
+            );
+        } else {
+            // Geolocation not supported: Use default location (Ankara)
+            console.log('Geolocation not supported, using default location (Ankara)');
+            this.map.setView(defaultCoords, defaultZoom);
+        }
 
         // Custom map controls styling
         this.map.zoomControl.setPosition('topright');

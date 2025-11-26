@@ -7,8 +7,9 @@
 3. [Installation](#installation)
 4. [Project Setup](#project-setup)
 5. [Running the System](#running-the-system)
-6. [Troubleshooting](#troubleshooting)
-7. [Additional Documentation](#additional-documentation)
+6. [Project Structure](#project-structure)
+7. [Troubleshooting](#troubleshooting)
+8. [Additional Documentation](#additional-documentation)
 
 <a id="project-overview"></a>
 ## Project Overview
@@ -94,11 +95,11 @@ The system includes:
 Clone the project repository to your local machine:
 
 ```bash
-git clone "https://github.com/mercethem/DDS"
+git clone <repository-url>
 cd DDS
 ```
 
-Replace `https://github.com/mercethem/DDS` with the actual repository URL.
+Replace `<repository-url>` with the actual repository URL.
 
 ### Step 2: Install System Dependencies
 
@@ -107,7 +108,7 @@ Replace `https://github.com/mercethem/DDS` with the actual repository URL.
 Run the automated dependency installer:
 
 ```bash
-bash install_dependencies_ubuntu.sh
+bash init/sh/install_dependencies_ubuntu.sh
 ```
 
 This script will:
@@ -221,7 +222,7 @@ After installing dependencies, you must set up the project. The setup process co
 Run the automated setup script:
 
 ```bash
-bash setup.sh
+bash init/sh/setup.sh
 ```
 
 This script performs all setup steps automatically:
@@ -244,17 +245,17 @@ Configure the project environment and detect tools:
 
 ```bash
 cd scripts/sh
-bash dynamic_environment_setup.sh
+bash setup_environment.sh
 ```
 
-This creates environment configuration files (`dds_environment_linux.sh` and `dds_aliases_linux.sh`) in the project root.
+This creates environment configuration files (`export_dds_environment.sh` and `setup_dds_aliases.sh`) in the `init/sh` directory.
 
 #### Step 2: IDL Code Generation
 
 Generate C++ code from IDL files:
 
 ```bash
-bash IDL_GENERATOR.sh
+bash generate_idl_code.sh
 ```
 
 This script:
@@ -270,7 +271,7 @@ This script:
 Update domain IDs in generated code based on IDL file comments:
 
 ```bash
-bash update_domain_ids_dynamic.sh
+bash update_domain_ids.sh
 ```
 
 This ensures that generated applications use the correct DDS domain IDs specified in IDL files.
@@ -280,7 +281,7 @@ This ensures that generated applications use the correct DDS domain IDs specifie
 Create security certificates and apply security configuration:
 
 ```bash
-bash dynamic_security_certificate.sh
+bash setup_security_certificates.sh
 ```
 
 This script:
@@ -298,13 +299,13 @@ Apply code enhancements in the correct order:
 **5a. IDL Patcher** (creates default data blocks):
 
 ```bash
-python3 scripts/py/idl_patcher.py
+python3 scripts/py/idl_default_data_patcher.py
 ```
 
 **5b. JSON Patcher** (replaces blocks with JSON reading):
 
 ```bash
-python3 scripts/py/json_patcher.py
+python3 scripts/py/json_reading_patcher.py
 ```
 
 ! CRITICAL: Patches must be applied in this exact order. Running JSON patcher before IDL patcher will fail.
@@ -312,19 +313,19 @@ python3 scripts/py/json_patcher.py
 **5c. Security Patcher** (adds security configuration):
 
 ```bash
-python3 scripts/py/security.py
+python3 scripts/py/apply_security_settings.py
 ```
 
 **5d. Clean Duplicates** (removes duplicate code blocks):
 
 ```bash
-python3 scripts/py/clean_duplicates.py
+python3 scripts/py/clean_duplicate_code.py
 ```
 
 **5e. CMake Portability Fix** (makes CMake files portable):
 
 ```bash
-python3 scripts/py/fix_cmake_portability.py
+python3 scripts/py/fix_cmake_rpath.py
 ```
 
 #### Step 6: Build IDL Modules
@@ -332,7 +333,7 @@ python3 scripts/py/fix_cmake_portability.py
 Build all IDL modules:
 
 ```bash
-bash IDL_BUILDER.sh
+bash build_idl_modules.sh
 ```
 
 This script:
@@ -348,8 +349,8 @@ Build output is placed in `IDL/<Module>_idl_generated/build/` directories.
 Build the unified monitoring application:
 
 ```bash
-cd monitoring
-bash build.sh
+cd monitoring/build_monitoring
+bash build_monitoring.sh
 ```
 
 This creates the monitor executable at `monitoring/build/monitor`.
@@ -357,6 +358,13 @@ This creates the monitor executable at `monitoring/build/monitor`.
 #### Step 8: Setup Demo Dashboard
 
 Install Node.js dependencies for the demo dashboard:
+
+```bash
+cd demo/build_demo
+bash build_demo.sh
+```
+
+Or manually:
 
 ```bash
 cd demo
@@ -437,8 +445,8 @@ Subscribers will:
 The unified monitor subscribes to all topics across multiple domains:
 
 ```bash
-cd monitoring
-bash monitor.sh
+cd monitoring/run_monitoring
+bash run_monitoring.sh
 ```
 
 Or directly:
@@ -474,8 +482,8 @@ The demo dashboard provides web-based visualization of DDS data.
 #### Start the Dashboard Server
 
 ```bash
-cd demo
-bash demo.sh
+cd demo/run_demo
+bash run_demo.sh
 ```
 
 Or directly:
@@ -537,8 +545,8 @@ cd IDL/Messaging_idl_generated/build
 Or use the unified monitor:
 
 ```bash
-cd monitoring
-bash monitor.sh
+cd monitoring/run_monitoring
+bash run_monitoring.sh
 ```
 
 The dashboard will automatically parse monitor output and display data.
@@ -551,8 +559,8 @@ For a complete system demonstration:
 
 1. Start the demo dashboard server:
    ```bash
-   cd demo
-   bash demo.sh
+   cd demo/run_demo
+   bash run_demo.sh
    ```
 
 2. In separate terminals, start publishers:
@@ -577,6 +585,13 @@ For a complete system demonstration:
 
 4. Observe real-time data visualization on the dashboard.
 
+<a id="project-structure"></a>
+## Project Structure
+
+Understanding the project structure helps with navigation and troubleshooting.
+
+See `README.mdd` for the complete directory structure diagram.
+
 <a id="troubleshooting"></a>
 ## Troubleshooting
 
@@ -590,7 +605,7 @@ For a complete system demonstration:
 1. Verify OpenSSL is installed: `openssl version`
 2. Check write permissions on `secure_dds/` directory
 3. Ensure hostname is resolvable: `hostname`
-4. Manually create certificates: `python3 scripts/py/certificate.py`
+4. Manually create certificates: `python3 scripts/py/generate_security_certificates.py` or run `bash init/sh/project_setup.sh`
 
 #### IDL Generation Fails
 
@@ -612,7 +627,7 @@ For a complete system demonstration:
 2. Check CMake version: `cmake --version` (3.10+ required)
 3. Verify compiler supports C++17: `g++ -std=c++17 --version`
 4. Check library paths: `echo $LD_LIBRARY_PATH`
-5. Clean build directories and rebuild: `rm -rf IDL/*/build && bash scripts/sh/IDL_BUILDER.sh`
+5. Clean build directories and rebuild: `rm -rf IDL/*/build && bash scripts/sh/build_idl_modules.sh`
 
 #### Publishers and Subscribers Don't Communicate
 
@@ -646,7 +661,7 @@ For a complete system demonstration:
 1. Verify certificates exist: `ls secure_dds/CA/mainca_cert.pem`
 2. Check hostname matches certificate directory: `hostname`
 3. Verify certificate validity: `openssl x509 -in secure_dds/participants/$(hostname)/$(hostname)_cert.pem -text -noout`
-4. Recreate certificates if needed: `python3 scripts/py/certificate.py`
+4. Recreate certificates if needed: `python3 scripts/py/generate_security_certificates.py`
 5. Check file permissions on certificate files
 
 #### Port Already in Use

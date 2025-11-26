@@ -1,22 +1,22 @@
-# dynamic_environment_setup.sh
+# setup_environment.sh
 
 ## Overview
 
-`dynamic_environment_setup.sh` detects and configures the DDS project environment. It finds Python, Java, and CMake installations and creates environment configuration files.
+`setup_environment.sh` detects and configures the DDS project environment. It finds Python, Java, and CMake installations and creates environment configuration files.
 
 ## Purpose
 
 - Detects Python, Java, and CMake installations
-- Creates `dds_environment_linux.sh` with detected paths
-- Creates `dds_aliases_linux.sh` with convenience aliases
+- Creates `export_dds_environment.sh` with detected paths
+- Creates `setup_dds_aliases.sh` with convenience aliases
 - Verifies tool availability
 
 ## How It Works
 
-1. **Tool Detection**: Runs `dynamic_finder.sh` to detect tools
+1. **Tool Detection**: Runs `find_tools.sh` to detect tools
 2. **Path Detection**: Dynamically finds project root
-3. **Environment File Creation**: Generates `dds_environment_linux.sh`
-4. **Aliases Creation**: Generates `dds_aliases_linux.sh`
+3. **Environment File Creation**: Generates `export_dds_environment.sh`
+4. **Aliases Creation**: Generates `setup_dds_aliases.sh`
 5. **Verification**: Checks that all tools are available
 
 ## Usage
@@ -25,13 +25,13 @@
 
 ```bash
 cd scripts/sh
-bash dynamic_environment_setup.sh
+bash setup_environment.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/dynamic_environment_setup.sh
+bash scripts/sh/setup_environment.sh
 ```
 
 ### Via Alias
@@ -43,14 +43,14 @@ dds-env
 
 ## Generated Files
 
-### dds_environment_linux.sh
+### export_dds_environment.sh
 Contains:
 - Project paths (DDS_PROJECT_ROOT, DDS_IDL_DIR, etc.)
 - Tool paths (Python, Java, CMake)
 - Environment variables
 - Library paths
 
-### dds_aliases_linux.sh
+### setup_dds_aliases.sh
 Contains convenience aliases:
 - `dds-build` - Build all modules
 - `dds-clean` - Clean generated files
@@ -88,8 +88,8 @@ After setup, verifies:
 ## Integration
 
 This script is called by:
-- `setup.sh` - During environment setup
-- `dynamic_ALL.sh` - As STEP 1
+- `init/sh/project_setup.sh` - During environment setup
+- `run_complete_workflow.sh` - As STEP 1
 - Can be run standalone to refresh environment
 
 ## Notes

@@ -1,8 +1,8 @@
-# IDL_GENERATOR.sh
+# generate_idl_code.sh
 
 ## Overview
 
-`IDL_GENERATOR.sh` generates C++ code from IDL files using Fast-DDS generator (fastddsgen). It processes all `.idl` files in the `IDL/` directory and creates `*_idl_generated` directories with C++ code.
+`generate_idl_code.sh` generates C++ code from IDL files using Fast-DDS generator (fastddsgen). It processes all `.idl` files in the `IDL/` directory and creates `*_idl_generated` directories with C++ code.
 
 ## Purpose
 
@@ -26,13 +26,13 @@
 
 ```bash
 cd scripts/sh
-bash IDL_GENERATOR.sh
+bash generate_idl_code.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/IDL_GENERATOR.sh
+bash scripts/sh/generate_idl_code.sh
 ```
 
 ### Via Alias
@@ -44,20 +44,7 @@ dds-build
 
 ## Generated Structure
 
-For each IDL file (e.g., `CoreData.idl`):
-```
-IDL/CoreData_idl_generated/
-├── CoreData.h
-├── CoreData.cxx
-├── CoreDataPubSubTypes.h
-├── CoreDataPubSubTypes.cxx
-├── CoreDataPublisherApp.h
-├── CoreDataPublisherApp.cxx
-├── CoreDataSubscriberApp.h
-├── CoreDataSubscriberApp.cxx
-├── CoreDatamain.cxx
-└── CMakeLists.txt
-```
+For each IDL file (e.g., `CoreData.idl`). See `generate_idl_code.mdd` for the complete generated structure diagram.
 
 ## Requirements
 
@@ -81,9 +68,9 @@ Dynamically finds OpenSSL:
 ## Integration
 
 This script is called by:
-- `setup.sh` - During IDL generation phase
-- `dynamic_ALL.sh` - As STEP 2
-- `IDL_BUILDER.sh` - Before building
+- `init/sh/project_setup.sh` - During IDL generation phase
+- `run_complete_workflow.sh` - As STEP 2
+- `build_idl_modules.sh` - Before building
 
 ## Notes
 

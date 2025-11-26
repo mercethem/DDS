@@ -1,8 +1,8 @@
-# IDL_BUILDER.sh
+# build_idl_modules.sh
 
 ## Overview
 
-`IDL_BUILDER.sh` builds all IDL modules that have been generated. It finds all `*_idl_generated` directories and builds them using CMake.
+`build_idl_modules.sh` builds all IDL modules that have been generated. It finds all `*_idl_generated` directories and builds them using CMake.
 
 ## Purpose
 
@@ -25,13 +25,13 @@
 
 ```bash
 cd scripts/sh
-bash IDL_BUILDER.sh
+bash build_idl_modules.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/IDL_BUILDER.sh
+bash scripts/sh/build_idl_modules.sh
 ```
 
 ### Via Alias
@@ -67,8 +67,8 @@ Executables are created in:
 ## Integration
 
 This script is called by:
-- `setup.sh` - During build phase
-- `dynamic_ALL.sh` - As final step
+- `init/sh/project_setup.sh` - During build phase
+- `run_complete_workflow.sh` - As final step
 - Can be run standalone after IDL generation
 
 ## Notes

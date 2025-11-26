@@ -225,11 +225,12 @@ bool CoreData3PublisherApp::publish()
         static bool json_loaded = false;
         
         if (!json_loaded) {
-            // Try multiple possible paths for the JSON file
+            // Try multiple possible paths for the JSON file (relative to executable location)
+            // Paths are tried in order: from build/, from generated/, from project root
             std::vector<std::string> possible_paths = {
-                "scenarios/CoreData3.json",
-                "../../scenarios/CoreData3.json",
-                "../../../scenarios/CoreData3.json"
+                "../../../scenarios/CoreData3.json",  // From IDL/<Module>_idl_generated/build/
+                "../../scenarios/CoreData3.json",      // From IDL/<Module>_idl_generated/
+                "scenarios/CoreData3.json"            // From project root
             };
             
             bool file_found = false;

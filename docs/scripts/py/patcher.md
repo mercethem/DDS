@@ -1,8 +1,8 @@
-# patcher.py
+# idl_json_patcher.py
 
 ## Overview
 
-`patcher.py` is a legacy IDL patcher that adds JSON file reading functionality to C++ Publisher applications. It analyzes IDL files and patches PublisherApp files to read data from JSON files.
+`idl_json_patcher.py` is a legacy IDL patcher that adds JSON file reading functionality to C++ Publisher applications. It analyzes IDL files and patches PublisherApp files to read data from JSON files.
 
 ## Purpose
 
@@ -24,20 +24,20 @@
 
 ```bash
 cd scripts/py
-python3 patcher.py
+python3 idl_json_patcher.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/patcher.py
+python3 scripts/py/idl_json_patcher.py
 ```
 
 ## Note
 
 This script is a legacy version. For new projects, use:
-- `idl_patcher.py` - For default data generation
-- `json_patcher.py` - For JSON file reading
+- `idl_default_data_patcher.py` - For default data generation
+- `json_reading_patcher.py` - For JSON file reading
 
 ## Requirements
 
@@ -48,5 +48,5 @@ This script is a legacy version. For new projects, use:
 ## Notes
 
 - Legacy script, may be deprecated
-- Consider using `idl_patcher.py` + `json_patcher.py` instead
+- Consider using `idl_default_data_patcher.py` + `json_reading_patcher.py` instead
 

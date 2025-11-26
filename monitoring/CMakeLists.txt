@@ -14,8 +14,23 @@ find_package(fastdds REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 # Repo-relative paths to generated IDL headers and libs
-# IDL directories are in parent directory (DDS root)
-get_filename_component(DDS_ROOT "${CMAKE_SOURCE_DIR}" DIRECTORY)
+# Dynamically detect project root by walking up from monitoring directory
+# until we find IDL and scenarios directories
+get_filename_component(CURRENT_DIR "${CMAKE_SOURCE_DIR}" DIRECTORY)
+set(DDS_ROOT "${CURRENT_DIR}")
+
+# Walk up to find project root (contains IDL and scenarios)
+while(NOT "${CURRENT_DIR}" STREQUAL "/")
+    if(EXISTS "${CURRENT_DIR}/IDL" AND EXISTS "${CURRENT_DIR}/scenarios")
+        set(DDS_ROOT "${CURRENT_DIR}")
+        break()
+    endif()
+    get_filename_component(CURRENT_DIR "${CURRENT_DIR}" DIRECTORY)
+    if("${CURRENT_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
+        break()
+    endif()
+endwhile()
+
 set(IDL_CORE_DATA_DIR "${DDS_ROOT}/IDL/CoreData_idl_generated")
 set(IDL_INTEL_DIR "${DDS_ROOT}/IDL/Intelligence_idl_generated")
 set(IDL_MSG_DIR "${DDS_ROOT}/IDL/Messaging_idl_generated")

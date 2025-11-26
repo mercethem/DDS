@@ -1,8 +1,8 @@
-# clean_duplicates.py
+# clean_duplicate_code.py
 
 ## Overview
 
-`clean_duplicates.py` removes duplicate dynamic code blocks from generated C++ PublisherApp and SubscriberApp files. Specifically, it cleans duplicate `resolve_dds_root` lambda functions that may be accidentally inserted multiple times.
+`clean_duplicate_code.py` removes duplicate dynamic code blocks from generated C++ PublisherApp and SubscriberApp files. Specifically, it cleans duplicate `resolve_dds_root` lambda functions that may be accidentally inserted multiple times.
 
 ## Purpose
 
@@ -24,18 +24,18 @@
 
 ```bash
 cd scripts/py
-python3 clean_duplicates.py
+python3 clean_duplicate_code.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/clean_duplicates.py
+python3 scripts/py/clean_duplicate_code.py
 ```
 
 ### Via Setup Script
 
-Automatically called by `setup.sh` during the cleanup phase.
+Automatically called by `init/sh/project_setup.sh` during the cleanup phase.
 
 ## What It Cleans
 
@@ -61,7 +61,7 @@ const std::filesystem::path dds_root = resolve_dds_root();
 ## Integration
 
 This script is called by:
-- `setup.sh` - During cleanup phase (STEP 2a)
+- `init/sh/setup.sh` - During cleanup phase (STEP 2a)
 
 ## Notes
 

@@ -1,0 +1,115 @@
+# Secure DDS Folder Structure Diagram
+
+```
+secure_dds/
+├── CA/                              # Certificate Authority
+│   ├── mainca_cert.pem             # Root CA certificate (public)
+│   ├── private/
+│   │   └── mainca_key.pem          # Root CA private key (secret)
+│   ├── maincaconf.cnf              # CA configuration
+│   ├── serial                      # Certificate serial tracking
+│   └── index.txt                   # Certificate database
+├── appconf.cnf                     # Application configuration
+└── participants/                   # Participant certificates
+    └── <hostname>/                 # PC-specific directory
+        ├── <hostname>_cert.pem     # Participant certificate
+        ├── <hostname>_key.pem      # Participant private key
+        ├── <hostname>.csr          # Certificate Signing Request
+        └── security/
+            ├── governance.xml      # Governance document
+            ├── permissions.xml      # Permissions document
+            ├── governance.p7s      # Signed governance
+            └── permissions.p7s     # Signed permissions
+```
+
+# Secure DDS Operation Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Certificate Authority (CA)                     │
+│  secure_dds/CA/mainca_cert.pem                            │
+│  - Root certificate                                        │
+│  - Signs participant certificates                          │
+└────────────────────┬────────────────────────────────────────┘
+                     │ Signs
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│         Participant Certificates                            │
+│  secure_dds/participants/<hostname>/                       │
+│  ├── <hostname>_cert.pem  (signed by CA)                  │
+│  └── <hostname>_key.pem    (private key)                   │
+└────────────────────┬────────────────────────────────────────┘
+                     │ Used in DDS QoS
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              DDS Participant                                │
+│  DomainParticipantQos:                                      │
+│  - Authentication: PKI-DH                                   │
+│  - Encryption: AES-GCM-GMAC                                 │
+│  - Certificate paths configured                            │
+└────────────────────┬────────────────────────────────────────┘
+                     │ Secure DDS Communication
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│         Authenticated & Encrypted Data Exchange            │
+│  - Mutual authentication                                    │
+│  - Encrypted payloads                                       │
+│  - Integrity verification                                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+# DIAGRAM KODU
+
+## Folder Structure Diagram
+
+```mermaid
+graph TD
+    SECURE["secure_dds/"]
+    CA["CA/"]
+    CA_CERT["mainca_cert.pem"]
+    CA_PRIV["private/"]
+    CA_KEY["mainca_key.pem"]
+    CA_CONF["maincaconf.cnf"]
+    CA_SERIAL["serial"]
+    CA_INDEX["index.txt"]
+    APP_CONF["appconf.cnf"]
+    PARTICIPANTS["participants/"]
+    HOSTNAME["<hostname>/"]
+    HOST_CERT["<hostname>_cert.pem"]
+    HOST_KEY["<hostname>_key.pem"]
+    HOST_CSR["<hostname>.csr"]
+    SECURITY["security/"]
+    GOV_XML["governance.xml"]
+    PERM_XML["permissions.xml"]
+    GOV_P7S["governance.p7s"]
+    PERM_P7S["permissions.p7s"]
+    
+    SECURE --> CA
+    SECURE --> APP_CONF
+    SECURE --> PARTICIPANTS
+    CA --> CA_CERT
+    CA --> CA_PRIV
+    CA --> CA_CONF
+    CA --> CA_SERIAL
+    CA --> CA_INDEX
+    CA_PRIV --> CA_KEY
+    PARTICIPANTS --> HOSTNAME
+    HOSTNAME --> HOST_CERT
+    HOSTNAME --> HOST_KEY
+    HOSTNAME --> HOST_CSR
+    HOSTNAME --> SECURITY
+    SECURITY --> GOV_XML
+    SECURITY --> PERM_XML
+    SECURITY --> GOV_P7S
+    SECURITY --> PERM_P7S
+```
+
+## Operation Diagram
+
+```mermaid
+flowchart TD
+    A["Certificate Authority (CA)<br/>secure_dds/CA/mainca_cert.pem<br/>- Root certificate<br/>- Signs participant certificates"] -->|Signs| B["Participant Certificates<br/>secure_dds/participants/<hostname>/<br/>├── <hostname>_cert.pem (signed by CA)<br/>└── <hostname>_key.pem (private key)"]
+    B -->|Used in DDS QoS| C["DDS Participant<br/>DomainParticipantQos:<br/>- Authentication: PKI-DH<br/>- Encryption: AES-GCM-GMAC<br/>- Certificate paths configured"]
+    C -->|Secure DDS Communication| D["Authenticated & Encrypted Data Exchange<br/>- Mutual authentication<br/>- Encrypted payloads<br/>- Integrity verification"]
+```
+

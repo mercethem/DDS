@@ -1,8 +1,8 @@
-# simple_dynamic_test.sh
+# test_idl_modules.sh
 
 ## Overview
 
-`simple_dynamic_test.sh` automatically discovers and tests all IDL modules by running their Publisher and Subscriber executables. It launches each module in separate terminal windows for easy monitoring.
+`test_idl_modules.sh` automatically discovers and tests all IDL modules by running their Publisher and Subscriber executables. It launches each module in separate terminal windows for easy monitoring.
 
 ## Purpose
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/sh
-bash simple_dynamic_test.sh
+bash test_idl_modules.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/simple_dynamic_test.sh
+bash scripts/sh/test_idl_modules.sh
 ```
 
 ## Terminal Emulators Supported

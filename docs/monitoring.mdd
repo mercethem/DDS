@@ -1,0 +1,166 @@
+# Monitoring Certificate Structure Diagram
+
+```
+secure_dds/
+├── CA/
+│   ├── mainca_cert.pem          # Root CA certificate
+│   └── private/
+│       └── mainca_key.pem        # Root CA private key
+└── participants/
+    └── <hostname>/
+        ├── <hostname>_cert.pem  # Participant certificate
+        ├── <hostname>_key.pem   # Participant private key
+        └── security/
+            ├── governance.xml    # Governance document
+            └── permissions.p7s  # Signed permissions
+```
+
+# Monitoring Project Structure Diagram
+
+```
+monitoring/
+├── monitor.cpp          # Main application source
+├── CMakeLists.txt       # CMake configuration
+├── build_monitoring/    # Build scripts
+│   ├── build_monitoring.sh  # Build script (Linux)
+│   └── build_monitoring.bat # Build script (Windows)
+├── run_monitoring/      # Run scripts
+│   ├── run_monitoring.sh    # Launch script (Linux)
+│   └── run_monitoring.bat   # Launch script (Windows)
+└── build/               # Build output directory
+    ├── CMakeFiles/      # CMake generated files
+    ├── CMakeCache.txt   # CMake cache
+    └── monitor          # Executable
+```
+
+# Monitoring Operation Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              DDS Publishers                                 │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                 │
+│  │CoreData  │  │Intelligence│ │Messaging │                 │
+│  │Publisher │  │Publisher  │  │Publisher │                 │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                 │
+│       │             │             │                        │
+│       └─────────────┴─────────────┘                        │
+│                    │ DDS Topics                            │
+│                    │ (RTPS/UDP Multicast)                  │
+└────────────────────┼────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Monitor Application                            │
+│  ┌────────────────────────────────────────┐              │
+│  │  Domain 0 Participant                   │              │
+│  │  - CoreDataTopic DataReader             │              │
+│  │  - IntelligenceTopic DataReader         │              │
+│  │  - MessagingTopic DataReader            │              │
+│  └────────────────────────────────────────┘              │
+│  ┌────────────────────────────────────────┐              │
+│  │  Domain 1 Participant                   │              │
+│  │  - CoreDataTopic DataReader             │              │
+│  │  - IntelligenceTopic DataReader         │              │
+│  │  - MessagingTopic DataReader            │              │
+│  └────────────────────────────────────────┘              │
+│  ... (more domains)                                       │
+└────────────────────┬────────────────────────────────────────┘
+                     │ stdout (formatted output)
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Output Processing                             │
+│  - Demo Server (parses stdout)                             │
+│  - Custom scripts                                           │
+│  - Log analysis tools                                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+# DIAGRAM KODU
+
+## Certificate Structure Diagram
+
+```mermaid
+graph TD
+    SECURE["secure_dds/"]
+    CA["CA/"]
+    CA_CERT["mainca_cert.pem"]
+    CA_PRIV["private/"]
+    CA_KEY["mainca_key.pem"]
+    PARTICIPANTS["participants/"]
+    HOSTNAME["<hostname>/"]
+    HOST_CERT["<hostname>_cert.pem"]
+    HOST_KEY["<hostname>_key.pem"]
+    SECURITY["security/"]
+    GOV_XML["governance.xml"]
+    PERM_P7S["permissions.p7s"]
+    
+    SECURE --> CA
+    SECURE --> PARTICIPANTS
+    CA --> CA_CERT
+    CA --> CA_PRIV
+    CA_PRIV --> CA_KEY
+    PARTICIPANTS --> HOSTNAME
+    HOSTNAME --> HOST_CERT
+    HOSTNAME --> HOST_KEY
+    HOSTNAME --> SECURITY
+    SECURITY --> GOV_XML
+    SECURITY --> PERM_P7S
+```
+
+## Project Structure Diagram
+
+```mermaid
+graph TD
+    MONITORING["monitoring/"]
+    MONITOR_CPP["monitor.cpp"]
+    CMAKE["CMakeLists.txt"]
+    BUILD_MON["build_monitoring/"]
+    BUILD_SH["build_monitoring.sh"]
+    BUILD_BAT["build_monitoring.bat"]
+    RUN_MON["run_monitoring/"]
+    RUN_SH["run_monitoring.sh"]
+    RUN_BAT["run_monitoring.bat"]
+    BUILD_OUT["build/"]
+    CMAKE_FILES["CMakeFiles/"]
+    CMAKE_CACHE["CMakeCache.txt"]
+    MONITOR_EXE["monitor"]
+    
+    MONITORING --> MONITOR_CPP
+    MONITORING --> CMAKE
+    MONITORING --> BUILD_MON
+    MONITORING --> RUN_MON
+    MONITORING --> BUILD_OUT
+    BUILD_MON --> BUILD_SH
+    BUILD_MON --> BUILD_BAT
+    RUN_MON --> RUN_SH
+    RUN_MON --> RUN_BAT
+    BUILD_OUT --> CMAKE_FILES
+    BUILD_OUT --> CMAKE_CACHE
+    BUILD_OUT --> MONITOR_EXE
+```
+
+## Operation Diagram
+
+```mermaid
+flowchart TD
+    PUBLISHERS["DDS Publishers"]
+    PUB1["CoreData<br/>Publisher"]
+    PUB2["Intelligence<br/>Publisher"]
+    PUB3["Messaging<br/>Publisher"]
+    MONITOR_APP["Monitor Application"]
+    DOMAIN0["Domain 0 Participant<br/>- CoreDataTopic DataReader<br/>- IntelligenceTopic DataReader<br/>- MessagingTopic DataReader"]
+    DOMAIN1["Domain 1 Participant<br/>- CoreDataTopic DataReader<br/>- IntelligenceTopic DataReader<br/>- MessagingTopic DataReader"]
+    OUTPUT["Output Processing<br/>- Demo Server (parses stdout)<br/>- Custom scripts<br/>- Log analysis tools"]
+    
+    PUBLISHERS --> PUB1
+    PUBLISHERS --> PUB2
+    PUBLISHERS --> PUB3
+    PUB1 -->|DDS Topics<br/>(RTPS/UDP Multicast)| MONITOR_APP
+    PUB2 -->|DDS Topics<br/>(RTPS/UDP Multicast)| MONITOR_APP
+    PUB3 -->|DDS Topics<br/>(RTPS/UDP Multicast)| MONITOR_APP
+    MONITOR_APP --> DOMAIN0
+    MONITOR_APP --> DOMAIN1
+    DOMAIN0 -->|stdout (formatted output)| OUTPUT
+    DOMAIN1 -->|stdout (formatted output)| OUTPUT
+```
+

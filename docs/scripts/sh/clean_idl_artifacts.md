@@ -1,8 +1,8 @@
-# clean_idl_artifacts.sh
+# clean_build_artifacts.sh
 
 ## Overview
 
-`clean_idl_artifacts.sh` removes Windows-specific build artifacts from IDL directories. It prepares the project for Linux builds by cleaning Windows files.
+`clean_build_artifacts.sh` removes Windows-specific build artifacts from IDL directories. It prepares the project for Linux builds by cleaning Windows files.
 
 ## Purpose
 
@@ -24,13 +24,13 @@
 
 ```bash
 cd scripts/sh
-bash clean_idl_artifacts.sh
+bash clean_build_artifacts.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/clean_idl_artifacts.sh
+bash scripts/sh/clean_build_artifacts.sh
 ```
 
 ## Files Removed

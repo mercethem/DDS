@@ -1,0 +1,115 @@
+# IDL Project Structure Diagram
+
+```
+IDL/
+├── CoreData.idl                    # CoreData module definition
+├── CoreData2.idl                   # CoreData2 module (domain 2)
+├── CoreData3.idl                   # CoreData3 module (domain 3)
+├── CoreData4.idl                   # CoreData4 module (domain 4)
+├── Intelligence.idl                # Intelligence module
+├── Messaging.idl                   # Messaging module
+├── CoreData_idl_generated/         # Generated code for CoreData
+│   ├── CoreData.hpp
+│   ├── CoreDataPubSubTypes.hpp
+│   ├── CoreDataPublisherApp.cxx
+│   ├── CoreDataSubscriberApp.cxx
+│   ├── CoreDatamain.cxx
+│   ├── CMakeLists.txt
+│   └── build/
+│       ├── libCoreData_lib.a
+│       └── CoreDatamain
+└── [Other modules follow same structure]
+```
+
+# IDL Operation Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    IDL Definition                           │
+│  CoreData.idl, Intelligence.idl, Messaging.idl            │
+└────────────────────┬────────────────────────────────────────┘
+                     │ fastddsgen
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Code Generation                                 │
+│  *_idl_generated/ directories created                       │
+│  - Type definitions                                         │
+│  - PubSubTypes                                              │
+│  - Publisher/Subscriber apps                                │
+│  - CMakeLists.txt                                           │
+└────────────────────┬────────────────────────────────────────┘
+                     │ Patches (idl_default_data_patcher, json_reading_patcher, apply_security_settings)
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Enhanced Code                                  │
+│  - Default data assignments                                 │
+│  - JSON reading capability                                  │
+│  - Security configuration                                   │
+└────────────────────┬────────────────────────────────────────┘
+                     │ CMake + Make
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Built Artifacts                                 │
+│  - Static libraries (lib*_lib.a)                          │
+│  - Executables (*main)                                      │
+└────────────────────┬────────────────────────────────────────┘
+                     │ Runtime
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              DDS Communication                              │
+│  Publishers ↔ Subscribers via DDS Topics                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+# DIAGRAM KODU
+
+## Project Structure Diagram
+
+```mermaid
+graph TD
+    IDL["IDL/"]
+    CORE_IDL["CoreData.idl"]
+    CORE2_IDL["CoreData2.idl"]
+    CORE3_IDL["CoreData3.idl"]
+    CORE4_IDL["CoreData4.idl"]
+    INT_IDL["Intelligence.idl"]
+    MSG_IDL["Messaging.idl"]
+    CORE_GEN["CoreData_idl_generated/"]
+    CORE_HPP["CoreData.hpp"]
+    CORE_PUBTYPES["CoreDataPubSubTypes.hpp"]
+    CORE_PUBAPP["CoreDataPublisherApp.cxx"]
+    CORE_SUBAPP["CoreDataSubscriberApp.cxx"]
+    CORE_MAIN["CoreDatamain.cxx"]
+    CORE_CMAKE["CMakeLists.txt"]
+    CORE_BUILD["build/"]
+    CORE_LIB["libCoreData_lib.a"]
+    CORE_EXE["CoreDatamain"]
+    
+    IDL --> CORE_IDL
+    IDL --> CORE2_IDL
+    IDL --> CORE3_IDL
+    IDL --> CORE4_IDL
+    IDL --> INT_IDL
+    IDL --> MSG_IDL
+    IDL --> CORE_GEN
+    CORE_GEN --> CORE_HPP
+    CORE_GEN --> CORE_PUBTYPES
+    CORE_GEN --> CORE_PUBAPP
+    CORE_GEN --> CORE_SUBAPP
+    CORE_GEN --> CORE_MAIN
+    CORE_GEN --> CORE_CMAKE
+    CORE_GEN --> CORE_BUILD
+    CORE_BUILD --> CORE_LIB
+    CORE_BUILD --> CORE_EXE
+```
+
+## Operation Diagram
+
+```mermaid
+flowchart TD
+    A["IDL Definition<br/>CoreData.idl, Intelligence.idl, Messaging.idl"] -->|fastddsgen| B["Code Generation<br/>*_idl_generated/ directories created<br/>- Type definitions<br/>- PubSubTypes<br/>- Publisher/Subscriber apps<br/>- CMakeLists.txt"]
+    B -->|Patches<br/>idl_default_data_patcher<br/>json_reading_patcher<br/>apply_security_settings| C["Enhanced Code<br/>- Default data assignments<br/>- JSON reading capability<br/>- Security configuration"]
+    C -->|CMake + Make| D["Built Artifacts<br/>- Static libraries (lib*_lib.a)<br/>- Executables (*main)"]
+    D -->|Runtime| E["DDS Communication<br/>Publishers ↔ Subscribers via DDS Topics"]
+```
+

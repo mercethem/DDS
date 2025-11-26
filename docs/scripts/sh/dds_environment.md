@@ -1,8 +1,8 @@
-# dds_environment.sh
+# export_environment_vars.sh
 
 ## Overview
 
-`dds_environment.sh` is an auto-generated environment file created by `dynamic_finder.sh`. It contains detected paths for Python, Java, and CMake.
+`export_environment_vars.sh` is an auto-generated environment file created by `find_tools.sh`. It contains detected paths for Python, Java, and CMake.
 
 ## Purpose
 
@@ -25,23 +25,23 @@ export DDS_CMAKE_PATH="/detected/path/to/cmake"
 ### Source the File
 
 ```bash
-source scripts/sh/dds_environment.sh
+source scripts/sh/export_environment_vars.sh
 ```
 
 ### Used By
 
-- `dynamic_environment_setup.sh` - Loads detected paths
+- `setup_environment.sh` - Loads detected paths
 - Other scripts that need tool paths
 
 ## Generation
 
 This file is automatically created by:
-- `dynamic_finder.sh` - During tool detection
+- `find_tools.sh` - During tool detection
 
 ## Notes
 
 - Auto-generated: do not edit manually
-- Regenerated each time `dynamic_finder.sh` runs
+- Regenerated each time `find_tools.sh` runs
 - Contains dynamically detected paths
 - Used as input for comprehensive environment setup
 

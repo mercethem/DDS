@@ -1,0 +1,166 @@
+```
+DDS/
+├── IDL/                          # IDL definitions and generated code
+│   ├── *.idl                     # IDL source files
+│   └── *_idl_generated/         # Generated C++ code
+│       ├── build/                # Build output
+│       │   ├── lib*_lib.a       # Static libraries
+│       │   └── *main            # Executables
+│       ├── *PublisherApp.cxx    # Publisher application
+│       ├── *SubscriberApp.cxx   # Subscriber application
+│       └── CMakeLists.txt       # Build configuration
+│
+├── scripts/                      # Automation scripts
+│   ├── py/                      # Python scripts
+│   │   ├── generate_security_certificates.py  # Certificate generation
+│   │   ├── idl_default_data_patcher.py      # IDL code patching
+│   │   ├── json_reading_patcher.py           # JSON reading injection
+│   │   ├── apply_security_settings.py        # Security configuration
+│   │   └── ...                  # Other patching scripts
+│   └── sh/                      # Shell scripts
+│       ├── run_complete_workflow.sh  # Complete workflow
+│       ├── generate_idl_code.sh     # IDL code generation
+│       ├── build_idl_modules.sh     # Build all modules
+│       └── ...                  # Other utility scripts
+│
+├── secure_dds/                   # Security certificates
+│   ├── CA/                      # Certificate Authority
+│   │   ├── mainca_cert.pem      # Root CA certificate
+│   │   └── private/             # CA private key
+│   └── participants/            # Participant certificates
+│       └── <hostname>/         # PC-specific certificates
+│
+├── monitoring/                   # Monitoring system
+│   ├── monitor.cpp              # Monitor application source
+│   ├── build_monitoring/         # Build scripts
+│   │   ├── build_monitoring.sh  # Build script
+│   │   └── build_monitoring.bat # Build script (Windows)
+│   ├── run_monitoring/           # Run scripts
+│   │   ├── run_monitoring.sh    # Launch script
+│   │   └── run_monitoring.bat   # Launch script (Windows)
+│   ├── CMakeLists.txt           # CMake configuration
+│   └── build/                    # Build output
+│       └── monitor              # Monitor executable
+│
+├── demo/                        # Demo dashboard
+│   ├── server.js               # Node.js backend server
+│   ├── build_demo/              # Build scripts
+│   │   ├── build_demo.sh       # Dependency installer
+│   │   └── build_demo.bat      # Dependency installer (Windows)
+│   ├── run_demo/                # Run scripts
+│   │   ├── run_demo.sh         # Launch script
+│   │   └── run_demo.bat        # Launch script (Windows)
+│   ├── package.json           # Node.js dependencies
+│   └── public/                # Frontend files
+│       ├── index.html         # HTML interface
+│       ├── app.js            # JavaScript logic
+│       └── style.css         # Styling
+│
+├── scenarios/                   # JSON scenario files
+│   ├── CoreData.json          # CoreData scenario data
+│   ├── Intelligence.json      # Intelligence scenario data
+│   └── Messaging.json         # Messaging scenario data
+│
+├── init/                        # Initialization scripts
+│   ├── sh/                      # Linux shell scripts
+│   │   ├── setup.sh           # Automated setup script
+│   │   ├── install_dependencies_ubuntu.sh  # Dependency installer
+│   │   └── ...                 # Other init scripts
+│   └── bat/                     # Windows batch scripts
+│       ├── setup.bat          # Automated setup script
+│       └── ...                 # Other init scripts
+│
+├── docs/                       # Documentation
+│   ├── demo.md               # Demo system documentation
+│   ├── IDL.md               # IDL system documentation
+│   ├── monitoring.md         # Monitoring documentation
+│   ├── scenarios.md         # Scenarios documentation
+│   ├── secure_dds.md        # Security documentation
+│   └── scripts/             # Script documentation
+│
+└── README.md                  # This file
+```
+
+# DIAGRAM KODU
+
+```mermaid
+graph TD
+    DDS["DDS/"]
+    
+    DDS --> IDL["IDL/"]
+    DDS --> SCRIPTS["scripts/"]
+    DDS --> SECURE["secure_dds/"]
+    DDS --> MONITORING["monitoring/"]
+    DDS --> DEMO["demo/"]
+    DDS --> SCENARIOS["scenarios/"]
+    DDS --> INIT["init/"]
+    DDS --> DOCS["docs/"]
+    DDS --> README["README.md"]
+    
+    IDL --> IDL_IDL["*.idl"]
+    IDL --> IDL_GEN["*_idl_generated/"]
+    IDL_GEN --> IDL_PUB["*PublisherApp.cxx"]
+    IDL_GEN --> IDL_SUB["*SubscriberApp.cxx"]
+    IDL_GEN --> IDL_CMAKE["CMakeLists.txt"]
+    IDL_GEN --> IDL_BUILD["build/"]
+    IDL_BUILD --> IDL_LIB["lib*_lib.a"]
+    IDL_BUILD --> IDL_MAIN["*main"]
+    
+    SCRIPTS --> SCRIPTS_PY["py/"]
+    SCRIPTS --> SCRIPTS_SH["sh/"]
+    SCRIPTS_PY --> SCRIPTS_PY_GEN["generate_security_certificates.py"]
+    SCRIPTS_PY --> SCRIPTS_PY_IDL["idl_default_data_patcher.py"]
+    SCRIPTS_PY --> SCRIPTS_PY_JSON["json_reading_patcher.py"]
+    SCRIPTS_PY --> SCRIPTS_PY_SEC["apply_security_settings.py"]
+    SCRIPTS_SH --> SCRIPTS_SH_WORK["run_complete_workflow.sh"]
+    SCRIPTS_SH --> SCRIPTS_SH_GEN["generate_idl_code.sh"]
+    SCRIPTS_SH --> SCRIPTS_SH_BUILD["build_idl_modules.sh"]
+    
+    SECURE --> SECURE_CA["CA/"]
+    SECURE --> SECURE_PART["participants/"]
+    SECURE_CA --> SECURE_CA_CERT["mainca_cert.pem"]
+    SECURE_CA --> SECURE_CA_PRIV["private/"]
+    SECURE_PART --> SECURE_HOST["<hostname>/"]
+    
+    MONITORING --> MONITORING_CPP["monitor.cpp"]
+    MONITORING --> MONITORING_CMAKE["CMakeLists.txt"]
+    MONITORING --> MONITORING_BUILD["build_monitoring/"]
+    MONITORING --> MONITORING_RUN["run_monitoring/"]
+    MONITORING --> MONITORING_BUILD_OUT["build/"]
+    MONITORING_BUILD --> MONITORING_BUILD_SH["build_monitoring.sh"]
+    MONITORING_BUILD --> MONITORING_BUILD_BAT["build_monitoring.bat"]
+    MONITORING_RUN --> MONITORING_RUN_SH["run_monitoring.sh"]
+    MONITORING_RUN --> MONITORING_RUN_BAT["run_monitoring.bat"]
+    MONITORING_BUILD_OUT --> MONITORING_EXE["monitor"]
+    
+    DEMO --> DEMO_SERVER["server.js"]
+    DEMO --> DEMO_PKG["package.json"]
+    DEMO --> DEMO_BUILD["build_demo/"]
+    DEMO --> DEMO_RUN["run_demo/"]
+    DEMO --> DEMO_PUBLIC["public/"]
+    DEMO_BUILD --> DEMO_BUILD_SH["build_demo.sh"]
+    DEMO_BUILD --> DEMO_BUILD_BAT["build_demo.bat"]
+    DEMO_RUN --> DEMO_RUN_SH["run_demo.sh"]
+    DEMO_RUN --> DEMO_RUN_BAT["run_demo.bat"]
+    DEMO_PUBLIC --> DEMO_HTML["index.html"]
+    DEMO_PUBLIC --> DEMO_JS["app.js"]
+    DEMO_PUBLIC --> DEMO_CSS["style.css"]
+    
+    SCENARIOS --> SCENARIOS_CORE["CoreData.json"]
+    SCENARIOS --> SCENARIOS_INT["Intelligence.json"]
+    SCENARIOS --> SCENARIOS_MSG["Messaging.json"]
+    
+    INIT --> INIT_SH["sh/"]
+    INIT --> INIT_BAT["bat/"]
+    INIT_SH --> INIT_SH_SETUP["setup.sh"]
+    INIT_SH --> INIT_SH_INSTALL["install_dependencies_ubuntu.sh"]
+    INIT_BAT --> INIT_BAT_SETUP["setup.bat"]
+    
+    DOCS --> DOCS_DEMO["demo.md"]
+    DOCS --> DOCS_IDL["IDL.md"]
+    DOCS --> DOCS_MON["monitoring.md"]
+    DOCS --> DOCS_SCEN["scenarios.md"]
+    DOCS --> DOCS_SEC["secure_dds.md"]
+    DOCS --> DOCS_SCRIPTS["scripts/"]
+```
+

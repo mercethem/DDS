@@ -1,22 +1,22 @@
-# dynamic_finder.sh
+# find_tools.sh
 
 ## Overview
 
-`dynamic_finder.sh` detects Python, Java, and CMake installations on the system. It searches common installation paths and creates an environment file with detected tool paths.
+`find_tools.sh` detects Python, Java, and CMake installations on the system. It searches common installation paths and creates an environment file with detected tool paths.
 
 ## Purpose
 
 - Finds Python 3.x installations
 - Finds Java installations
 - Finds CMake installations
-- Creates `dds_environment.sh` with detected paths
+- Creates `export_environment_vars.sh` with detected paths
 
 ## How It Works
 
 1. **Python Detection**: Searches system PATH and common locations
 2. **Java Detection**: Searches system PATH and common locations
 3. **CMake Detection**: Searches system PATH and common locations
-4. **File Creation**: Writes detected paths to `dds_environment.sh`
+4. **File Creation**: Writes detected paths to `export_environment_vars.sh`
 
 ## Usage
 
@@ -24,12 +24,12 @@
 
 ```bash
 cd scripts/sh
-bash dynamic_finder.sh
+bash find_tools.sh
 ```
 
 ### Usually Called By
 
-- `dynamic_environment_setup.sh` - As part of environment setup
+- `setup_environment.sh` - As part of environment setup
 
 ## Detection Order
 
@@ -53,7 +53,7 @@ bash dynamic_finder.sh
 
 ## Output File
 
-Creates `scripts/sh/dds_environment.sh` with:
+Creates `scripts/sh/export_environment_vars.sh` with:
 ```bash
 export DDS_PYTHON_PATH="/detected/path/to/python3"
 export DDS_JAVA_PATH="/detected/path/to/java"
@@ -68,7 +68,7 @@ export DDS_CMAKE_PATH="/detected/path/to/cmake"
 ## Integration
 
 This script is called by:
-- `dynamic_environment_setup.sh` - Tool detection phase
+- `setup_environment.sh` - Tool detection phase
 
 ## Notes
 

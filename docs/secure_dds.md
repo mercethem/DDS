@@ -73,7 +73,7 @@ The Root CA is created once per project:
 - `serial` - Certificate serial number tracking
 - `index.txt` - Certificate database
 
-**Creation Process** (`certificate.py`):
+**Creation Process** (`generate_security_certificates.py`):
 1. Creates CA directory structure
 2. Generates CA configuration file
 3. Creates CA private key
@@ -266,9 +266,9 @@ Certificates are automatically renewed if:
 
 Certificates are created automatically by:
 
-**setup.sh**:
+**init/sh/setup.sh**:
 ```bash
-bash setup.sh
+bash init/sh/setup.sh
 ```
 
 This script:
@@ -277,9 +277,9 @@ This script:
 3. Creates certificates if needed or expired
 4. Configures security in generated code
 
-**certificate.py**:
+**generate_security_certificates.py**:
 ```bash
-python3 scripts/py/certificate.py
+python3 scripts/py/generate_security_certificates.py
 ```
 
 Standalone certificate generation.
@@ -307,9 +307,9 @@ openssl ca -in secure_dds/participants/<hostname>/<hostname>.csr \
 
 Security is automatically applied by:
 
-**security.py**:
+**apply_security_settings.py**:
 ```bash
-python3 scripts/py/security.py
+python3 scripts/py/apply_security_settings.py
 ```
 
 This script:
@@ -351,27 +351,7 @@ openssl verify -CAfile secure_dds/CA/mainca_cert.pem \
 
 ## Folder Structure
 
-```
-secure_dds/
-├── CA/                              # Certificate Authority
-│   ├── mainca_cert.pem             # Root CA certificate (public)
-│   ├── private/
-│   │   └── mainca_key.pem          # Root CA private key (secret)
-│   ├── maincaconf.cnf              # CA configuration
-│   ├── serial                      # Certificate serial tracking
-│   └── index.txt                   # Certificate database
-├── appconf.cnf                     # Application configuration
-└── participants/                   # Participant certificates
-    └── <hostname>/                 # PC-specific directory
-        ├── <hostname>_cert.pem     # Participant certificate
-        ├── <hostname>_key.pem      # Participant private key
-        ├── <hostname>.csr          # Certificate Signing Request
-        └── security/
-            ├── governance.xml      # Governance document
-            ├── permissions.xml      # Permissions document
-            ├── governance.p7s      # Signed governance
-            └── permissions.p7s     # Signed permissions
-```
+See `secure_dds.mdd` for the complete folder structure diagram.
 
 ## Security Configuration Details
 
@@ -400,13 +380,13 @@ secure_dds/
 
 ### With Setup System
 
-- `setup.sh` checks and creates certificates automatically
+- `init/sh/setup.sh` checks and creates certificates automatically
 - Certificate renewal logic integrated into setup process
 - Security configuration applied during setup
 
 ### With Code Generation
 
-- `security.py` patches generated code with security configuration
+- `apply_security_settings.py` patches generated code with security configuration
 - Certificate paths injected dynamically
 - Cross-platform path handling
 
@@ -496,39 +476,7 @@ secure_dds/
 
 ## Operation Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Certificate Authority (CA)                     │
-│  secure_dds/CA/mainca_cert.pem                            │
-│  - Root certificate                                        │
-│  - Signs participant certificates                          │
-└────────────────────┬────────────────────────────────────────┘
-                     │ Signs
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│         Participant Certificates                            │
-│  secure_dds/participants/<hostname>/                       │
-│  ├── <hostname>_cert.pem  (signed by CA)                  │
-│  └── <hostname>_key.pem    (private key)                   │
-└────────────────────┬────────────────────────────────────────┘
-                     │ Used in DDS QoS
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│              DDS Participant                                │
-│  DomainParticipantQos:                                      │
-│  - Authentication: PKI-DH                                   │
-│  - Encryption: AES-GCM-GMAC                                 │
-│  - Certificate paths configured                            │
-└────────────────────┬────────────────────────────────────────┘
-                     │ Secure DDS Communication
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│         Authenticated & Encrypted Data Exchange            │
-│  - Mutual authentication                                    │
-│  - Encrypted payloads                                       │
-│  - Integrity verification                                   │
-└─────────────────────────────────────────────────────────────┘
-```
+See `secure_dds.mdd` for the complete operation diagram.
 
 ## Notes
 

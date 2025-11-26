@@ -15,6 +15,24 @@ const io = socketIo(server, {
   }
 });
 
+// Dynamically detect project root (contains IDL and scenarios directories)
+function detectProjectRoot() {
+  let currentDir = __dirname;
+  while (currentDir !== path.dirname(currentDir)) {
+    const idlPath = path.join(currentDir, 'IDL');
+    const scenariosPath = path.join(currentDir, 'scenarios');
+    if (fs.existsSync(idlPath) && fs.existsSync(scenariosPath)) {
+      return currentDir;
+    }
+    currentDir = path.dirname(currentDir);
+  }
+  // Fallback: go up one directory from demo
+  return path.dirname(__dirname);
+}
+
+const PROJECT_ROOT = detectProjectRoot();
+console.log(`Project root detected: ${PROJECT_ROOT}`);
+
 // MODE: DDS-only (no JSON simulation, no local publishers)
 const DDS_ONLY = !(process.env.DDS_ONLY === '0' || process.env.DDS_ONLY === 'false');
 
@@ -56,7 +74,7 @@ function loadScenarioData() {
     
     // Load aircraft data (CoreData variants)
     IDL_TYPES.aircraft.forEach(type => {
-      const filePath = path.join(__dirname, '..', 'scenarios', `${type}.json`);
+      const filePath = path.join(PROJECT_ROOT, 'scenarios', `${type}.json`);
       const streamKey = type.toLowerCase();
       
       console.log(`Attempting to load: ${filePath}`);
@@ -72,7 +90,7 @@ function loadScenarioData() {
 
     // Load intelligence data
     IDL_TYPES.intelligence.forEach(type => {
-      const filePath = path.join(__dirname, '..', 'scenarios', `${type}.json`);
+      const filePath = path.join(PROJECT_ROOT, 'scenarios', `${type}.json`);
       
       if (fs.existsSync(filePath)) {
         dataStreams.intelligence = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -85,7 +103,7 @@ function loadScenarioData() {
 
     // Load messaging data
     IDL_TYPES.messaging.forEach(type => {
-      const filePath = path.join(__dirname, '..', 'scenarios', `${type}.json`);
+      const filePath = path.join(PROJECT_ROOT, 'scenarios', `${type}.json`);
       
       if (fs.existsSync(filePath)) {
         dataStreams.messaging = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -279,11 +297,31 @@ function createDDSStdoutParser(procMeta) {
 
 // Start standalone monitoring process (aggregated)
 function startMonitorProcess() {
-  const srcPath = path.join(__dirname, '..', 'monitoring', 'monitor');
-  const buildPath = path.join(__dirname, '..', 'monitoring', 'build', 'monitor');
-  const monitorPath = fs.existsSync(srcPath) ? srcPath : buildPath;
-  if (fs.existsSync(monitorPath)) {
-    console.log('Starting unified monitor subscriber...');
+  // Cross-platform executable path handling
+  // Try monitoring/build first (new structure), then fallback to old locations
+  const buildBase = path.join(PROJECT_ROOT, 'monitoring', 'build', 'monitor');
+  const buildMonitoringOldBase = path.join(PROJECT_ROOT, 'monitoring', 'build_monitoring', 'build', 'monitor');
+  const buildMonitoringOld2Base = path.join(PROJECT_ROOT, 'monitoring', 'build_monitoring', 'monitor');
+  const monitorBase = path.join(PROJECT_ROOT, 'monitoring', 'monitor');
+  const executableExt = process.platform === 'win32' ? '.exe' : '';
+  const buildPath = buildBase + executableExt;
+  const buildMonitoringOldPath = buildMonitoringOldBase + executableExt;
+  const buildMonitoringOld2Path = buildMonitoringOld2Base + executableExt;
+  const srcPath = monitorBase + executableExt;
+  
+  // Check in order: monitoring/build -> build_monitoring/build -> build_monitoring -> monitoring root
+  let monitorPath = null;
+  if (fs.existsSync(buildPath)) {
+    monitorPath = buildPath;
+  } else if (fs.existsSync(buildMonitoringOldPath)) {
+    monitorPath = buildMonitoringOldPath;
+  } else if (fs.existsSync(buildMonitoringOld2Path)) {
+    monitorPath = buildMonitoringOld2Path;
+  } else if (fs.existsSync(srcPath)) {
+    monitorPath = srcPath;
+  }
+  if (monitorPath && fs.existsSync(monitorPath)) {
+    console.log(`Starting unified monitor subscriber from: ${monitorPath}`);
     // Pass MONITOR_DOMAINS to monitor as CLI arg if present
     const monitorArgs = [];
     if (process.env.MONITOR_DOMAINS && String(process.env.MONITOR_DOMAINS).trim().length > 0) {
@@ -305,7 +343,12 @@ function startMonitorProcess() {
 
     activeProcesses.push({ name: 'Monitor', process: childProcess, group: 'aircraft' });
   } else {
-    console.log(`Monitor executable not found at: ${srcPath} or ${buildPath}`);
+    console.log(`Monitor executable not found. Checked locations:`);
+    console.log(`  - ${buildPath}`);
+    console.log(`  - ${buildMonitoringOldPath}`);
+    console.log(`  - ${buildMonitoringOld2Path}`);
+    console.log(`  - ${srcPath}`);
+    console.log(`Please build the monitor first: cd monitoring/build_monitoring && ./build_monitoring.sh`);
   }
 }
 
@@ -318,19 +361,19 @@ function startDDSProcesses() {
     console.log('DDS_ONLY mode disabled: starting individual subscribers');
     const processes = [
       // Aircraft subscribers (CoreData variants)
-      { name: 'CoreData', path: '../IDL/CoreData_idl_generated/CoreDatamain', group: 'aircraft' },
-      { name: 'CoreData2', path: '../IDL/CoreData2_idl_generated/CoreData2main', group: 'aircraft' },
-      { name: 'CoreData3', path: '../IDL/CoreData3_idl_generated/CoreData3main', group: 'aircraft' },
-      { name: 'CoreData4', path: '../IDL/CoreData4_idl_generated/CoreData4main', group: 'aircraft' },
+      { name: 'CoreData', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData_idl_generated', 'CoreDatamain'), group: 'aircraft' },
+      { name: 'CoreData2', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData2_idl_generated', 'CoreData2main'), group: 'aircraft' },
+      { name: 'CoreData3', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData3_idl_generated', 'CoreData3main'), group: 'aircraft' },
+      { name: 'CoreData4', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData4_idl_generated', 'CoreData4main'), group: 'aircraft' },
       // Other subscribers
-      { name: 'Intelligence', path: '../IDL/Intelligence_idl_generated/Intelligencemain', group: 'intelligence' },
-      { name: 'Messaging', path: '../IDL/Messaging_idl_generated/Messagingmain', group: 'messaging' }
+      { name: 'Intelligence', path: path.join(PROJECT_ROOT, 'IDL', 'Intelligence_idl_generated', 'Intelligencemain'), group: 'intelligence' },
+      { name: 'Messaging', path: path.join(PROJECT_ROOT, 'IDL', 'Messaging_idl_generated', 'Messagingmain'), group: 'messaging' }
     ];
 
     processes.forEach(proc => {
       // Cross-platform executable path handling
       const executablePath = process.platform === 'win32' ? `${proc.path}.exe` : proc.path;
-      const fullPath = path.join(__dirname, executablePath);
+      const fullPath = executablePath;
       
       if (fs.existsSync(fullPath)) {
         console.log(`Starting ${proc.name} subscriber...`);
@@ -362,19 +405,19 @@ function startDDSPublishers() {
   }
   const publishers = [
     // Aircraft publishers (CoreData variants)
-    { name: 'CoreDataPub', path: '../IDL/CoreData_idl_generated/CoreDatamain', group: 'aircraft' },
-    { name: 'CoreData2Pub', path: '../IDL/CoreData2_idl_generated/CoreData2main', group: 'aircraft' },
-    { name: 'CoreData3Pub', path: '../IDL/CoreData3_idl_generated/CoreData3main', group: 'aircraft' },
-    { name: 'CoreData4Pub', path: '../IDL/CoreData4_idl_generated/CoreData4main', group: 'aircraft' },
+    { name: 'CoreDataPub', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData_idl_generated', 'CoreDatamain'), group: 'aircraft' },
+    { name: 'CoreData2Pub', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData2_idl_generated', 'CoreData2main'), group: 'aircraft' },
+    { name: 'CoreData3Pub', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData3_idl_generated', 'CoreData3main'), group: 'aircraft' },
+    { name: 'CoreData4Pub', path: path.join(PROJECT_ROOT, 'IDL', 'CoreData4_idl_generated', 'CoreData4main'), group: 'aircraft' },
     // Other publishers
-    { name: 'IntelligencePub', path: '../IDL/Intelligence_idl_generated/Intelligencemain', group: 'intelligence' },
-    { name: 'MessagingPub', path: '../IDL/Messaging_idl_generated/Messagingmain', group: 'messaging' }
+    { name: 'IntelligencePub', path: path.join(PROJECT_ROOT, 'IDL', 'Intelligence_idl_generated', 'Intelligencemain'), group: 'intelligence' },
+    { name: 'MessagingPub', path: path.join(PROJECT_ROOT, 'IDL', 'Messaging_idl_generated', 'Messagingmain'), group: 'messaging' }
   ];
 
   publishers.forEach(pub => {
     // Cross-platform executable path handling
     const executablePath = process.platform === 'win32' ? `${pub.path}.exe` : pub.path;
-    const fullPath = path.join(__dirname, executablePath);
+    const fullPath = executablePath;
     
     if (fs.existsSync(fullPath)) {
       console.log(`Starting ${pub.name}...`);
@@ -431,7 +474,7 @@ function simulateDataStream() {
           timestamp: Date.now(),
           type: 'aircraft',
           aircraftType: aircraftType,
-          callsign: `UÇAK-${aircraftId}`,
+          callsign: `AIRCRAFT-${aircraftId}`,
           isOwnAircraft: aircraftId === 1 // First aircraft is own aircraft
         };
         
@@ -601,7 +644,9 @@ server.listen(PORT, () => {
   if (DDS_ONLY) {
     startMonitorProcess();
   } else {
-    // If not DDS_ONLY, you can optionally load scenarios and simulate
-    loadScenarioData();
+    // If not DDS_ONLY, start DDS processes and simulation
+    startDDSProcesses();
+    startDDSPublishers();
+    simulateDataStream();
   }
 });

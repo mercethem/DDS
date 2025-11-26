@@ -1,8 +1,8 @@
-# dynamic_ALL.sh
+# run_complete_workflow.sh
 
 ## Overview
 
-`dynamic_ALL.sh` is the main orchestrator script that runs the complete DDS workflow. It executes all necessary steps in the correct order: environment setup, IDL generation, domain ID updates, security setup, patching, and building.
+`run_complete_workflow.sh` is the main orchestrator script that runs the complete DDS workflow. It executes all necessary steps in the correct order: environment setup, IDL generation, domain ID updates, security setup, patching, and building.
 
 ## Purpose
 
@@ -28,51 +28,51 @@ The script executes the following steps in order:
 
 ```bash
 cd scripts/sh
-bash dynamic_ALL.sh
+bash run_complete_workflow.sh
 ```
 
 ### From Project Root
 
 ```bash
-bash scripts/sh/dynamic_ALL.sh
+bash scripts/sh/run_complete_workflow.sh
 ```
 
 ### Via Setup Script
 
-Automatically called by `setup.sh` as the main workflow.
+Automatically called by `init/sh/project_setup.sh` as the main workflow.
 
 ## Execution Steps
 
 ### STEP 1: Environment Setup
-- Runs `dynamic_environment_setup.sh`
+- Runs `setup_environment.sh`
 - Detects Python, Java, CMake
 - Creates environment configuration files
 
 ### STEP 2: IDL Generation
-- Runs `IDL_GENERATOR.sh`
+- Runs `generate_idl_code.sh`
 - Generates C++ code from `.idl` files
 - Creates `*_idl_generated` directories
 
 ### STEP 3: Domain ID Update
-- Runs `update_domain_ids_dynamic.sh`
+- Runs `update_domain_ids.sh`
 - Updates domain IDs in `*main.cxx` files
 - Reads domain IDs from IDL file comments
 
 ### STEP 4: Security Setup
-- Runs `dynamic_security_certificate.sh`
+- Runs `setup_security_certificates.sh`
 - Creates certificates if needed
 - Applies security patches
 
 ### STEP 5: IDL Patcher Setup
-- Runs `idl_patcher.py`
+- Runs `idl_default_data_patcher.py`
 - Patches PublisherApp files with default data
 
 ### STEP 6: JSON Patcher Setup
-- Runs `json_patcher.py`
+- Runs `json_reading_patcher.py`
 - Replaces hardcoded data with JSON reading
 
 ### STEP 7: Building
-- Runs `IDL_BUILDER.sh`
+- Runs `build_idl_modules.sh`
 - Builds all IDL modules
 - Creates executables
 
@@ -91,7 +91,7 @@ Automatically called by `setup.sh` as the main workflow.
 ## Integration
 
 This script is called by:
-- `setup.sh` - Main setup script
+- `init/sh/project_setup.sh` - Main setup script
 
 ## Notes
 

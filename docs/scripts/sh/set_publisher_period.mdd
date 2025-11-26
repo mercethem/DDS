@@ -1,0 +1,83 @@
+# Set Publisher Period Directory Structure Diagram
+
+```
+project_root/
+├── scripts/
+│   ├── py/
+│   │   └── set_publisher_period.py
+│   └── sh/
+│       └── set_publisher_period.sh
+├── IDL/
+│   └── *_idl_generated/
+│       └── *PublisherApp.hpp
+└── scenarios/
+```
+
+# Set Publisher Period Execution Flow Diagram
+
+```
+User runs script
+    ↓
+Navigate to project root
+    ↓
+Check arguments
+    ↓
+┌─────────────────┬─────────────────┐
+│ No arguments    │ With argument    │
+│ (Interactive)   │ (Batch)          │
+└─────────────────┴─────────────────┘
+    ↓                    ↓
+Run Python script    Validate argument
+    ↓                    ↓
+User interaction    Run Python script
+    ↓                    ↓
+Show status         Show status
+    ↓                    ↓
+Wait for Enter      Wait for Enter
+```
+
+# DIAGRAM KODU
+
+## Directory Structure Diagram
+
+```mermaid
+graph TD
+    ROOT["project_root/"]
+    SCRIPTS["scripts/"]
+    SCRIPTS_PY["py/"]
+    SET_PERIOD_PY["set_publisher_period.py"]
+    SCRIPTS_SH["sh/"]
+    SET_PERIOD_SH["set_publisher_period.sh"]
+    IDL["IDL/"]
+    IDL_GEN["*_idl_generated/"]
+    PUB_APP["*PublisherApp.hpp"]
+    SCENARIOS["scenarios/"]
+    
+    ROOT --> SCRIPTS
+    ROOT --> IDL
+    ROOT --> SCENARIOS
+    SCRIPTS --> SCRIPTS_PY
+    SCRIPTS --> SCRIPTS_SH
+    SCRIPTS_PY --> SET_PERIOD_PY
+    SCRIPTS_SH --> SET_PERIOD_SH
+    IDL --> IDL_GEN
+    IDL_GEN --> PUB_APP
+```
+
+## Execution Flow Diagram
+
+```mermaid
+flowchart TD
+    START["User runs script"] --> NAV["Navigate to project root"]
+    NAV --> CHECK["Check arguments"]
+    CHECK --> BRANCH{"Arguments?"}
+    BRANCH -->|No arguments<br/>(Interactive)| PY1["Run Python script"]
+    BRANCH -->|With argument<br/>(Batch)| VALIDATE["Validate argument"]
+    VALIDATE --> PY2["Run Python script"]
+    PY1 --> INTERACT["User interaction"]
+    PY2 --> STATUS1["Show status"]
+    INTERACT --> STATUS2["Show status"]
+    STATUS1 --> WAIT1["Wait for Enter"]
+    STATUS2 --> WAIT2["Wait for Enter"]
+```
+

@@ -1,8 +1,8 @@
-# qos_patcher.py
+# qos_settings_patcher.py
 
 ## Overview
 
-`qos_patcher.py` applies Quality of Service (QoS) settings to DDS DataWriter and DataReader configurations. It patches PublisherApp and SubscriberApp files with QoS policies based on user selection.
+`qos_settings_patcher.py` applies Quality of Service (QoS) settings to DDS DataWriter and DataReader configurations. It patches PublisherApp and SubscriberApp files with QoS policies based on user selection.
 
 ## Purpose
 
@@ -24,18 +24,18 @@
 
 ```bash
 cd scripts/py
-python3 qos_patcher.py
+python3 qos_settings_patcher.py
 ```
 
 ### GUI Version
 
 ```bash
-python3 qos_patcher_gui.py
+python3 qos_settings_patcher_gui.py
 ```
 
 Or via shell script:
 ```bash
-bash scripts/sh/dynamic_qos_patcher.sh
+bash scripts/sh/patch_qos_settings.sh
 ```
 
 ## QoS Policies Supported
@@ -86,7 +86,7 @@ wqos.history().depth = 10;
 ## Integration
 
 This script is called by:
-- `scripts/sh/dynamic_qos_patcher.sh` - GUI launcher
+- `scripts/sh/patch_qos_settings.sh` - GUI launcher
 - Can be used standalone for CLI mode
 
 ## Notes

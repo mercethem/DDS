@@ -1,0 +1,154 @@
+# Demo Data Flow Architecture Diagram
+
+```
+┌─────────────────┐
+│ DDS Publishers │  (CoreData, Intelligence, Messaging)
+└────────┬────────┘
+         │ DDS Topics (RTPS)
+         │
+         ▼
+┌─────────────────┐
+│ Unified Monitor │  (monitoring/build/monitor)
+│  or Individual  │  Subscribes to multiple domains/topics
+│  Subscribers    │
+└────────┬────────┘
+         │ stdout (formatted text)
+         │
+         ▼
+┌─────────────────┐
+│  server.js      │  Parses stdout with regex
+│  (Parser)       │  Extracts domain, topic, data fields
+└────────┬────────┘
+         │ WebSocket Events
+         │ (aircraftData, intelligence, messaging)
+         │
+         ▼
+┌─────────────────┐
+│  Frontend       │  Receives events via Socket.IO
+│  (app.js)       │  Updates map markers and data panels
+└─────────────────┘
+```
+
+# Demo Project Structure Diagram
+
+```
+demo/
+├── server.js              # Backend server (Express + Socket.IO)
+├── package.json           # Node.js dependencies and scripts
+├── processes.pid          # Process tracking file (auto-generated)
+├── build_demo/            # Build scripts
+│   ├── build_demo.sh     # Dependency installer (Linux)
+│   └── build_demo.bat    # Dependency installer (Windows)
+├── run_demo/              # Run scripts
+│   ├── run_demo.sh        # Launch script (Linux)
+│   └── run_demo.bat       # Launch script (Windows)
+└── public/                # Frontend files
+    ├── index.html         # Main HTML structure
+    ├── app.js             # Frontend JavaScript logic
+    └── style.css          # Styling and theming
+```
+
+# Demo Operation Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DDS Infrastructure                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                  │
+│  │Publisher │  │Publisher │  │Publisher │                  │
+│  │CoreData  │  │Intelligence│ │Messaging │                  │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                  │
+│       │             │             │                         │
+│       └─────────────┴─────────────┘                         │
+│                    │ DDS Topics                             │
+│                    ▼                                         │
+│         ┌──────────────────────┐                            │
+│         │  Unified Monitor     │                            │
+│         │  (monitoring/monitor)│                            │
+│         └──────────┬───────────┘                            │
+└────────────────────┼────────────────────────────────────────┘
+                     │ stdout (parsed)
+                     ▼
+         ┌──────────────────────┐
+         │   Demo Server        │
+         │   (server.js)        │
+         │   - Parse stdout     │
+         │   - WebSocket emit   │
+         └──────────┬───────────┘
+                    │ WebSocket Events
+                    ▼
+         ┌──────────────────────┐
+         │   Web Browser        │
+         │   (Frontend)         │
+         │   - Map visualization│
+         │   - Data panels     │
+         │   - Real-time updates│
+         └──────────────────────┘
+```
+
+# DIAGRAM KODU
+
+## Data Flow Architecture Diagram
+
+```mermaid
+flowchart TD
+    A["DDS Publishers<br/>(CoreData, Intelligence, Messaging)"] -->|DDS Topics (RTPS)| B["Unified Monitor<br/>(monitoring/build/monitor)<br/>or Individual Subscribers<br/>Subscribes to multiple domains/topics"]
+    B -->|stdout (formatted text)| C["server.js<br/>(Parser)<br/>Parses stdout with regex<br/>Extracts domain, topic, data fields"]
+    C -->|WebSocket Events<br/>(aircraftData, intelligence, messaging)| D["Frontend<br/>(app.js)<br/>Receives events via Socket.IO<br/>Updates map markers and data panels"]
+```
+
+## Project Structure Diagram
+
+```mermaid
+graph TD
+    DEMO["demo/"]
+    SERVER["server.js"]
+    PKG["package.json"]
+    PID["processes.pid"]
+    BUILD_DEMO["build_demo/"]
+    BUILD_SH["build_demo.sh"]
+    BUILD_BAT["build_demo.bat"]
+    RUN_DEMO["run_demo/"]
+    RUN_SH["run_demo.sh"]
+    RUN_BAT["run_demo.bat"]
+    PUBLIC["public/"]
+    HTML["index.html"]
+    JS["app.js"]
+    CSS["style.css"]
+    
+    DEMO --> SERVER
+    DEMO --> PKG
+    DEMO --> PID
+    DEMO --> BUILD_DEMO
+    DEMO --> RUN_DEMO
+    DEMO --> PUBLIC
+    BUILD_DEMO --> BUILD_SH
+    BUILD_DEMO --> BUILD_BAT
+    RUN_DEMO --> RUN_SH
+    RUN_DEMO --> RUN_BAT
+    PUBLIC --> HTML
+    PUBLIC --> JS
+    PUBLIC --> CSS
+```
+
+## Operation Diagram
+
+```mermaid
+flowchart TD
+    INFRA["DDS Infrastructure"]
+    PUB1["Publisher<br/>CoreData"]
+    PUB2["Publisher<br/>Intelligence"]
+    PUB3["Publisher<br/>Messaging"]
+    MONITOR["Unified Monitor<br/>(monitoring/monitor)"]
+    SERVER["Demo Server<br/>(server.js)<br/>- Parse stdout<br/>- WebSocket emit"]
+    BROWSER["Web Browser<br/>(Frontend)<br/>- Map visualization<br/>- Data panels<br/>- Real-time updates"]
+    
+    INFRA --> PUB1
+    INFRA --> PUB2
+    INFRA --> PUB3
+    PUB1 -->|DDS Topics| MONITOR
+    PUB2 -->|DDS Topics| MONITOR
+    PUB3 -->|DDS Topics| MONITOR
+    MONITOR -->|stdout (parsed)| SERVER
+    SERVER -->|WebSocket Events| BROWSER
+```
+

@@ -1,8 +1,8 @@
-# qos_patcher_gui.py
+# qos_settings_patcher_gui.py
 
 ## Overview
 
-`qos_patcher_gui.py` provides a graphical user interface (GUI) for the QoS patcher. It allows users to visually select modules and configure QoS settings without using command-line arguments.
+`qos_settings_patcher_gui.py` provides a graphical user interface (GUI) for the QoS patcher. It allows users to visually select modules and configure QoS settings without using command-line arguments.
 
 ## Purpose
 
@@ -17,7 +17,7 @@
 2. **File Grouping**: Groups PublisherApp and SubscriberApp files by module
 3. **GUI Display**: Shows selectable modules and files
 4. **QoS Configuration**: Provides simple and advanced configuration modes
-5. **Patch Application**: Calls `qos_patcher.py` to apply changes
+5. **Patch Application**: Calls `qos_settings_patcher.py` to apply changes
 
 ## Usage
 
@@ -25,13 +25,13 @@
 
 ```bash
 cd scripts/py
-python3 qos_patcher_gui.py
+python3 qos_settings_patcher_gui.py
 ```
 
 ### Via Shell Script
 
 ```bash
-bash scripts/sh/dynamic_qos_patcher.sh
+bash scripts/sh/patch_qos_settings.sh
 ```
 
 ## GUI Features
@@ -61,12 +61,12 @@ bash scripts/sh/dynamic_qos_patcher.sh
 
 - Python 3.x
 - tkinter library (usually included with Python)
-- `qos_patcher.py` module (must be in same directory)
+- `qos_settings_patcher.py` module (must be in same directory)
 
 ## Integration
 
 Launched by:
-- `scripts/sh/dynamic_qos_patcher.sh` - Shell script wrapper
+- `scripts/sh/patch_qos_settings.sh` - Shell script wrapper
 
 ## Notes
 

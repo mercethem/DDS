@@ -1,8 +1,8 @@
-# idl_setup_patcher.py
+# idl_setup_data_printer.py
 
 ## Overview
 
-`idl_setup_patcher.py` patches PublisherApp and SubscriberApp files to add JSON data printing functionality. It extracts data fields from header files and adds code to print sample data in JSON format.
+`idl_setup_data_printer.py` patches PublisherApp and SubscriberApp files to add JSON data printing functionality. It extracts data fields from header files and adds code to print sample data in JSON format.
 
 ## Purpose
 
@@ -24,19 +24,19 @@
 
 ```bash
 cd scripts/py
-python3 idl_setup_patcher.py
+python3 idl_setup_data_printer.py
 ```
 
 ### From Project Root
 
 ```bash
-python3 scripts/py/idl_setup_patcher.py
+python3 scripts/py/idl_setup_data_printer.py
 ```
 
 ### Via Shell Script
 
 ```bash
-bash scripts/sh/idl_setup_patcher.sh
+bash scripts/sh/patch_idl_setup.sh
 ```
 
 ## What It Does
@@ -71,7 +71,7 @@ Prints data in JSON format to stdout:
 ## Integration
 
 This script is called by:
-- `scripts/sh/idl_setup_patcher.sh` - Standalone execution
+- `scripts/sh/patch_idl_setup.sh` - Standalone execution
 - Can be integrated into build/test workflows
 
 ## Notes
