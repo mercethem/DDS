@@ -1,0 +1,3 @@
+/home/mercethem/DDS/monitoring/build/CMakeFiles/monitor.dir
+/home/mercethem/DDS/monitoring/build/CMakeFiles/edit_cache.dir
+/home/mercethem/DDS/monitoring/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,4 @@
+/home/mercethem/DDS/IDL/CoreData3_idl_generated/build/CMakeFiles/CoreData3_lib.dir
+/home/mercethem/DDS/IDL/CoreData3_idl_generated/build/CMakeFiles/CoreData3main.dir
+/home/mercethem/DDS/IDL/CoreData3_idl_generated/build/CMakeFiles/edit_cache.dir
+/home/mercethem/DDS/IDL/CoreData3_idl_generated/build/CMakeFiles/rebuild_cache.dir

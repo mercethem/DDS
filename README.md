@@ -29,11 +29,13 @@ The system includes:
 <a id="system-requirements"></a>
 ## System Requirements
 
+! **IMPORTANT**: Currently, development and automated setup scripts are primarily focused on **Linux** systems. Windows support is planned for future releases. For Windows users, manual installation and setup may be required until full Windows support is implemented.
+
 ### Operating System
 
-- Linux (Ubuntu 20.04 or higher recommended, Debian-based distributions supported)
-- Windows (with WSL 2 recommended for Linux compatibility)
-- macOS (with manual Fast-DDS installation)
+- **Linux** (Ubuntu 20.04 or higher recommended, Debian-based distributions supported) - **Currently fully supported**
+- **Windows** (with WSL 2 recommended for Linux compatibility) - **Windows native support coming soon**
+- **macOS** (with manual Fast-DDS installation) - **Manual setup required**
 
 ### Hardware Requirements
 
@@ -101,15 +103,17 @@ cd DDS
 
 Replace `<repository-url>` with the actual repository URL.
 
-### Step 2: Complete Installation (Recommended for Linux)
+### Step 2: Complete Installation (Linux - Currently Supported)
+
+! **NOTE**: The automated installation scripts (`v1.0.0_alpha_setup.sh` and `v1.0.0_alpha_run.sh`) are currently designed for **Linux systems only**. Windows native support is planned for future releases.
 
 **For Linux users**, you can install all dependencies and set up the project with a single command:
 
 ```bash
-bash v1.0.0_alpha.sh
+bash v1.0.0_alpha_setup.sh
 ```
 
-This script (`v1.0.0_alpha.sh`) performs complete installation and setup:
+This script (`v1.0.0_alpha_setup.sh`) performs complete installation and setup:
 - Installs all system dependencies (requires sudo password)
 - Configures environment variables automatically
 - Runs complete project setup
@@ -118,7 +122,12 @@ This script (`v1.0.0_alpha.sh`) performs complete installation and setup:
 
 ! IMPORTANT: This script should be run as a normal user (not root). It will request sudo privileges automatically when needed.
 
-After running this script, you can skip to [Running the System](#running-the-system) section.
+**After running this script:**
+- The system will be fully set up and ready to use
+- Run tests and demo: `bash v1.0.0_alpha_run.sh`
+- See [Running the System](#running-the-system) section for detailed usage instructions
+
+! NOTE: If you're running the alpha version for the first time, you must run `v1.0.0_alpha_setup.sh` before `v1.0.0_alpha_run.sh`. See the [Quick Start guide](#running-the-system) for step-by-step instructions.
 
 ### Step 2 (Alternative): Install System Dependencies Manually
 
@@ -421,6 +430,70 @@ All checks should show files exist. If any are missing, review the setup steps a
 
 <a id="running-the-system"></a>
 ## Running the System
+
+### Quick Start: Run Tests and Demo (v1.0.0_alpha)
+
+**For Linux users**, to run the alpha version:
+
+#### Step 1: Check if System is Ready
+
+First, verify if the system is already set up:
+
+```bash
+# Check if executables exist
+ls IDL/*_idl_generated/build/*main 2>/dev/null && ls monitoring/build/monitor 2>/dev/null
+```
+
+If the command shows files, the system is ready. Skip to Step 2.
+
+If files are missing or you see errors, the system needs setup. Proceed with setup first.
+
+#### Step 2: Setup (if needed)
+
+If the system is not ready, run the setup script:
+
+```bash
+bash v1.0.0_alpha_setup.sh
+```
+
+This script will:
+- Install all system dependencies (requires sudo password)
+- Configure environment variables automatically
+- Run complete project setup
+- Build all components (IDL modules and monitoring application)
+- Verify installation
+
+! IMPORTANT: This script should be run as a normal user (not root). It will request sudo privileges automatically when needed.
+
+Wait for the setup to complete successfully before proceeding.
+
+#### Step 3: Run Tests and Demo
+
+After setup is complete (or if the system was already ready), run tests and start the demo:
+
+```bash
+bash v1.0.0_alpha_run.sh
+```
+
+This script (`v1.0.0_alpha_run.sh`) will:
+- Start test publishers/subscribers for all IDL modules
+- Launch the demo dashboard automatically
+- Display real-time DDS data in the web interface
+
+Press Ctrl+C to stop the demo when finished.
+
+#### Summary
+
+**First time setup:**
+```bash
+bash v1.0.0_alpha_setup.sh    # Install and build everything
+bash v1.0.0_alpha_run.sh      # Run tests and demo
+```
+
+**Subsequent runs (system already set up):**
+```bash
+bash v1.0.0_alpha_run.sh      # Just run tests and demo
+```
 
 ### Running Publishers
 
