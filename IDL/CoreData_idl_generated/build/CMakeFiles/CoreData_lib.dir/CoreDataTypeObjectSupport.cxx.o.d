@@ -1,7 +1,7 @@
 CMakeFiles/CoreData_lib.dir/CoreDataTypeObjectSupport.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataTypeObjectSupport.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataTypeObjectSupport.cxx \
  /usr/include/stdc-predef.h \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataTypeObjectSupport.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataTypeObjectSupport.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/TypeObject.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/detail/dds_xtypes_typeobject.hpp \
  /usr/include/c++/14/array /usr/include/c++/14/compare \
@@ -375,4 +375,4 @@ CMakeFiles/CoreData_lib.dir/CoreDataTypeObjectSupport.cxx.o: \
  /usr/local/include/fastdds/dds/xtypes/common.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/TypeObjectUtils.hpp \
  /usr/local/include/fastdds/dds/xtypes/exception/Exception.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreData.hpp
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreData.hpp

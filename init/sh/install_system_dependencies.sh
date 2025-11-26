@@ -118,4 +118,3 @@ echo "Note: Pre-Ubuntu 20.04 versions may require manual Fast-DDS installation."
 echo "See REQUIREMENTS_LINUX.md for details."
 echo
 
-read -p "Press Enter to continue..."

@@ -27,7 +27,6 @@ echo "[INFO] Searching for Python installation..."
 bash "${SCRIPT_DIR}/find_tools.sh"
 if [ $? -ne 0 ]; then
     echo "[ERROR] Python not found!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -45,7 +44,6 @@ echo
 if [ ! -f "$PROJECT_ROOT/scripts/py/qos_settings_patcher_gui.py" ]; then
     echo "[ERROR] qos_settings_patcher_gui.py not found!"
     echo "Please make sure the file exists in the scripts/py folder."
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -67,4 +65,3 @@ else
 fi
 
 echo
-read -p "Press Enter to continue..."

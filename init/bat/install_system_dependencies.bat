@@ -29,7 +29,6 @@ if errorlevel 1 (
     echo [INFO] To install Chocolatey, run PowerShell as Administrator:
     echo   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     echo.
-    pause
     exit /b 1
 ) else (
     echo [OK] Chocolatey found
@@ -40,7 +39,6 @@ echo [STEP 2/6] Installing basic build tools...
 choco install -y cmake git curl wget unzip
 if errorlevel 1 (
     echo [ERROR] Failed to install build tools
-    pause
     exit /b 1
 )
 
@@ -49,7 +47,6 @@ echo [STEP 3/6] Installing Python and Java...
 choco install -y python3 openjdk11
 if errorlevel 1 (
     echo [ERROR] Failed to install Python or Java
-    pause
     exit /b 1
 )
 
@@ -118,6 +115,5 @@ echo.
 echo Note: Some dependencies require manual installation on Windows.
 echo See README.md for detailed instructions.
 echo.
-pause
 exit /b 0
 

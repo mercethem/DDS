@@ -130,8 +130,7 @@ echo Website opened in your browser.
 echo To see DDS data, start monitor and publishers manually.
 echo DO NOT CLOSE this window while demo is running!
 echo.
-echo Press any key to close demo...
-pause >nul
+echo Demo closed.
 
 REM Cleanup section
 echo.

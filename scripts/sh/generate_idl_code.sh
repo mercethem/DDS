@@ -27,7 +27,6 @@ echo "[INFO] Running portability checks..."
 if [ ! -d "$PROJECT_ROOT/IDL" ]; then
     echo "[ERROR] IDL folder not found!"
     echo "Project root: $PROJECT_ROOT"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -42,7 +41,6 @@ echo
 # Java check
 if ! command -v java &> /dev/null; then
     echo "[ERROR] Java is not installed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -64,7 +62,6 @@ if [ ! -f "$JSON_HEADER" ]; then
             echo "[OK] JSON library downloaded successfully"
         else
             echo "[ERROR] Failed to download JSON library"
-            read -p "Press Enter to continue..."
             exit 1
         fi
     elif command -v curl &> /dev/null; then
@@ -73,12 +70,10 @@ if [ ! -f "$JSON_HEADER" ]; then
             echo "[OK] JSON library downloaded successfully"
         else
             echo "[ERROR] Failed to download JSON library"
-            read -p "Press Enter to continue..."
             exit 1
         fi
     else
         echo "[ERROR] Neither wget nor curl found! Cannot download JSON library"
-        read -p "Press Enter to continue..."
         exit 1
     fi
 else
@@ -116,7 +111,6 @@ else
     echo "  Ubuntu/Debian: sudo apt-get install libssl-dev"
     echo "  CentOS/RHEL: sudo yum install openssl-devel"
     echo "  Fedora: sudo dnf install openssl-devel"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -128,7 +122,6 @@ echo "[PATH] IDL folder: $(pwd)"
 IDL_FILES=(*.idl)
 if [ ${#IDL_FILES[@]} -eq 0 ] || [ ! -f "${IDL_FILES[0]}" ]; then
     echo "[ERROR] No IDL files found in IDL folder!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -166,7 +159,6 @@ for idl_file in "${IDL_FILES[@]}"; do
             fi
         else
             echo "[ERROR] fastddsgen not found! Please install Fast DDS"
-            read -p "Press Enter to continue..."
             exit 1
         fi
         
@@ -301,7 +293,6 @@ echo "All IDL files have been processed!"
 # fi
 echo "[INFO] JSON Patcher disabled to prevent conflicts with IDL Patcher"
 
-read -p "Press Enter to continue..."
 
 echo
 echo "========================================"

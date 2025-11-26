@@ -1,5 +1,6 @@
 CMakeFiles/monitor.dir/monitor.cpp.o: \
- /home/mercethem/DDS/monitoring/monitor.cpp /usr/include/stdc-predef.h \
+ /home/mercethem/Masaüstü/DDS/monitoring/monitor.cpp \
+ /usr/include/stdc-predef.h \
  /usr/local/include/fastdds/dds/domain/DomainParticipantFactory.hpp \
  /usr/include/c++/14/map /usr/include/c++/14/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -476,9 +477,9 @@ CMakeFiles/monitor.dir/monitor.cpp.o: \
  /usr/include/c++/14/filesystem /usr/include/c++/14/bits/fs_fwd.h \
  /usr/include/c++/14/bits/fs_path.h /usr/include/c++/14/codecvt \
  /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataPubSubTypes.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreData.hpp \
- /home/mercethem/DDS/IDL/Intelligence_idl_generated/IntelligencePubSubTypes.hpp \
- /home/mercethem/DDS/IDL/Intelligence_idl_generated/Intelligence.hpp \
- /home/mercethem/DDS/IDL/Messaging_idl_generated/MessagingPubSubTypes.hpp \
- /home/mercethem/DDS/IDL/Messaging_idl_generated/Messaging.hpp
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataPubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreData.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/Intelligence_idl_generated/IntelligencePubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/Intelligence_idl_generated/Intelligence.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/MessagingPubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/Messaging.hpp

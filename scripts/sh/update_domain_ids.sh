@@ -35,6 +35,5 @@ for idl_file in *.idl; do
 done
 
 echo "Dynamic domain ID update complete."
-read -p "Press Enter to continue..."
 
 exit 0

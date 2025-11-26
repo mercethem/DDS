@@ -28,7 +28,6 @@ echo "[INFO] Running portability checks..."
 if [ ! -d "$PROJECT_ROOT/IDL" ]; then
     echo "[ERROR] IDL folder not found!"
     echo "Project root: $PROJECT_ROOT"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -53,7 +52,6 @@ echo "========================================"
 bash "${SCRIPT_DIR}/setup_environment.sh"
 if [ $? -ne 0 ]; then
     echo "[ERROR] Environment Setup failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] Environment Setup completed!"
@@ -66,7 +64,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash generate_idl_code.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] IDL Generation failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] IDL Generation completed!"
@@ -79,7 +76,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash update_domain_ids.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] Domain ID Update failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] Domain ID Update completed!"
@@ -92,7 +88,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash setup_security_certificates.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] Security Setup failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] Security Setup completed!"
@@ -105,7 +100,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash patch_idl_defaults.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] IDL Patcher failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] IDL Patcher completed!"
@@ -118,7 +112,6 @@ echo "========================================"
 bash "${SCRIPT_DIR}/patch_idl_setup.sh"
 if [ $? -ne 0 ]; then
     echo "[ERROR] IDL Setup Patcher failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] IDL Setup Patcher completed!"
@@ -131,7 +124,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash patch_json_reading.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] JSON Patcher failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] JSON Patcher completed!"
@@ -178,7 +170,6 @@ echo "========================================"
 (cd "$SCRIPT_DIR" && bash build_idl_modules.sh)
 if [ $? -ne 0 ]; then
     echo "[ERROR] IDL Building failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] IDL Building completed!"
@@ -191,7 +182,6 @@ echo "========================================"
 bash "${SCRIPT_DIR}/find_tools.sh"
 if [ $? -ne 0 ]; then
     echo "[ERROR] Module Detection failed!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 echo "[OK] Module Detection completed!"
@@ -201,8 +191,10 @@ echo
 echo "========================================"
 echo "[STEP 10] Testing (Optional)"
 echo "========================================"
-echo "[INFO] Would you like to run tests? (Y/N)"
-read -p "Enter choice: " RUN_TESTS
+# Auto-run tests (no user interaction needed)
+RUN_TESTS="N"
+# Uncomment to enable auto-testing:
+# RUN_TESTS="Y"
 if [[ "${RUN_TESTS^^}" == "Y" ]]; then
     bash "${SCRIPT_DIR}/test_idl_modules.sh"
     if [ $? -ne 0 ]; then
@@ -231,4 +223,3 @@ echo "  - Testing: ${RUN_TESTS}"
 echo
 echo "Your DDS system is ready to use!"
 echo
-read -p "Press Enter to continue..."

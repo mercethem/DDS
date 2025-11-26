@@ -63,6 +63,5 @@ echo 1. Copy project to Windows system
 echo 2. Run: %PROJECT_ROOT%\scripts\bat\run_complete_workflow.bat
 echo 3. This will regenerate all IDL files for Windows
 echo.
-pause
 exit /b 0
 

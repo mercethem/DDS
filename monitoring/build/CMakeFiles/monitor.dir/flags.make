@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DFOONATHAN_MEMORY=1 -DFOONATHAN_MEMORY_VERSION_MAJOR=0 -DFOONATHAN_MEMORY_VERSION_MINOR=7 -DFOONATHAN_MEMORY_VERSION_PATCH=3 -DTINYXML2_IMPORT -D_FILE_OFFSET_BITS=64
 
-CXX_INCLUDES = -I/home/mercethem/DDS/IDL/CoreData_idl_generated -I/home/mercethem/DDS/IDL/Intelligence_idl_generated -I/home/mercethem/DDS/IDL/Messaging_idl_generated -isystem /usr/local/include/foonathan_memory
+CXX_INCLUDES = -I/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated -I/home/mercethem/Masaüstü/DDS/IDL/Intelligence_idl_generated -I/home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated -isystem /usr/local/include/foonathan_memory
 
 CXX_FLAGS = -O3 -DNDEBUG -std=gnu++17
 

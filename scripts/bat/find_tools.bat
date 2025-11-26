@@ -188,6 +188,5 @@ if exist "%IDL_DIR%" (
 
 echo.
 echo Dynamic finder completed successfully!
-pause
 exit /b 0
 

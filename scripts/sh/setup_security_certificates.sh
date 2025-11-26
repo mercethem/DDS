@@ -24,7 +24,6 @@ echo "[INFO] Running portability checks..."
 if [ ! -d "$PROJECT_ROOT/IDL" ]; then
     echo "[ERROR] IDL folder not found!"
     echo "Project root: $PROJECT_ROOT"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -47,7 +46,6 @@ echo "[INFO] Searching for Python installation..."
 bash "${SCRIPT_DIR}/find_tools.sh"
 if [ $? -ne 0 ]; then
     echo "[ERROR] Python not found!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -74,7 +72,6 @@ echo "========================================"
 if [ ! -f "$PROJECT_ROOT/scripts/py/generate_security_certificates.py" ]; then
     echo "[ERROR] generate_security_certificates.py not found!"
     echo "Please make sure the file exists in the scripts/py folder."
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -87,7 +84,6 @@ if [ $CERT_EXIT_CODE -eq 0 ]; then
     echo "[OK] Certificate generation completed successfully!"
 else
     echo "[ERROR] Certificate generation failed with exit code $CERT_EXIT_CODE!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -100,7 +96,6 @@ echo "========================================"
 if [ ! -f "$PROJECT_ROOT/scripts/py/apply_security_settings.py" ]; then
     echo "[ERROR] apply_security_settings.py not found!"
     echo "Please make sure the file exists in the scripts/py folder."
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -113,7 +108,6 @@ if [ $SEC_EXIT_CODE -eq 0 ]; then
     echo "[OK] Security configuration completed successfully!"
 else
     echo "[ERROR] Security configuration failed with exit code $SEC_EXIT_CODE!"
-    read -p "Press Enter to continue..."
     exit 1
 fi
 
@@ -130,4 +124,3 @@ echo
 echo "Your DDS system now has security enabled!"
 
 exit 0
-read -p "Press Enter to continue..."

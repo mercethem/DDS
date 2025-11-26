@@ -23,7 +23,6 @@ if errorlevel 1 (
     echo   Download from: https://nodejs.org/
     echo   Or use Chocolatey: choco install nodejs
     echo.
-    pause
     exit /b 1
 )
 
@@ -36,7 +35,6 @@ if errorlevel 1 (
     echo Installation instructions:
     echo   Download Node.js from: https://nodejs.org/ (includes npm)
     echo.
-    pause
     exit /b 1
 )
 
@@ -50,7 +48,6 @@ echo.
 REM Check if package.json exists
 if not exist "%DEMO_DIR%\package.json" (
     echo [ERROR] package.json not found in %DEMO_DIR%
-    pause
     exit /b 1
 )
 
@@ -62,7 +59,6 @@ call npm install
 
 if errorlevel 1 (
     echo [ERROR] Dependency installation failed!
-    pause
     exit /b 1
 )
 
@@ -92,6 +88,5 @@ echo Or manually:
 echo   npm start
 echo.
 
-pause
 exit /b 0
 

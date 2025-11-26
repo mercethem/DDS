@@ -1,7 +1,7 @@
 CMakeFiles/CoreData4_lib.dir/CoreData4PublisherApp.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4PublisherApp.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4PublisherApp.cxx \
  /usr/include/stdc-predef.h \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4PublisherApp.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4PublisherApp.hpp \
  /usr/include/c++/14/condition_variable \
  /usr/include/c++/14/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -417,7 +417,7 @@ CMakeFiles/CoreData4_lib.dir/CoreData4PublisherApp.cxx.o: \
  /usr/local/include/fastdds/dds/core/status/MatchedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/IncompatibleQosStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/DeadlineMissedStatus.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4Application.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4Application.hpp \
  /usr/include/c++/14/csignal /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
@@ -455,12 +455,12 @@ CMakeFiles/CoreData4_lib.dir/CoreData4PublisherApp.cxx.o: \
  /usr/local/include/fastdds/dds/builtin/topic/SubscriptionBuiltinTopicData.hpp \
  /usr/local/include/fastdds/rtps/builtin/data/SubscriptionBuiltinTopicData.hpp \
  /usr/local/include/fastdds/dds/publisher/Publisher.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4.hpp \
  /usr/include/c++/14/filesystem /usr/include/c++/14/bits/fs_fwd.h \
  /usr/include/c++/14/bits/fs_path.h /usr/include/c++/14/codecvt \
  /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/../../include/nlohmann/json.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/../../include/nlohmann/json.hpp \
  /usr/include/c++/14/iterator /usr/include/c++/14/bits/stream_iterator.h \
  /usr/include/c++/14/forward_list /usr/include/c++/14/bits/forward_list.h \
  /usr/include/c++/14/bits/forward_list.tcc /usr/include/c++/14/valarray \

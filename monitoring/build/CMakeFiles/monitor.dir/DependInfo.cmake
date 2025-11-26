@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/mercethem/DDS/monitoring/monitor.cpp" "CMakeFiles/monitor.dir/monitor.cpp.o" "gcc" "CMakeFiles/monitor.dir/monitor.cpp.o.d"
+  "/home/mercethem/Masaüstü/DDS/monitoring/monitor.cpp" "CMakeFiles/monitor.dir/monitor.cpp.o" "gcc" "CMakeFiles/monitor.dir/monitor.cpp.o.d"
   "" "monitor" "gcc" "CMakeFiles/monitor.dir/link.d"
   )
 

@@ -223,6 +223,5 @@ echo To use the DDS environment:
 echo   call %FULL_ENV_FILE%
 echo.
 echo Setup completed successfully!
-pause
 exit /b 0
 

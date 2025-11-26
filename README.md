@@ -29,13 +29,16 @@ The system includes:
 <a id="system-requirements"></a>
 ## System Requirements
 
-! **IMPORTANT**: Currently, development and automated setup scripts are primarily focused on **Linux** systems. Windows support is planned for future releases. For Windows users, manual installation and setup may be required until full Windows support is implemented.
+! **IMPORTANT**: Currently, development and automated setup scripts are primarily focused on **Linux** systems. 
+- **Linux**: Fully supported with AppImage (recommended) or manual setup scripts
+- **Windows**: Native support planned for future releases. Currently, manual installation required or use WSL 2 for Linux compatibility
+- **macOS**: **Not currently supported**. macOS support is planned for future releases. Manual installation and setup may be possible but is not tested or documented.
 
 ### Operating System
 
-- **Linux** (Ubuntu 20.04 or higher recommended, Debian-based distributions supported) - **Currently fully supported**
-- **Windows** (with WSL 2 recommended for Linux compatibility) - **Windows native support coming soon**
-- **macOS** (with manual Fast-DDS installation) - **Manual setup required**
+- **Linux** (Ubuntu 20.04 or higher recommended, Debian-based distributions supported) - **✅ Currently fully supported**
+- **Windows** (with WSL 2 recommended for Linux compatibility) - **⚠️ Windows native support coming soon**
+- **macOS** - **❌ Not currently supported (planned for future releases)**
 
 ### Hardware Requirements
 
@@ -105,29 +108,37 @@ Replace `<repository-url>` with the actual repository URL.
 
 ### Step 2: Complete Installation (Linux - Currently Supported)
 
-! **NOTE**: The automated installation scripts (`v1.0.0_alpha_setup.sh` and `v1.0.0_alpha_run.sh`) are currently designed for **Linux systems only**. Windows native support is planned for future releases.
+! **NOTE**: The AppImage and setup scripts are currently designed for **Linux systems only**. Windows native support is planned for future releases.
 
-**For Linux users**, you can install all dependencies and set up the project with a single command:
+**For Linux users**, you have two options:
+
+#### Option A: Using AppImage (Easiest - Recommended)
+
+1. **Download AppImage** from GitHub releases (`DDS-Project-v1.0.0_alpha-x86_64.AppImage`)
+2. **Place it anywhere** (Desktop, Downloads, etc.) - it's completely self-contained!
+3. **Make executable**: `chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+4. **Run**: `./DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+   - Setup runs automatically on first run if needed
+   - Tests and demo start automatically
+
+See [Quick Start: Run Tests and Demo](#running-the-system) section for detailed AppImage usage.
+
+#### Option B: Using Manual Setup Scripts
+
+You can set up the project manually using the provided scripts:
 
 ```bash
-bash v1.0.0_alpha_setup.sh
+# Install system dependencies
+bash init/sh/install_system_dependencies.sh
+
+# Run project setup
+bash init/sh/project_setup.sh
+
+# Run tests and demo
+bash init/sh/run_tests_and_demo.sh
 ```
 
-This script (`v1.0.0_alpha_setup.sh`) performs complete installation and setup:
-- Installs all system dependencies (requires sudo password)
-- Configures environment variables automatically
-- Runs complete project setup
-- Builds all components (IDL modules and monitoring application)
-- Verifies installation
-
-! IMPORTANT: This script should be run as a normal user (not root). It will request sudo privileges automatically when needed.
-
-**After running this script:**
-- The system will be fully set up and ready to use
-- Run tests and demo: `bash v1.0.0_alpha_run.sh`
-- See [Running the System](#running-the-system) section for detailed usage instructions
-
-! NOTE: If you're running the alpha version for the first time, you must run `v1.0.0_alpha_setup.sh` before `v1.0.0_alpha_run.sh`. See the [Quick Start guide](#running-the-system) for step-by-step instructions.
+See [Project Setup](#project-setup) section for detailed manual setup instructions.
 
 ### Step 2 (Alternative): Install System Dependencies Manually
 
@@ -181,7 +192,24 @@ sudo ldconfig
 
 Install equivalent packages using your distribution's package manager. Fast-DDS may need to be built from source if packages are not available.
 
+#### For macOS
+
+! **NOTE**: macOS is **not currently supported**. The AppImage and setup scripts are designed for Linux only. macOS support is planned for future releases.
+
+If you want to attempt manual installation on macOS (not recommended, untested):
+- Install Homebrew package manager
+- Install build tools: `brew install cmake git`
+- Install Python 3: `brew install python3`
+- Install Java JDK 11: `brew install openjdk@11`
+- Build Fast-DDS from source (no pre-built packages available)
+- Install Node.js: `brew install node`
+- Manually run setup scripts (may require modifications)
+
+**Recommended**: Use Linux (native or via VM) or wait for official macOS support.
+
 #### For Windows
+
+! **NOTE**: Windows native support is planned for future releases. Currently, manual installation required or use WSL 2 for Linux compatibility.
 
 Install dependencies manually:
 - Install Visual Studio 2017 or higher with C++ support
@@ -190,6 +218,8 @@ Install dependencies manually:
 - Install Java JDK 11
 - Build Fast-DDS from source or use pre-built binaries
 - Install Node.js
+
+**Recommended**: Use WSL 2 (Windows Subsystem for Linux) to run Linux scripts, or wait for official Windows support.
 
 ### Step 3: Verify Installation
 
@@ -433,7 +463,47 @@ All checks should show files exist. If any are missing, review the setup steps a
 
 ### Quick Start: Run Tests and Demo (v1.0.0_alpha)
 
-**For Linux users**, to run the alpha version:
+**For Linux users**, there are two ways to run the alpha version:
+
+#### Option A: Using AppImage (Easiest - Recommended)
+
+The AppImage is **completely self-contained** and contains all project files!
+
+1. **Download AppImage** from GitHub releases:
+   - Go to the latest release page
+   - Download `DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+
+2. **Place AppImage anywhere** you want:
+   - Desktop
+   - Downloads folder
+   - Any directory
+   - **No project directory needed** - it's completely independent!
+
+3. **Make executable and run**:
+   ```bash
+   chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage
+   ./DDS-Project-v1.0.0_alpha-x86_64.AppImage
+   ```
+
+4. **First Run**:
+   - AppImage extracts project files to `~/.dds-project-runtime` automatically
+   - Checks if system is ready
+   - Runs setup automatically if needed (via `init/sh/project_setup.sh`)
+   - Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
+   - Subsequent runs skip setup and run directly
+
+**Advantages of AppImage:**
+- ✅ **Completely self-contained** - contains all project files
+- ✅ **Portable** - can be placed anywhere (Desktop, Downloads, etc.)
+- ✅ **No installation required** - just download and run
+- ✅ **Automatic setup** - detects and runs setup if needed
+- ✅ **Independent** - no external project directory needed
+- ✅ **Double-click to run** - GUI support
+- ✅ **Works like an .exe** - single file, runs from anywhere
+
+#### Option B: Using Manual Setup Scripts
+
+If you prefer to set up manually or want more control:
 
 #### Step 1: Check if System is Ready
 
@@ -444,26 +514,30 @@ First, verify if the system is already set up:
 ls IDL/*_idl_generated/build/*main 2>/dev/null && ls monitoring/build/monitor 2>/dev/null
 ```
 
-If the command shows files, the system is ready. Skip to Step 2.
+If the command shows files, the system is ready. Skip to Step 3.
 
 If files are missing or you see errors, the system needs setup. Proceed with setup first.
 
 #### Step 2: Setup (if needed)
 
-If the system is not ready, run the setup script:
+If the system is not ready, run the setup scripts:
 
 ```bash
-bash v1.0.0_alpha_setup.sh
+# Install system dependencies (requires sudo)
+bash init/sh/install_system_dependencies.sh
+
+# Run complete project setup
+bash init/sh/project_setup.sh
 ```
 
-This script will:
+These scripts will:
 - Install all system dependencies (requires sudo password)
 - Configure environment variables automatically
 - Run complete project setup
 - Build all components (IDL modules and monitoring application)
 - Verify installation
 
-! IMPORTANT: This script should be run as a normal user (not root). It will request sudo privileges automatically when needed.
+! IMPORTANT: Scripts should be run as a normal user (not root). They will request sudo privileges automatically when needed.
 
 Wait for the setup to complete successfully before proceeding.
 
@@ -472,10 +546,10 @@ Wait for the setup to complete successfully before proceeding.
 After setup is complete (or if the system was already ready), run tests and start the demo:
 
 ```bash
-bash v1.0.0_alpha_run.sh
+bash init/sh/run_tests_and_demo.sh
 ```
 
-This script (`v1.0.0_alpha_run.sh`) will:
+This script will:
 - Start test publishers/subscribers for all IDL modules
 - Launch the demo dashboard automatically
 - Display real-time DDS data in the web interface
@@ -484,16 +558,35 @@ Press Ctrl+C to stop the demo when finished.
 
 #### Summary
 
-**First time setup:**
+**Using AppImage (Recommended):**
 ```bash
-bash v1.0.0_alpha_setup.sh    # Install and build everything
-bash v1.0.0_alpha_run.sh      # Run tests and demo
+# Download AppImage from GitHub releases
+chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage
+./DDS-Project-v1.0.0_alpha-x86_64.AppImage
+# Setup runs automatically on first run if needed
 ```
 
-**Subsequent runs (system already set up):**
+**Using Manual Scripts:**
 ```bash
-bash v1.0.0_alpha_run.sh      # Just run tests and demo
+# First time setup:
+bash init/sh/install_system_dependencies.sh  # Install dependencies
+bash init/sh/project_setup.sh                # Setup and build everything
+bash init/sh/run_tests_and_demo.sh           # Run tests and demo
+
+# Subsequent runs (system already set up):
+bash init/sh/run_tests_and_demo.sh           # Just run tests and demo
 ```
+
+**Building AppImage from Source:**
+
+If you want to build the AppImage yourself:
+```bash
+cd image
+bash build.sh  # Single script that does everything
+# Output: image/DDS-Project-v1.0.0_alpha-x86_64.AppImage
+```
+
+See `image/README.md` for detailed AppImage build instructions.
 
 ### Running Publishers
 

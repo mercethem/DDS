@@ -57,6 +57,5 @@ if %EXIT_CODE%==0 (
     echo An error occurred during operation.
 )
 
-pause
 exit /b %EXIT_CODE%
 

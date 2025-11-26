@@ -7,9 +7,9 @@ monitor: \
   /usr/local/lib/libfastcdr.a \
   /usr/lib/x86_64-linux-gnu/libssl.so \
   /usr/lib/x86_64-linux-gnu/libcrypto.so \
-  /home/mercethem/DDS/IDL/CoreData_idl_generated/build/libCoreData_lib.a \
-  /home/mercethem/DDS/IDL/Intelligence_idl_generated/build/libIntelligence_lib.a \
-  /home/mercethem/DDS/IDL/Messaging_idl_generated/build/libMessaging_lib.a \
+  /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/libCoreData_lib.a \
+  /home/mercethem/Masaüstü/DDS/IDL/Intelligence_idl_generated/build/libIntelligence_lib.a \
+  /home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/build/libMessaging_lib.a \
   /usr/local/lib/libfoonathan_memory-0.7.3.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpthread.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libdl.a \
@@ -67,11 +67,11 @@ CMakeFiles/monitor.dir/monitor.cpp.o:
 
 /usr/lib/x86_64-linux-gnu/libcrypto.so:
 
-/home/mercethem/DDS/IDL/CoreData_idl_generated/build/libCoreData_lib.a:
+/home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/build/libCoreData_lib.a:
 
-/home/mercethem/DDS/IDL/Intelligence_idl_generated/build/libIntelligence_lib.a:
+/home/mercethem/Masaüstü/DDS/IDL/Intelligence_idl_generated/build/libIntelligence_lib.a:
 
-/home/mercethem/DDS/IDL/Messaging_idl_generated/build/libMessaging_lib.a:
+/home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/build/libMessaging_lib.a:
 
 /usr/local/lib/libfoonathan_memory-0.7.3.a:
 

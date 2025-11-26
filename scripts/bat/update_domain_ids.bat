@@ -45,6 +45,5 @@ for %%f in (*.idl) do (
 )
 
 echo Dynamic domain ID update complete.
-pause
 exit /b 0
 

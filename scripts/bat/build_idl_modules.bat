@@ -74,6 +74,5 @@ for /l %%i in (1,1,%DIR_COUNT%) do (
 echo.
 echo All build operations completed. Outputs are in respective _idl_generated\build directories.
 echo.
-pause
 exit /b 0
 

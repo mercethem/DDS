@@ -158,7 +158,7 @@ echo -e "${GREEN}Website opened in your browser.${NC}"
 echo -e "${CYAN}To see DDS data, start monitor and publishers manually.${NC}"
 echo -e "${RED}DO NOT CLOSE this window while demo is running!${NC}"
 echo
-echo -e "${YELLOW}Press any key to close demo...${NC}"
+echo -e "${YELLOW}Demo closed.${NC}"
 read -n 1
 
 # Cleanup section

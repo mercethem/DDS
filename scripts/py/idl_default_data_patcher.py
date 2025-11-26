@@ -859,5 +859,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n!!! UNEXPECTED ERROR !!!\n{e}")
         import traceback; traceback.print_exc()
-    if os.name == 'nt': input("\nPress Enter to exit...")
+    # Auto-exit (no user interaction needed)
 

@@ -1,7 +1,7 @@
 CMakeFiles/CoreData_lib.dir/CoreDataSubscriberApp.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.cxx \
  /usr/include/stdc-predef.h \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.hpp \
  /usr/include/c++/14/condition_variable \
  /usr/include/c++/14/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -419,8 +419,8 @@ CMakeFiles/CoreData_lib.dir/CoreDataSubscriberApp.cxx.o: \
  /usr/local/include/fastdds/dds/core/status/SampleRejectedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/SubscriptionMatchedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/MatchedStatus.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreData.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataApplication.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreData.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataApplication.hpp \
  /usr/local/include/fastdds/dds/subscriber/DataReader.hpp \
  /usr/local/include/fastdds/dds/builtin/topic/PublicationBuiltinTopicData.hpp \
  /usr/local/include/fastdds/rtps/builtin/data/PublicationBuiltinTopicData.hpp \
@@ -433,7 +433,7 @@ CMakeFiles/CoreData_lib.dir/CoreDataSubscriberApp.cxx.o: \
  /usr/local/include/fastdds/dds/subscriber/ViewState.hpp \
  /usr/local/include/fastdds/dds/subscriber/SampleInfo.hpp \
  /usr/local/include/fastdds/dds/subscriber/Subscriber.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataPubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataPubSubTypes.hpp \
  /usr/include/c++/14/filesystem /usr/include/c++/14/bits/fs_fwd.h \
  /usr/include/c++/14/bits/fs_path.h /usr/include/c++/14/codecvt \
  /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \

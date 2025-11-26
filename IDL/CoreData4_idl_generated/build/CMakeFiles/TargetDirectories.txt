@@ -1,4 +1,4 @@
-/home/mercethem/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/CoreData4_lib.dir
-/home/mercethem/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/CoreData4main.dir
-/home/mercethem/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/edit_cache.dir
-/home/mercethem/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/rebuild_cache.dir
+/home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/CoreData4_lib.dir
+/home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/CoreData4main.dir
+/home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/edit_cache.dir
+/home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/build/CMakeFiles/rebuild_cache.dir

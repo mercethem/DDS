@@ -1,5 +1,5 @@
 CMakeFiles/Messagingmain.dir/Messagingmain.cxx.o: \
- /home/mercethem/DDS/IDL/Messaging_idl_generated/Messagingmain.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/Messagingmain.cxx \
  /usr/include/stdc-predef.h /usr/include/c++/14/csignal \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
@@ -249,7 +249,7 @@ CMakeFiles/Messagingmain.dir/Messagingmain.cxx.o: \
  /usr/local/include/fastdds/fastdds_dll.hpp \
  /usr/local/include/fastdds/config.hpp \
  /usr/local/include/fastdds/fastdds_auto_link.hpp \
- /home/mercethem/DDS/IDL/Messaging_idl_generated/MessagingApplication.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/Messaging_idl_generated/MessagingApplication.hpp \
  /usr/include/c++/14/atomic /usr/include/c++/14/bits/atomic_base.h \
  /usr/include/c++/14/bits/atomic_lockfree_defines.h \
  /usr/include/c++/14/memory \

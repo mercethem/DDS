@@ -1,5 +1,5 @@
 CMakeFiles/CoreData2main.dir/CoreData2main.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData2_idl_generated/CoreData2main.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData2_idl_generated/CoreData2main.cxx \
  /usr/include/stdc-predef.h /usr/include/c++/14/csignal \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
@@ -249,7 +249,7 @@ CMakeFiles/CoreData2main.dir/CoreData2main.cxx.o: \
  /usr/local/include/fastdds/fastdds_dll.hpp \
  /usr/local/include/fastdds/config.hpp \
  /usr/local/include/fastdds/fastdds_auto_link.hpp \
- /home/mercethem/DDS/IDL/CoreData2_idl_generated/CoreData2Application.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData2_idl_generated/CoreData2Application.hpp \
  /usr/include/c++/14/atomic /usr/include/c++/14/bits/atomic_base.h \
  /usr/include/c++/14/bits/atomic_lockfree_defines.h \
  /usr/include/c++/14/memory \

@@ -30,7 +30,6 @@ echo [INFO] Searching for Python installation...
 call "%SCRIPT_DIR%\find_tools.bat"
 if errorlevel 1 (
     echo [ERROR] Python not found!
-    pause
     exit /b 1
 )
 
@@ -48,7 +47,6 @@ REM Check if QoS patcher GUI exists
 if not exist "%PROJECT_ROOT%\scripts\py\qos_settings_patcher_gui.py" (
     echo [ERROR] qos_settings_patcher_gui.py not found!
     echo Please make sure the file exists in the scripts\py folder.
-    pause
     exit /b 1
 )
 
@@ -71,6 +69,5 @@ if %EXIT_CODE%==0 (
 )
 
 echo.
-pause
 exit /b %EXIT_CODE%
 

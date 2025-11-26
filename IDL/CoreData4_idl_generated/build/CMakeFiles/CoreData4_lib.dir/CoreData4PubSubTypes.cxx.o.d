@@ -1,7 +1,7 @@
 CMakeFiles/CoreData4_lib.dir/CoreData4PubSubTypes.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.cxx \
  /usr/include/stdc-predef.h \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4PubSubTypes.hpp \
  /usr/local/include/fastdds/dds/core/policy/QosPolicies.hpp \
  /usr/include/c++/14/bitset /usr/include/c++/14/bits/functexcept.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -348,11 +348,11 @@ CMakeFiles/CoreData4_lib.dir/CoreData4PubSubTypes.cxx.o: \
  /usr/local/include/fastcdr/xcdr/optional.hpp /usr/include/malloc.h \
  /usr/local/include/fastcdr/CdrSizeCalculator.hpp \
  /usr/local/include/fastdds/utils/md5.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4CdrAux.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4TypeObjectSupport.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4CdrAux.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4TypeObjectSupport.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/TypeObject.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/detail/dds_xtypes_typeobjectCdrAux.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/detail/dds_xtypes_typeobject.hpp \
  /usr/local/include/fastdds/dds/xtypes/type_representation/detail/dds_xtypes_typeobjectPubSubTypes.hpp \
- /home/mercethem/DDS/IDL/CoreData4_idl_generated/CoreData4CdrAux.ipp
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData4_idl_generated/CoreData4CdrAux.ipp

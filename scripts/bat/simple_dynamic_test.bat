@@ -68,11 +68,9 @@ for /d %%d in (*_idl_generated) do (
         )
         
         echo   - Starting Publisher...
-        start "!module_name! Publisher" cmd /k "cd /d !work_dir! && echo Starting !module_name! Publisher... && echo Executable: !found_exe! publisher && echo ---------------------------------------- && !found_exe! publisher && echo. && echo ---------------------------------------- && echo Process finished. Press Enter to close... && pause"
         timeout /t 2 /nobreak >nul
         
         echo   - Starting Subscriber...
-        start "!module_name! Subscriber" cmd /k "cd /d !work_dir! && echo Starting !module_name! Subscriber... && echo Executable: !found_exe! subscriber && echo ---------------------------------------- && !found_exe! subscriber && echo. && echo ---------------------------------------- && echo Process finished. Press Enter to close... && pause"
         echo   [OK] !module_name! test started
         set /a SUCCESS_COUNT+=1
         echo.
@@ -101,7 +99,5 @@ if %SUCCESS_COUNT% GTR 0 (
 
 echo ========================================
 echo.
-echo Press Enter to continue...
-pause
 exit /b 0
 

@@ -40,7 +40,6 @@ echo ========================================
 
 if not exist "%PROJECT_ROOT%\scripts\bat\run_complete_workflow.bat" (
     echo [ERROR] run_complete_workflow.bat not found: %PROJECT_ROOT%\scripts\bat\run_complete_workflow.bat
-    pause
     exit /b 1
 )
 
@@ -49,7 +48,6 @@ cd "%PROJECT_ROOT%\scripts\bat"
 call "%PROJECT_ROOT%\scripts\bat\run_complete_workflow.bat"
 if errorlevel 1 (
     echo [ERROR] Dynamic DDS workflow failed!
-    pause
     exit /b 1
 )
 echo [OK] Dynamic DDS workflow completed
@@ -84,7 +82,6 @@ if !RECREATE_CERTS!==1 (
     REM Check if Python scripts exist
     if not exist "%PROJECT_ROOT%\scripts\py\generate_security_certificates.py" (
         echo [ERROR] generate_security_certificates.py not found!
-        pause
         exit /b 1
     )
     
@@ -92,7 +89,6 @@ if !RECREATE_CERTS!==1 (
     python "%PROJECT_ROOT%\scripts\py\generate_security_certificates.py"
     if errorlevel 1 (
         echo [ERROR] Certificate creation failed!
-        pause
         exit /b 1
     )
     echo [OK] Certificates created
@@ -206,7 +202,6 @@ if !NEED_BUILD!==1 (
     
     if not exist "%PROJECT_ROOT%\scripts\bat\build_idl_modules.bat" (
         echo [ERROR] build_idl_modules.bat not found!
-        pause
         exit /b 1
     )
     
@@ -217,7 +212,6 @@ if !NEED_BUILD!==1 (
         echo.
         echo [WARNING] To build manually:
         echo   %PROJECT_ROOT%\scripts\bat\build_idl_modules.bat
-        pause
         exit /b 1
     )
     echo [OK] Build completed
@@ -305,6 +299,5 @@ echo.
 echo Example:
 echo   IDL\Messaging_idl_generated\build\Messagingmain.exe publisher
 echo.
-pause
 exit /b 0
 

@@ -63,4 +63,3 @@ echo "1. Copy project to Linux system"
 echo "2. Run: $PROJECT_ROOT/scripts/sh/run_complete_workflow.sh"
 echo "3. This will regenerate all IDL files for Linux"
 echo
-read -p "Press Enter to continue..."

@@ -31,7 +31,6 @@ REM Check required folders
 if not exist "%PROJECT_ROOT%\IDL" (
     echo [ERROR] IDL folder not found!
     echo Project root: %PROJECT_ROOT%
-    pause
     exit /b 1
 )
 
@@ -56,7 +55,6 @@ echo ========================================
 call "%SCRIPT_DIR%\setup_environment.bat"
 if errorlevel 1 (
     echo [ERROR] Environment Setup failed!
-    pause
     exit /b 1
 )
 echo [OK] Environment Setup completed!
@@ -69,7 +67,6 @@ echo ========================================
 call "%SCRIPT_DIR%\generate_idl_code.bat"
 if errorlevel 1 (
     echo [ERROR] IDL Generation failed!
-    pause
     exit /b 1
 )
 echo [OK] IDL Generation completed!
@@ -82,7 +79,6 @@ echo ========================================
 call "%SCRIPT_DIR%\update_domain_ids.bat"
 if errorlevel 1 (
     echo [ERROR] Domain ID Update failed!
-    pause
     exit /b 1
 )
 echo [OK] Domain ID Update completed!
@@ -95,7 +91,6 @@ echo ========================================
 call "%SCRIPT_DIR%\setup_security_certificates.bat"
 if errorlevel 1 (
     echo [ERROR] Security Setup failed!
-    pause
     exit /b 1
 )
 echo [OK] Security Setup completed!
@@ -108,7 +103,6 @@ echo ========================================
 call "%SCRIPT_DIR%\patch_idl_defaults.bat"
 if errorlevel 1 (
     echo [ERROR] IDL Patcher failed!
-    pause
     exit /b 1
 )
 echo [OK] IDL Patcher completed!
@@ -121,7 +115,6 @@ echo ========================================
 call "%SCRIPT_DIR%\patch_json_reading.bat"
 if errorlevel 1 (
     echo [ERROR] JSON Patcher failed!
-    pause
     exit /b 1
 )
 echo [OK] JSON Patcher completed!
@@ -168,7 +161,6 @@ echo ========================================
 call "%SCRIPT_DIR%\build_idl_modules.bat"
 if errorlevel 1 (
     echo [ERROR] Build failed!
-    pause
     exit /b 1
 )
 echo [OK] Build completed!
@@ -192,6 +184,5 @@ echo   - Build: OK
 echo.
 echo All steps completed successfully!
 echo.
-pause
 exit /b 0
 

@@ -1,7 +1,7 @@
 CMakeFiles/CoreData_lib.dir/CoreDataApplication.cxx.o: \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataApplication.cxx \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataApplication.cxx \
  /usr/include/stdc-predef.h \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataApplication.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataApplication.hpp \
  /usr/include/c++/14/atomic /usr/include/c++/14/bits/version.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
@@ -162,7 +162,7 @@ CMakeFiles/CoreData_lib.dir/CoreDataApplication.cxx.o: \
  /usr/include/c++/14/bits/basic_string.tcc \
  /usr/include/c++/14/bits/memory_resource.h /usr/include/c++/14/cstddef \
  /usr/include/c++/14/bits/uses_allocator_args.h \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataPublisherApp.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataPublisherApp.hpp \
  /usr/include/c++/14/condition_variable /usr/include/c++/14/bits/chrono.h \
  /usr/include/c++/14/ratio /usr/include/c++/14/cstdint \
  /usr/include/c++/14/limits /usr/include/c++/14/ctime \
@@ -419,9 +419,9 @@ CMakeFiles/CoreData_lib.dir/CoreDataApplication.cxx.o: \
  /usr/local/include/fastdds/dds/core/status/MatchedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/IncompatibleQosStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/DeadlineMissedStatus.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.hpp \
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreDataSubscriberApp.hpp \
  /usr/local/include/fastdds/dds/subscriber/DataReaderListener.hpp \
  /usr/local/include/fastdds/dds/core/status/LivelinessChangedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/SampleRejectedStatus.hpp \
  /usr/local/include/fastdds/dds/core/status/SubscriptionMatchedStatus.hpp \
- /home/mercethem/DDS/IDL/CoreData_idl_generated/CoreData.hpp
+ /home/mercethem/Masaüstü/DDS/IDL/CoreData_idl_generated/CoreData.hpp

@@ -27,7 +27,6 @@ REM Check required folders
 if not exist "%PROJECT_ROOT%\IDL" (
     echo [ERROR] IDL folder not found!
     echo Project root: %PROJECT_ROOT%
-    pause
     exit /b 1
 )
 
@@ -50,7 +49,6 @@ echo [INFO] Searching for Python installation...
 call "%SCRIPT_DIR%\find_tools.bat"
 if errorlevel 1 (
     echo [ERROR] Python not found!
-    pause
     exit /b 1
 )
 
@@ -77,7 +75,6 @@ REM Check if generate_security_certificates.py exists
 if not exist "%PROJECT_ROOT%\scripts\py\generate_security_certificates.py" (
     echo [ERROR] generate_security_certificates.py not found!
     echo Please make sure the file exists in the scripts\py folder.
-    pause
     exit /b 1
 )
 
@@ -91,7 +88,6 @@ if %CERT_EXIT_CODE%==0 (
     echo [OK] Certificate generation completed successfully!
 ) else (
     echo [ERROR] Certificate generation failed with exit code %CERT_EXIT_CODE%!
-    pause
     exit /b 1
 )
 
@@ -104,7 +100,6 @@ REM Check if apply_security_settings.py exists
 if not exist "%PROJECT_ROOT%\scripts\py\apply_security_settings.py" (
     echo [ERROR] apply_security_settings.py not found!
     echo Please make sure the file exists in the scripts\py folder.
-    pause
     exit /b 1
 )
 
@@ -118,7 +113,6 @@ if %SEC_EXIT_CODE%==0 (
     echo [OK] Security configuration completed successfully!
 ) else (
     echo [ERROR] Security configuration failed with exit code %SEC_EXIT_CODE%!
-    pause
     exit /b 1
 )
 
@@ -133,6 +127,5 @@ echo   - Security Configuration: OK
 echo   - System is ready for secure DDS communication
 echo.
 echo Your DDS system now has security enabled!
-pause
 exit /b 0
 

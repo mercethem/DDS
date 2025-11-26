@@ -26,7 +26,6 @@ echo "Running: json_reading_patcher.py..."
 python3 "$PROJECT_ROOT/scripts/py/json_reading_patcher.py"
 
 echo
-echo "Operation completed. Press Enter to continue..."
-read -p "Press Enter to continue..."
+echo "Operation completed."
 
 exit 0

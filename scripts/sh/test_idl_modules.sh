@@ -51,15 +51,15 @@ start_process() {
 
     # Find available terminal emulator
     if command -v gnome-terminal >/dev/null 2>&1; then
-        gnome-terminal --title="$title" -- bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished. Press Enter to close...'; read" &
+        gnome-terminal --title="$title" -- bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished.'; sleep 2" &
     elif command -v xterm >/dev/null 2>&1; then
-        xterm -title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished. Press Enter to close...'; read" &
+        xterm -title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished.'; sleep 2" &
     elif command -v konsole >/dev/null 2>&1; then
-        konsole --title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished. Press Enter to close...'; read" &
+        konsole --title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished.'; sleep 2" &
     elif command -v alacritty >/dev/null 2>&1; then
-        alacritty --title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished. Press Enter to close...'; read" &
+        alacritty --title "$title" -e bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished.'; sleep 2" &
     elif command -v kitty >/dev/null 2>&1; then
-        kitty --title "$title" bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished. Press Enter to close...'; read" &
+        kitty --title "$title" bash -c "cd '$work_dir'; echo 'Starting $title...'; echo 'Executable: $executable $mode'; echo '----------------------------------------'; './$executable' $mode; echo; echo '----------------------------------------'; echo 'Process finished.'; sleep 2" &
     else
         echo -e "${RED}[ERROR] No terminal emulator found!${NC}"
         return 1
@@ -127,5 +127,4 @@ fi
 
 echo "========================================"
 echo
-echo "Press Enter to continue..."
-read
+# Auto-continue (no user interaction needed)

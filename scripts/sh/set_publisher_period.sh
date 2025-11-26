@@ -53,7 +53,6 @@ else
     echo "An error occurred during operation."
 fi
 
-read -p "Press Enter to continue..."
 
 exit $EXIT_CODE
 

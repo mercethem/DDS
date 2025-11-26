@@ -29,12 +29,9 @@ REM Run the Python script with absolute path from project root
 python "%PROJECT_ROOT%\scripts\py\idl_setup_data_printer.py"
 if errorlevel 1 (
     echo Error occurred!
-    pause
     exit /b 1
 )
 
 echo.
-echo Operation completed. Press any key to close...
-pause
 exit /b 0
 

@@ -30,7 +30,6 @@ REM Check required folders
 if not exist "%PROJECT_ROOT%\IDL" (
     echo [ERROR] IDL folder not found!
     echo Project root: %PROJECT_ROOT%
-    pause
     exit /b 1
 )
 
@@ -41,7 +40,6 @@ REM Java check
 where java >nul 2>&1
 if errorlevel 1 (
     echo [ERROR] Java is not installed!
-    pause
     exit /b 1
 )
 
@@ -62,13 +60,11 @@ if not exist "%JSON_HEADER%" (
         curl -L -o "%JSON_HEADER%" "https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp"
         if errorlevel 1 (
             echo [ERROR] Failed to download JSON library
-            pause
             exit /b 1
         )
         echo [OK] JSON library downloaded successfully
     ) else (
         echo [ERROR] curl not found! Cannot download JSON library
-        pause
         exit /b 1
     )
 ) else (
@@ -111,7 +107,6 @@ for %%f in (*.idl) do (
 
 if %IDL_COUNT%==0 (
     echo [ERROR] No IDL files found in IDL folder!
-    pause
     exit /b 1
 )
 
@@ -144,7 +139,6 @@ for /l %%i in (1,1,%IDL_COUNT%) do (
     where fastddsgen >nul 2>&1
     if errorlevel 1 (
         echo [ERROR] fastddsgen not found! Please install Fast DDS
-        pause
         exit /b 1
     )
     
@@ -244,6 +238,5 @@ for /l %%i in (1,1,%IDL_COUNT%) do (
 echo.
 echo All IDL files have been processed!
 echo.
-pause
 exit /b 0
 
