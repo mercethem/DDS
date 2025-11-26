@@ -101,7 +101,26 @@ cd DDS
 
 Replace `<repository-url>` with the actual repository URL.
 
-### Step 2: Install System Dependencies
+### Step 2: Complete Installation (Recommended for Linux)
+
+**For Linux users**, you can install all dependencies and set up the project with a single command:
+
+```bash
+bash v1.0.0_alpha.sh
+```
+
+This script (`v1.0.0_alpha.sh`) performs complete installation and setup:
+- Installs all system dependencies (requires sudo password)
+- Configures environment variables automatically
+- Runs complete project setup
+- Builds all components (IDL modules and monitoring application)
+- Verifies installation
+
+! IMPORTANT: This script should be run as a normal user (not root). It will request sudo privileges automatically when needed.
+
+After running this script, you can skip to [Running the System](#running-the-system) section.
+
+### Step 2 (Alternative): Install System Dependencies Manually
 
 #### For Ubuntu/Debian Systems
 
