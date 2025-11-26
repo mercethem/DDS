@@ -330,10 +330,19 @@ Monitor (stdout) → Demo Server (stdin parsing) → WebSocket → Dashboard
 
 ## Security Configuration
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 9f27b6be (directory managemend upgraded, scripts renamed, docs updated)
 ### Certificate Structure
 
 See `monitoring.mdd` for the complete certificate structure diagram.
 
+<<<<<<< HEAD
+=======
+>>>>>>> 4094b194 (directory managemend upgraded, scripts renamed, docs updated)
+>>>>>>> 9f27b6be (directory managemend upgraded, scripts renamed, docs updated)
 ### Certificate Requirements
 
 - **CA Certificate**: Must exist and be valid

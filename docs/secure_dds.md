@@ -349,9 +349,18 @@ openssl verify -CAfile secure_dds/CA/mainca_cert.pem \
     secure_dds/participants/<hostname>/<hostname>_cert.pem
 ```
 
+<<<<<<< HEAD
 ## Folder Structure
 
 See `secure_dds.mdd` for the complete folder structure diagram.
+=======
+<<<<<<< HEAD
+=======
+## Folder Structure
+
+See `secure_dds.mdd` for the complete folder structure diagram.
+>>>>>>> 4094b194 (directory managemend upgraded, scripts renamed, docs updated)
+>>>>>>> 9f27b6be (directory managemend upgraded, scripts renamed, docs updated)
 
 ## Security Configuration Details
 

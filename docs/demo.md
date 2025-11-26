@@ -502,9 +502,55 @@ When `DDS_ONLY=false`, the server can:
 4. **SSL/TLS**: Enable HTTPS for production deployments
 5. **Resource Limits**: Set appropriate memory and CPU limits
 
+<<<<<<< HEAD
 ## Project Structure
 
 See `demo.mdd` for the complete project structure and operation diagrams.
+=======
+<<<<<<< HEAD
+
+## Operation Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DDS Infrastructure                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                  │
+│  │Publisher │  │Publisher │  │Publisher │                  │
+│  │CoreData  │  │Intelligence│ │Messaging │                  │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                  │
+│       │             │             │                         │
+│       └─────────────┴─────────────┘                         │
+│                    │ DDS Topics                             │
+│                    ▼                                         │
+│         ┌──────────────────────┐                            │
+│         │  Unified Monitor     │                            │
+│         │  (monitoring/monitor)│                            │
+│         └──────────┬───────────┘                            │
+└────────────────────┼────────────────────────────────────────┘
+                     │ stdout (parsed)
+                     ▼
+         ┌──────────────────────┐
+         │   Demo Server        │
+         │   (server.js)        │
+         │   - Parse stdout     │
+         │   - WebSocket emit   │
+         └──────────┬───────────┘
+                    │ WebSocket Events
+                    ▼
+         ┌──────────────────────┐
+         │   Web Browser        │
+         │   (Frontend)         │
+         │   - Map visualization│
+         │   - Data panels     │
+         │   - Real-time updates│
+         └──────────────────────┘
+```
+=======
+## Project Structure
+
+See `demo.mdd` for the complete project structure and operation diagrams.
+>>>>>>> 4094b194 (directory managemend upgraded, scripts renamed, docs updated)
+>>>>>>> 9f27b6be (directory managemend upgraded, scripts renamed, docs updated)
 
 ## Notes
 
