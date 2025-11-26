@@ -235,7 +235,19 @@ The demo server (`demo/server.js`) parses this output using regex patterns:
 
 ### Building
 
-#### Using build_monitoring.sh (Recommended)
+#### Automatic Build (Recommended)
+
+The monitoring application is automatically built during project setup:
+
+```bash
+bash init/sh/project_setup.sh
+```
+
+This script builds the monitoring application as **STEP 6** of the setup process, after all IDL modules are built.
+
+#### Using build_monitoring.sh (Manual)
+
+You can also build manually:
 
 ```bash
 cd monitoring/build_monitoring

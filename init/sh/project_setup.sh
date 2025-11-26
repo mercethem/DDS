@@ -355,6 +355,31 @@ else
 fi
 
 echo
+
+# Step 6: Build monitoring application
+echo "========================================"
+echo "STEP 6: Building Monitoring Application"
+echo "========================================"
+
+MONITORING_BUILD_SCRIPT="$PROJECT_ROOT/monitoring/build_monitoring/build_monitoring.sh"
+
+if [ -f "$MONITORING_BUILD_SCRIPT" ]; then
+    print_info "Building monitoring application..."
+    
+    # Make script executable
+    chmod +x "$MONITORING_BUILD_SCRIPT"
+    
+    # Run monitoring build script
+    if bash "$MONITORING_BUILD_SCRIPT"; then
+        print_success "Monitoring application built successfully"
+    else
+        print_warning "Monitoring build failed (continuing anyway...)"
+    fi
+else
+    print_warning "build_monitoring.sh not found at: $MONITORING_BUILD_SCRIPT (skipping...)"
+fi
+
+echo
 echo "========================================"
 echo "Setup Completed!"
 echo "========================================"

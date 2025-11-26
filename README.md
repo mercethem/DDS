@@ -230,7 +230,8 @@ This script performs all setup steps automatically:
 - Creates security certificates
 - Generates IDL code
 - Applies code patches
-- Builds all modules
+- Builds all IDL modules
+- Builds monitoring application
 - Verifies setup completion
 
 ! IMPORTANT: The setup script must be run from the project root directory. It will take several minutes to complete depending on your system performance.

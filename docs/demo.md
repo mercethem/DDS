@@ -230,12 +230,14 @@ This installs all required Node.js packages listed in `package.json`.
 
 #### 2. Verify DDS Components
 
-Ensure DDS components are built:
+Ensure DDS components are built. If you ran `bash init/sh/project_setup.sh`, all components including the monitoring application are already built automatically.
+
+To verify or build manually:
 ```bash
 # Build IDL modules
 bash scripts/sh/build_idl_modules.sh
 
-# Build monitor
+# Build monitor (automatically done by project_setup.sh as STEP 6)
 bash monitoring/build_monitoring/build_monitoring.sh
 ```
 

@@ -270,6 +270,28 @@ if not exist "%CA_CERT%" (
 )
 
 echo.
+
+REM Step 6: Build monitoring application
+echo ========================================
+echo STEP 6: Building Monitoring Application
+echo ========================================
+
+set "MONITORING_BUILD_SCRIPT=%PROJECT_ROOT%\monitoring\build_monitoring\build_monitoring.bat"
+
+if exist "%MONITORING_BUILD_SCRIPT%" (
+    echo [INFO] Building monitoring application...
+    
+    call "%MONITORING_BUILD_SCRIPT%"
+    if errorlevel 1 (
+        echo [WARNING] Monitoring build failed (continuing anyway...)
+    ) else (
+        echo [OK] Monitoring application built successfully
+    )
+) else (
+    echo [WARNING] build_monitoring.bat not found at: %MONITORING_BUILD_SCRIPT% (skipping...)
+)
+
+echo.
 echo ========================================
 echo Setup Completed!
 echo ========================================
