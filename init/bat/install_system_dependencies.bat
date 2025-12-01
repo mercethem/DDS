@@ -115,5 +115,16 @@ echo.
 echo Note: Some dependencies require manual installation on Windows.
 echo See README.md for detailed instructions.
 echo.
+
+REM Run post-install build script (monitoring build)
+if exist "%~dp0post_install_build.bat" (
+    call "%~dp0post_install_build.bat"
+    if errorlevel 1 (
+        echo [WARNING] post_install_build.bat failed
+    )
+) else (
+    echo [WARNING] post_install_build.bat not found at %~dp0post_install_build.bat
+)
+
 exit /b 0
 

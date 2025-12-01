@@ -156,6 +156,7 @@ This script will:
 - Install Python 3 and Java JDK
 - Install required libraries (OpenSSL, Fast-DDS, etc.)
 - Configure environment variables
+- **Automatically run post-install build** (Fast-DDS manual installation and monitoring application build via `init/sh/post_install_build.sh`)
 
 ! IMPORTANT: Do not run the installer script as root. It will request sudo privileges automatically when needed.
 
@@ -487,7 +488,10 @@ The AppImage is **completely self-contained** and contains all project files!
 
 4. **First Run**:
    - AppImage extracts project files to `~/.dds-project-runtime` automatically
-   - Checks if system is ready
+   - **Automatically checks system dependencies** (cmake, gcc, python3, java, Fast-DDS, etc.)
+   - **Automatically installs missing dependencies** if needed (via `init/sh/install_system_dependencies.sh`)
+   - **Automatically runs post-install build** (Fast-DDS manual installation and monitoring build via `init/sh/post_install_build.sh`)
+   - Checks if system is ready (built executables, certificates, etc.)
    - Runs setup automatically if needed (via `init/sh/project_setup.sh`)
    - Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
    - Subsequent runs skip setup and run directly
@@ -496,6 +500,7 @@ The AppImage is **completely self-contained** and contains all project files!
 - ✅ **Completely self-contained** - contains all project files
 - ✅ **Portable** - can be placed anywhere (Desktop, Downloads, etc.)
 - ✅ **No installation required** - just download and run
+- ✅ **Automatic dependency installation** - checks and installs system dependencies automatically
 - ✅ **Automatic setup** - detects and runs setup if needed
 - ✅ **Independent** - no external project directory needed
 - ✅ **Double-click to run** - GUI support
@@ -533,6 +538,7 @@ bash init/sh/project_setup.sh
 These scripts will:
 - Install all system dependencies (requires sudo password)
 - Configure environment variables automatically
+- **Automatically run post-install build** (Fast-DDS manual installation and monitoring application build)
 - Run complete project setup
 - Build all components (IDL modules and monitoring application)
 - Verify installation

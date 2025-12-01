@@ -230,7 +230,10 @@ This installs all required Node.js packages listed in `package.json`.
 
 #### 2. Verify DDS Components
 
-Ensure DDS components are built. If you ran `bash init/sh/project_setup.sh`, all components including the monitoring application are already built automatically.
+Ensure DDS components are built. Components are built automatically in these scenarios:
+
+- **If you ran `bash init/sh/install_system_dependencies.sh`**: The monitoring application is automatically built via `init/sh/post_install_build.sh` at the end of dependency installation.
+- **If you ran `bash init/sh/project_setup.sh`**: All components including the monitoring application are built automatically during setup.
 
 To verify or build manually:
 ```bash

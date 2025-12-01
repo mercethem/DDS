@@ -45,13 +45,18 @@ That's it! The `build.sh` script will:
 ## How It Works
 
 The AppImage is **completely self-contained** and contains:
-- **All project files** (IDL, scripts, scenarios, monitoring, demo, etc.)
+- **All project files** (IDL, scripts, scenarios, monitoring, demo, init, etc.)
+- **All setup scripts** (`init/sh/install_system_dependencies.sh`, `init/sh/post_install_build.sh`, `init/sh/project_setup.sh`, etc.)
 - **AppRun** script that:
   1. Extracts project files to `~/.dds-project-runtime` on first run
   2. Uses the extracted files as the project root
-  3. Checks if the system is ready (built executables, certificates, etc.)
-  4. Runs setup automatically if needed (via `init/sh/project_setup.sh`)
-  5. Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
+  3. **Checks system dependencies** (cmake, gcc, python3, java, Fast-DDS, etc.)
+  4. **Installs missing dependencies automatically** (via `init/sh/install_system_dependencies.sh`)
+  5. **Checks post-install build requirements** (Fast-DDS manual installation, monitoring build)
+  6. **Runs post-install build if needed** (via `init/sh/post_install_build.sh`)
+  7. Checks if the system is ready (built executables, certificates, etc.)
+  8. Runs setup automatically if needed (via `init/sh/project_setup.sh`)
+  9. Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
 
 **Key Features:**
 - ✅ **Portable**: Can be placed anywhere (Desktop, Downloads, etc.)
@@ -85,6 +90,12 @@ The AppImage is **completely self-contained** and can be placed **anywhere**!
 
 5. **First Run**:
    - AppImage extracts project files to `~/.dds-project-runtime`
+   - **Automatically checks system dependencies** (cmake, gcc, python3, java, Fast-DDS libraries, fastddsgen, etc.)
+   - **Automatically installs missing dependencies** if needed (via `init/sh/install_system_dependencies.sh`)
+     - This script installs all required system packages and libraries
+     - Automatically calls `init/sh/post_install_build.sh` to complete Fast-DDS manual installation and monitoring build
+   - **Checks post-install build requirements** (Fast-DDS manual installation, monitoring application build)
+   - **Runs post-install build if needed** (via `init/sh/post_install_build.sh`)
    - Automatically detects if setup is needed
    - Runs setup automatically if needed (via `init/sh/project_setup.sh`)
    - After setup completes, runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
@@ -137,11 +148,15 @@ When creating a GitHub release:
 - **Can be placed anywhere** - Desktop, Downloads, any directory (no project directory needed)
 - On first run, it will automatically:
   1. Extract project files to `~/.dds-project-runtime`
-  2. Check if system is ready (built executables, certificates, etc.)
-  3. Run setup automatically if needed (via `init/sh/project_setup.sh`)
-  4. Run tests and demo (via `init/sh/run_tests_and_demo.sh`)
+  2. Check system dependencies (cmake, gcc, python3, java, Fast-DDS, etc.)
+  3. Install missing dependencies if needed (via `init/sh/install_system_dependencies.sh`)
+  4. Check post-install build requirements (Fast-DDS manual installation, monitoring build)
+  5. Run post-install build if needed (via `init/sh/post_install_build.sh`)
+  6. Check if system is ready (built executables, certificates, etc.)
+  7. Run setup automatically if needed (via `init/sh/project_setup.sh`)
+  8. Run tests and demo (via `init/sh/run_tests_and_demo.sh`)
 - The AppImage is portable and doesn't require installation
-- No root/sudo permissions needed to **run** (but setup may require sudo for installing dependencies)
+- No root/sudo permissions needed to **run** (but automatic dependency installation requires sudo for installing system packages)
 - Setup will only run once - subsequent runs skip setup and run directly
 - Working directory (`~/.dds-project-runtime`) can be deleted to reset - AppImage will recreate it
 

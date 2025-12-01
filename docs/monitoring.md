@@ -237,13 +237,23 @@ The demo server (`demo/server.js`) parses this output using regex patterns:
 
 #### Automatic Build (Recommended)
 
-The monitoring application is automatically built during project setup:
+The monitoring application is automatically built in multiple ways:
 
+**Option 1: During system dependency installation**
+```bash
+bash init/sh/install_system_dependencies.sh
+```
+
+This script automatically calls `init/sh/post_install_build.sh` at the end, which builds the monitoring application after installing system dependencies.
+
+**Option 2: During project setup**
 ```bash
 bash init/sh/project_setup.sh
 ```
 
 This script builds the monitoring application as **STEP 6** of the setup process, after all IDL modules are built.
+
+**Note**: If you run `install_system_dependencies.sh` first, the monitoring application will already be built, so `project_setup.sh` will skip this step.
 
 #### Using build_monitoring.sh (Manual)
 

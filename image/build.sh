@@ -191,6 +191,174 @@ print_info "AppImage is self-contained - no external project directory needed"
 print_info "Working directory: $WORK_DIR"
 echo ""
 
+# Check system dependencies first
+print_info "Checking system dependencies..."
+
+DEPENDENCIES_SCRIPT="$PROJECT_ROOT/init/sh/install_system_dependencies.sh"
+DEPENDENCIES_NEEDED=0
+MISSING_DEPS=()
+
+# Check for essential build tools
+if ! command -v cmake &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("cmake")
+fi
+
+if ! command -v g++ &> /dev/null && ! command -v gcc &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("gcc/g++")
+fi
+
+if ! command -v git &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("git")
+fi
+
+if ! command -v pkg-config &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("pkg-config")
+fi
+
+# Check for Python
+if ! command -v python3 &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("python3")
+fi
+
+# Check for Java
+if ! command -v java &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("java")
+fi
+
+# Check for essential libraries (development headers)
+if [ ! -f "/usr/include/openssl/ssl.h" ] && [ ! -f "/usr/local/include/openssl/ssl.h" ]; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("libssl-dev")
+fi
+
+if [ ! -f "/usr/include/tinyxml2.h" ] && [ ! -f "/usr/local/include/tinyxml2.h" ]; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("libtinyxml2-dev")
+fi
+
+# Check for Fast-DDS libraries
+FASTDDS_FOUND=0
+if pkg-config --exists fastdds 2>/dev/null; then
+    FASTDDS_FOUND=1
+elif ldconfig -p 2>/dev/null | grep -q libfastdds; then
+    FASTDDS_FOUND=1
+elif [ -f "/usr/lib/x86_64-linux-gnu/libfastdds.so" ] || [ -f "/usr/local/lib/libfastdds.so" ]; then
+    FASTDDS_FOUND=1
+fi
+
+if [ $FASTDDS_FOUND -eq 0 ]; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("Fast-DDS libraries")
+fi
+
+# Check for fastddsgen
+if ! command -v fastddsgen &> /dev/null; then
+    DEPENDENCIES_NEEDED=1
+    MISSING_DEPS+=("fastddsgen")
+fi
+
+# Check post-install build requirements (Fast-DDS manual install and monitoring build)
+POST_INSTALL_BUILD_NEEDED=0
+POST_INSTALL_BUILD_SCRIPT="$PROJECT_ROOT/init/sh/post_install_build.sh"
+
+# Check if Fast-DDS manual installation is done (fastdds_and_npm_auto_install.sh result)
+FASTDDS_MANUAL_INSTALLED=0
+if [ -d "$HOME/Fast-DDS-v3.2.2-Linux" ]; then
+    FASTDDS_MANUAL_INSTALLED=1
+fi
+
+# Check if monitoring application is built
+MONITORING_BUILT=0
+if [ -f "$PROJECT_ROOT/monitoring/build/monitor" ] && [ -x "$PROJECT_ROOT/monitoring/build/monitor" ]; then
+    MONITORING_BUILT=1
+fi
+
+# Determine if post-install build is needed
+if [ $FASTDDS_MANUAL_INSTALLED -eq 0 ] || [ $MONITORING_BUILT -eq 0 ]; then
+    POST_INSTALL_BUILD_NEEDED=1
+fi
+
+# Show missing dependencies if any
+if [ $DEPENDENCIES_NEEDED -eq 1 ]; then
+    print_warning "Missing dependencies detected:"
+    for dep in "${MISSING_DEPS[@]}"; do
+        echo "  - $dep"
+    done
+fi
+
+# If dependencies are needed, run install script
+if [ $DEPENDENCIES_NEEDED -eq 1 ]; then
+    print_warning "System dependencies are missing. Installing dependencies..."
+    echo ""
+    
+    if [ -f "$DEPENDENCIES_SCRIPT" ]; then
+        chmod +x "$DEPENDENCIES_SCRIPT"
+        if bash "$DEPENDENCIES_SCRIPT"; then
+            print_success "System dependencies installed successfully"
+            echo ""
+            # Reload environment
+            if [ -f ~/.bashrc ]; then
+                source ~/.bashrc 2>/dev/null || true
+            fi
+            # After install_system_dependencies.sh runs, post_install_build.sh will be called automatically
+            # So we can skip the separate post-install build check
+            POST_INSTALL_BUILD_NEEDED=0
+        else
+            print_error "System dependencies installation failed!"
+            echo ""
+            print_warning "Please install dependencies manually and try again."
+            exit 1
+        fi
+    else
+        print_error "install_system_dependencies.sh not found: $DEPENDENCIES_SCRIPT"
+        echo ""
+        print_warning "Please install dependencies manually and try again."
+        exit 1
+    fi
+else
+    print_success "System dependencies are installed"
+    echo ""
+    
+    # If system dependencies are installed but post-install build is needed
+    if [ $POST_INSTALL_BUILD_NEEDED -eq 1 ]; then
+        print_warning "Post-install build steps are missing:"
+        if [ $FASTDDS_MANUAL_INSTALLED -eq 0 ]; then
+            echo "  - Fast-DDS manual installation"
+        fi
+        if [ $MONITORING_BUILT -eq 0 ]; then
+            echo "  - Monitoring application build"
+        fi
+        echo ""
+        print_info "Running post-install build..."
+        echo ""
+        
+        if [ -f "$POST_INSTALL_BUILD_SCRIPT" ]; then
+            chmod +x "$POST_INSTALL_BUILD_SCRIPT"
+            if bash "$POST_INSTALL_BUILD_SCRIPT"; then
+                print_success "Post-install build completed successfully"
+                echo ""
+                # Reload environment after Fast-DDS installation
+                if [ -f ~/.bashrc ]; then
+                    source ~/.bashrc 2>/dev/null || true
+                fi
+                sudo ldconfig 2>/dev/null || true
+            else
+                print_warning "Post-install build failed (continuing anyway...)"
+                echo ""
+            fi
+        else
+            print_warning "post_install_build.sh not found: $POST_INSTALL_BUILD_SCRIPT"
+            echo ""
+        fi
+    fi
+fi
+
 # Check if system is ready
 print_info "Checking system status..."
 

@@ -118,3 +118,10 @@ echo "Note: Pre-Ubuntu 20.04 versions may require manual Fast-DDS installation."
 echo "See REQUIREMENTS_LINUX.md for details."
 echo
 
+# Run post-install build script (Fast-DDS/npm installation and monitoring build)
+if [ -f "$SCRIPT_DIR/post_install_build.sh" ]; then
+    bash "$SCRIPT_DIR/post_install_build.sh"
+else
+    echo "[WARNING] post_install_build.sh not found at $SCRIPT_DIR/post_install_build.sh"
+fi
+
