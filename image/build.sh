@@ -1,7 +1,7 @@
 #!/bin/bash
 # DDS Project - Complete AppImage Builder
 # This single script does everything: installs appimagetool and builds the AppImage
-# Version: v1.0.0_alpha
+# Version: v1.0.0_beta
 
 set -e
 
@@ -24,7 +24,7 @@ print_banner() {
     echo -e "${CYAN}${BOLD}"
     echo "========================================"
     echo "  DDS Project - Complete AppImage Builder"
-    echo "  Version: v1.0.0_alpha"
+    echo "  Version: v1.0.0_beta"
     echo "========================================"
     echo -e "${NC}"
 }
@@ -66,10 +66,43 @@ else
     print_info "appimagetool not found, installing..."
     
     # Try to install FUSE (optional, for direct AppImage execution)
+    # Prefer FUSE3, fallback to FUSE2
+    FUSE_INSTALLED=0
     if command -v apt-get &> /dev/null; then
-        print_info "Installing FUSE library (optional)..."
-        sudo apt-get update > /dev/null 2>&1
-        sudo apt-get install -y libfuse2 > /dev/null 2>&1 || print_warning "FUSE installation skipped (will extract instead)"
+        print_info "Checking for FUSE library..."
+        
+        # Check if FUSE3 is already installed
+        if ldconfig -p 2>/dev/null | grep -q libfuse3 || [ -f "/usr/lib/x86_64-linux-gnu/libfuse3.so" ] || [ -f "/usr/local/lib/libfuse3.so" ]; then
+            print_success "FUSE3 is already installed"
+            FUSE_INSTALLED=1
+        # Check if FUSE2 is already installed
+        elif ldconfig -p 2>/dev/null | grep -q libfuse2 || [ -f "/usr/lib/x86_64-linux-gnu/libfuse.so.2" ] || [ -f "/usr/local/lib/libfuse.so.2" ]; then
+            print_success "FUSE2 is already installed"
+            FUSE_INSTALLED=1
+        else
+            # Try to install FUSE3 first (preferred)
+            print_info "Installing FUSE3 library (preferred)..."
+            # Try different FUSE3 package names for different distributions
+            if sudo apt-get update > /dev/null 2>&1; then
+                if sudo apt-get install -y libfuse3-3 fuse3 2>/dev/null || \
+                   sudo apt-get install -y libfuse3 fuse3 2>/dev/null || \
+                   sudo apt-get install -y libfuse3-tools fuse3 2>/dev/null; then
+                    print_success "FUSE3 installed successfully"
+                    FUSE_INSTALLED=1
+                else
+                    # Fallback to FUSE2
+                    print_info "FUSE3 not available, trying FUSE2..."
+                    if sudo apt-get install -y libfuse2 2>/dev/null; then
+                        print_success "FUSE2 installed successfully"
+                        FUSE_INSTALLED=1
+                    else
+                        print_warning "FUSE installation skipped (will extract instead)"
+                    fi
+                fi
+            else
+                print_warning "Cannot update package list (will extract instead)"
+            fi
+        fi
     fi
     
     # Download appimagetool if not exists
@@ -80,10 +113,19 @@ else
         print_success "appimagetool downloaded"
     fi
     
-    # Try to use AppImage directly (if FUSE is available)
+    # Try to use AppImage directly (if FUSE is available - FUSE3 or FUSE2)
     if ./appimagetool-x86_64.AppImage --version > /dev/null 2>&1; then
         APPIMAGETOOL="./appimagetool-x86_64.AppImage"
-        print_success "Using appimagetool AppImage directly"
+        if [ $FUSE_INSTALLED -eq 1 ]; then
+            # Check which FUSE version is being used
+            if ldconfig -p 2>/dev/null | grep -q libfuse3 || [ -f "/usr/lib/x86_64-linux-gnu/libfuse3.so" ] || [ -f "/usr/local/lib/libfuse3.so" ]; then
+                print_success "Using appimagetool AppImage directly (FUSE3)"
+            else
+                print_success "Using appimagetool AppImage directly (FUSE2)"
+            fi
+        else
+            print_success "Using appimagetool AppImage directly"
+        fi
     else
         # Extract and use binary directly (no FUSE needed)
         print_info "Extracting appimagetool (FUSE not required)..."
@@ -148,7 +190,7 @@ print_banner() {
     echo -e "${CYAN}${BOLD}"
     echo "========================================"
     echo "  DDS Project - Launcher"
-    echo "  Version: v1.0.0_alpha"
+    echo "  Version: v1.0.0_beta"
     echo "========================================"
     echo -e "${NC}"
 }
@@ -191,187 +233,374 @@ print_info "AppImage is self-contained - no external project directory needed"
 print_info "Working directory: $WORK_DIR"
 echo ""
 
-# Check system dependencies first
-print_info "Checking system dependencies..."
+# Check and install FUSE2 first (required for AppImage execution)
+print_info "Checking FUSE2 library (required for AppImage)..."
+echo ""
 
-DEPENDENCIES_SCRIPT="$PROJECT_ROOT/init/sh/install_system_dependencies.sh"
-DEPENDENCIES_NEEDED=0
-MISSING_DEPS=()
+FUSE2_INSTALLED=0
 
-# Check for essential build tools
-if ! command -v cmake &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("cmake")
-fi
-
-if ! command -v g++ &> /dev/null && ! command -v gcc &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("gcc/g++")
-fi
-
-if ! command -v git &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("git")
-fi
-
-if ! command -v pkg-config &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("pkg-config")
-fi
-
-# Check for Python
-if ! command -v python3 &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("python3")
-fi
-
-# Check for Java
-if ! command -v java &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("java")
-fi
-
-# Check for essential libraries (development headers)
-if [ ! -f "/usr/include/openssl/ssl.h" ] && [ ! -f "/usr/local/include/openssl/ssl.h" ]; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("libssl-dev")
-fi
-
-if [ ! -f "/usr/include/tinyxml2.h" ] && [ ! -f "/usr/local/include/tinyxml2.h" ]; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("libtinyxml2-dev")
-fi
-
-# Check for Fast-DDS libraries
-FASTDDS_FOUND=0
-if pkg-config --exists fastdds 2>/dev/null; then
-    FASTDDS_FOUND=1
-elif ldconfig -p 2>/dev/null | grep -q libfastdds; then
-    FASTDDS_FOUND=1
-elif [ -f "/usr/lib/x86_64-linux-gnu/libfastdds.so" ] || [ -f "/usr/local/lib/libfastdds.so" ]; then
-    FASTDDS_FOUND=1
-fi
-
-if [ $FASTDDS_FOUND -eq 0 ]; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("Fast-DDS libraries")
-fi
-
-# Check for fastddsgen
-if ! command -v fastddsgen &> /dev/null; then
-    DEPENDENCIES_NEEDED=1
-    MISSING_DEPS+=("fastddsgen")
-fi
-
-# Check post-install build requirements (Fast-DDS manual install and monitoring build)
-POST_INSTALL_BUILD_NEEDED=0
-POST_INSTALL_BUILD_SCRIPT="$PROJECT_ROOT/init/sh/post_install_build.sh"
-
-# Check if Fast-DDS manual installation is done (fastdds_and_npm_auto_install.sh result)
-FASTDDS_MANUAL_INSTALLED=0
-if [ -d "$HOME/Fast-DDS-v3.2.2-Linux" ]; then
-    FASTDDS_MANUAL_INSTALLED=1
-fi
-
-# Check if monitoring application is built
-MONITORING_BUILT=0
-if [ -f "$PROJECT_ROOT/monitoring/build/monitor" ] && [ -x "$PROJECT_ROOT/monitoring/build/monitor" ]; then
-    MONITORING_BUILT=1
-fi
-
-# Determine if post-install build is needed
-if [ $FASTDDS_MANUAL_INSTALLED -eq 0 ] || [ $MONITORING_BUILT -eq 0 ]; then
-    POST_INSTALL_BUILD_NEEDED=1
-fi
-
-# Show missing dependencies if any
-if [ $DEPENDENCIES_NEEDED -eq 1 ]; then
-    print_warning "Missing dependencies detected:"
-    for dep in "${MISSING_DEPS[@]}"; do
-        echo "  - $dep"
-    done
-fi
-
-# If dependencies are needed, run install script
-if [ $DEPENDENCIES_NEEDED -eq 1 ]; then
-    print_warning "System dependencies are missing. Installing dependencies..."
-    echo ""
-    
-    if [ -f "$DEPENDENCIES_SCRIPT" ]; then
-        chmod +x "$DEPENDENCIES_SCRIPT"
-        if bash "$DEPENDENCIES_SCRIPT"; then
-            print_success "System dependencies installed successfully"
-            echo ""
-            # Reload environment
-            if [ -f ~/.bashrc ]; then
-                source ~/.bashrc 2>/dev/null || true
-            fi
-            # After install_system_dependencies.sh runs, post_install_build.sh will be called automatically
-            # So we can skip the separate post-install build check
-            POST_INSTALL_BUILD_NEEDED=0
-        else
-            print_error "System dependencies installation failed!"
-            echo ""
-            print_warning "Please install dependencies manually and try again."
-            exit 1
-        fi
-    else
-        print_error "install_system_dependencies.sh not found: $DEPENDENCIES_SCRIPT"
-        echo ""
-        print_warning "Please install dependencies manually and try again."
-        exit 1
-    fi
+# Check if FUSE2 is already installed
+if ldconfig -p 2>/dev/null | grep -q libfuse.so.2 || \
+   [ -f "/usr/lib/x86_64-linux-gnu/libfuse.so.2" ] || \
+   [ -f "/usr/local/lib/libfuse.so.2" ] || \
+   [ -f "/lib/x86_64-linux-gnu/libfuse.so.2" ]; then
+    print_success "FUSE2 is already installed"
+    FUSE2_INSTALLED=1
 else
-    print_success "System dependencies are installed"
-    echo ""
-    
-    # If system dependencies are installed but post-install build is needed
-    if [ $POST_INSTALL_BUILD_NEEDED -eq 1 ]; then
-        print_warning "Post-install build steps are missing:"
-        if [ $FASTDDS_MANUAL_INSTALLED -eq 0 ]; then
-            echo "  - Fast-DDS manual installation"
-        fi
-        if [ $MONITORING_BUILT -eq 0 ]; then
-            echo "  - Monitoring application build"
-        fi
+    # Try to install FUSE2
+    if command -v apt-get &> /dev/null; then
+        print_info "FUSE2 not found, installing libfuse2..."
         echo ""
-        print_info "Running post-install build..."
-        echo ""
-        
-        if [ -f "$POST_INSTALL_BUILD_SCRIPT" ]; then
-            chmod +x "$POST_INSTALL_BUILD_SCRIPT"
-            if bash "$POST_INSTALL_BUILD_SCRIPT"; then
-                print_success "Post-install build completed successfully"
-                echo ""
-                # Reload environment after Fast-DDS installation
-                if [ -f ~/.bashrc ]; then
-                    source ~/.bashrc 2>/dev/null || true
-                fi
+        if sudo apt-get update > /dev/null 2>&1 && sudo apt-get install -y libfuse2 2>/dev/null; then
+            # Verify installation
+            if ldconfig -p 2>/dev/null | grep -q libfuse.so.2 || \
+               [ -f "/usr/lib/x86_64-linux-gnu/libfuse.so.2" ] || \
+               [ -f "/usr/local/lib/libfuse.so.2" ] || \
+               [ -f "/lib/x86_64-linux-gnu/libfuse.so.2" ]; then
+                print_success "FUSE2 installed successfully"
+                FUSE2_INSTALLED=1
+                # Update library cache
                 sudo ldconfig 2>/dev/null || true
             else
-                print_warning "Post-install build failed (continuing anyway...)"
-                echo ""
+                print_warning "FUSE2 package installed but library not found"
             fi
         else
-            print_warning "post_install_build.sh not found: $POST_INSTALL_BUILD_SCRIPT"
+            echo ""
+            print_error "========================================"
+            print_error "FUSE2 installation failed!"
+            print_error "========================================"
+            echo ""
+            print_warning "FUSE2 is required for AppImage to run properly."
+            echo ""
+            print_info "To install FUSE2 manually, run:"
+            echo "  sudo apt-get update"
+            echo "  sudo apt-get install -y libfuse2"
+            echo ""
+            print_info "After installing FUSE2, run this AppImage again."
+            echo ""
+            print_warning "Continuing anyway, but AppImage may not work properly without FUSE2."
             echo ""
         fi
+    else
+        print_warning "apt-get not found, cannot install FUSE2 automatically"
+        echo ""
+        print_warning "AppImage requires FUSE2 to run. Please install it manually."
+        echo ""
     fi
 fi
 
-# Check if system is ready
-print_info "Checking system status..."
+echo ""
+
+# ========================================
+# PHASE 1: JavaScript/Node.js Installation (PRIORITY)
+# ========================================
+print_info "========================================"
+print_info "PHASE 1: JavaScript/Node.js Setup"
+print_info "========================================"
+echo ""
+
+# Install Node.js if not already installed
+NODEJS_INSTALLED=0
+if command -v node &> /dev/null; then
+    NODE_VERSION=$(node --version 2>/dev/null || echo "unknown")
+    print_success "Node.js is already installed: $NODE_VERSION"
+    NODEJS_INSTALLED=1
+elif command -v nodejs &> /dev/null; then
+    NODE_VERSION=$(nodejs --version 2>/dev/null || echo "unknown")
+    print_success "Node.js is already installed (as nodejs): $NODE_VERSION"
+    NODEJS_INSTALLED=1
+fi
+
+if [ $NODEJS_INSTALLED -eq 0 ]; then
+    print_info "Node.js not found, installing..."
+    echo ""
+    
+    NODEJS_INSTALL_ATTEMPTED=0
+    
+    if command -v apt-get &> /dev/null; then
+        # First, ensure curl is available for NodeSource installation
+        if ! command -v curl &> /dev/null; then
+            print_info "Installing curl (required for Node.js installation)..."
+            if sudo apt-get update > /dev/null 2>&1 && sudo apt-get install -y curl 2>/dev/null; then
+                print_success "curl installed successfully"
+            else
+                print_warning "Failed to install curl, will try Ubuntu repositories for Node.js"
+            fi
+        fi
+        
+        # Try to install Node.js from Ubuntu repositories first
+        print_info "Attempting to install Node.js from Ubuntu repositories..."
+        if sudo apt-get update > /dev/null 2>&1 && sudo apt-get install -y nodejs npm 2>/dev/null; then
+            # Verify installation
+            if command -v node &> /dev/null && command -v npm &> /dev/null; then
+                NODE_VERSION=$(node --version 2>/dev/null || echo "unknown")
+                NPM_VERSION=$(npm --version 2>/dev/null || echo "unknown")
+                print_success "Node.js installed from Ubuntu repositories"
+                print_success "Node.js version: $NODE_VERSION"
+                print_success "npm version: $NPM_VERSION"
+                NODEJS_INSTALLED=1
+                NODEJS_INSTALL_ATTEMPTED=1
+            else
+                print_warning "Node.js package installed but 'node' or 'npm' command not found"
+            fi
+        else
+            print_warning "Failed to install Node.js from Ubuntu repositories"
+        fi
+        
+        # Fallback: Install Node.js using NodeSource repository (recommended)
+        if [ $NODEJS_INSTALLED -eq 0 ] && command -v curl &> /dev/null; then
+            print_info "Attempting to install Node.js from NodeSource repository (recommended)..."
+            if curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - > /dev/null 2>&1; then
+                if sudo apt-get install -y nodejs 2>/dev/null; then
+                    # Verify installation
+                    if command -v node &> /dev/null && command -v npm &> /dev/null; then
+                        NODE_VERSION=$(node --version 2>/dev/null || echo "unknown")
+                        NPM_VERSION=$(npm --version 2>/dev/null || echo "unknown")
+                        print_success "Node.js installed from NodeSource repository"
+                        print_success "Node.js version: $NODE_VERSION"
+                        print_success "npm version: $NPM_VERSION"
+                        NODEJS_INSTALLED=1
+                        NODEJS_INSTALL_ATTEMPTED=1
+                    else
+                        print_warning "Node.js package installed but 'node' or 'npm' command not found"
+                    fi
+                else
+                    print_error "Failed to install Node.js from NodeSource repository"
+                fi
+            else
+                print_error "Failed to setup NodeSource repository"
+            fi
+        elif [ $NODEJS_INSTALLED -eq 0 ] && ! command -v curl &> /dev/null; then
+            print_error "curl not found, cannot install Node.js from NodeSource"
+            print_info "Please install curl manually: sudo apt-get install curl"
+        fi
+    else
+        print_error "apt-get not found, cannot install Node.js automatically"
+    fi
+    
+    if [ $NODEJS_INSTALLED -eq 0 ]; then
+        echo ""
+        print_error "========================================"
+        print_error "Node.js installation failed!"
+        print_error "========================================"
+        echo ""
+        print_warning "Node.js is required for the demo dashboard to work."
+        print_warning "The system will continue but demo features will be unavailable."
+        echo ""
+        print_info "To install Node.js manually, run:"
+        echo "  sudo apt-get update"
+        echo "  sudo apt-get install -y curl"
+        echo "  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -"
+        echo "  sudo apt-get install -y nodejs"
+        echo ""
+        print_info "Or try Ubuntu repositories:"
+        echo "  sudo apt-get update"
+        echo "  sudo apt-get install -y nodejs npm"
+        echo ""
+        print_info "After installing Node.js, run this AppImage again."
+        echo ""
+    fi
+fi
+
+echo ""
+
+# Install demo npm packages (JavaScript dependencies)
+if [ $NODEJS_INSTALLED -eq 1 ]; then
+    print_info "Installing demo dashboard npm packages..."
+    DEMO_DIR="$PROJECT_ROOT/demo"
+    DEMO_PACKAGE_JSON="$DEMO_DIR/package.json"
+    
+    if [ -f "$DEMO_PACKAGE_JSON" ]; then
+        cd "$DEMO_DIR"
+        if npm install; then
+            print_success "Demo dashboard dependencies installed successfully"
+        else
+            print_error "Failed to install demo dashboard dependencies"
+        fi
+        cd "$PROJECT_ROOT"
+    else
+        print_warning "package.json not found at $DEMO_PACKAGE_JSON"
+    fi
+else
+    print_warning "Skipping npm packages installation (Node.js not available)"
+fi
+
+echo ""
+
+# ========================================
+# PHASE 2: System Dependencies Installation
+# ========================================
+print_info "========================================"
+print_info "PHASE 2: System Dependencies"
+print_info "========================================"
+echo ""
+
+DEPENDENCIES_SCRIPT="$PROJECT_ROOT/init/sh/install_system_dependencies.sh"
+
+if [ -f "$DEPENDENCIES_SCRIPT" ]; then
+    chmod +x "$DEPENDENCIES_SCRIPT"
+    if bash "$DEPENDENCIES_SCRIPT"; then
+        print_success "System dependencies installation completed"
+        echo ""
+        # Reload environment
+        if [ -f ~/.bashrc ]; then
+            source ~/.bashrc 2>/dev/null || true
+        fi
+    else
+        print_error "System dependencies installation failed!"
+        echo ""
+        print_warning "Continuing anyway, but some features may not work..."
+        echo ""
+    fi
+else
+    print_error "install_system_dependencies.sh not found: $DEPENDENCIES_SCRIPT"
+    echo ""
+    print_warning "Continuing anyway, but some features may not work..."
+    echo ""
+fi
+
+# ========================================
+# PHASE 3: Fast-DDS and Monitoring Build
+# ========================================
+print_info "========================================"
+print_info "PHASE 3: Fast-DDS and Monitoring Build"
+print_info "========================================"
+echo ""
+
+# Run Fast-DDS auto installation script
+print_info "Running Fast-DDS Auto Installation..."
+echo ""
+FASTDDS_SCRIPT="$PROJECT_ROOT/init/sh/fastdds_and_npm_auto_install.sh"
+if [ -f "$FASTDDS_SCRIPT" ]; then
+    chmod +x "$FASTDDS_SCRIPT"
+    if bash "$FASTDDS_SCRIPT"; then
+        print_success "Fast-DDS installation completed"
+    else
+        print_warning "Fast-DDS installation failed (continuing anyway...)"
+    fi
+else
+    print_warning "fastdds_and_npm_auto_install.sh not found: $FASTDDS_SCRIPT"
+fi
+echo ""
+
+# Clean monitoring build directory and rebuild
+print_info "Cleaning and Building Monitoring Application..."
+echo ""
+MONITORING_BUILD_DIR="$PROJECT_ROOT/monitoring/build"
+MONITORING_BUILD_SCRIPT="$PROJECT_ROOT/monitoring/build_monitoring/build_monitoring.sh"
+
+if [ -d "$MONITORING_BUILD_DIR" ]; then
+    print_info "Removing existing monitoring build directory..."
+    rm -rf "$MONITORING_BUILD_DIR"
+    print_success "Monitoring build directory removed."
+else
+    print_info "No existing monitoring build directory found."
+fi
+
+if [ -f "$MONITORING_BUILD_SCRIPT" ]; then
+    chmod +x "$MONITORING_BUILD_SCRIPT"
+    if bash "$MONITORING_BUILD_SCRIPT"; then
+        print_success "Monitoring application built successfully"
+    else
+        print_error "Monitoring build failed!"
+    fi
+else
+    print_warning "build_monitoring.sh not found at $MONITORING_BUILD_SCRIPT"
+fi
+echo ""
+
+# Reload environment after Fast-DDS installation
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc 2>/dev/null || true
+fi
+sudo ldconfig 2>/dev/null || true
+
+# ========================================
+# PHASE 4: System Readiness Check
+# ========================================
+print_info "========================================"
+print_info "PHASE 4: System Readiness Check"
+print_info "========================================"
+echo ""
 
 SYSTEM_READY=1
+MISSING_COMPONENTS=()
 
-# Check for built executables
+# Check essential build tools (required for compilation)
+if ! command -v cmake &> /dev/null; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("CMake")
+fi
+
+if ! command -v gcc &> /dev/null && ! command -v g++ &> /dev/null; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("GCC/G++ compiler")
+fi
+
+if ! command -v python3 &> /dev/null; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Python3")
+fi
+
+if ! command -v java &> /dev/null && [ -z "$JAVA_HOME" ]; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Java (JDK)")
+fi
+
+# Check Node.js (required for demo)
+if [ $NODEJS_INSTALLED -eq 0 ]; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Node.js")
+fi
+
+# Check npm packages
+if [ $NODEJS_INSTALLED -eq 1 ]; then
+    DEMO_DIR="$PROJECT_ROOT/demo"
+    if [ ! -d "$DEMO_DIR/node_modules" ]; then
+        SYSTEM_READY=0
+        MISSING_COMPONENTS+=("Demo npm packages")
+    fi
+fi
+
+# Check Fast-DDS installation
+if ! command -v fastddsgen &> /dev/null && [ ! -f "/usr/local/bin/fastddsgen" ]; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Fast-DDS")
+fi
+
+# Check for IDL generated directories
 if [ ! -d "$PROJECT_ROOT/IDL" ] || [ -z "$(find "$PROJECT_ROOT/IDL" -maxdepth 1 -name "*_idl_generated" -type d 2>/dev/null)" ]; then
     SYSTEM_READY=0
+    MISSING_COMPONENTS+=("IDL generated modules")
+fi
+
+# Check for built executables in IDL modules
+IDL_EXECUTABLES_FOUND=0
+for idl_dir in "$PROJECT_ROOT/IDL"/*_idl_generated; do
+    if [ -d "$idl_dir" ]; then
+        MODULE_NAME=$(basename "$idl_dir" | sed 's/_idl_generated//')
+        MAIN_BINARY="$idl_dir/build/${MODULE_NAME}main"
+        
+        # Try build/ first, then root
+        if [ ! -f "$MAIN_BINARY" ]; then
+            MAIN_BINARY="$idl_dir/${MODULE_NAME}main"
+        fi
+        
+        if [ -f "$MAIN_BINARY" ] && [ -x "$MAIN_BINARY" ]; then
+            IDL_EXECUTABLES_FOUND=$((IDL_EXECUTABLES_FOUND + 1))
+        fi
+    fi
+done
+
+if [ $IDL_EXECUTABLES_FOUND -eq 0 ]; then
+    SYSTEM_READY=0
+    MISSING_COMPONENTS+=("IDL module executables")
 fi
 
 # Check for monitoring executable
 if [ ! -f "$PROJECT_ROOT/monitoring/build/monitor" ] || [ ! -x "$PROJECT_ROOT/monitoring/build/monitor" ]; then
     SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Monitoring executable")
 fi
 
 # Check for certificates
@@ -381,11 +610,33 @@ PC_CERT="$PROJECT_ROOT/secure_dds/participants/$PC_NAME/${PC_NAME}_cert.pem"
 
 if [ ! -f "$CA_CERT" ] || [ ! -f "$PC_CERT" ]; then
     SYSTEM_READY=0
+    MISSING_COMPONENTS+=("Security certificates")
 fi
 
-# If system is not ready, run setup first
-if [ $SYSTEM_READY -eq 0 ]; then
-    print_warning "System is not ready. Running setup..."
+# Display status
+if [ $SYSTEM_READY -eq 1 ]; then
+    print_success "All system components are ready"
+    echo ""
+else
+    echo ""
+    print_warning "========================================"
+    print_warning "System is not ready. Missing components:"
+    print_warning "========================================"
+    echo ""
+    for component in "${MISSING_COMPONENTS[@]}"; do
+        echo "  ✗ $component"
+    done
+    echo ""
+    
+    # Check if Node.js is missing and provide specific guidance
+    if [[ " ${MISSING_COMPONENTS[@]} " =~ " Node.js " ]]; then
+        print_info "Node.js installation may have failed during setup."
+        print_info "This is common on first run. Please try running the AppImage again."
+        echo ""
+    fi
+    
+    # Run setup to fix missing components
+    print_info "Running project setup to install missing components..."
     echo ""
     
     SETUP_SCRIPT="$PROJECT_ROOT/init/sh/project_setup.sh"
@@ -403,33 +654,163 @@ if [ $SYSTEM_READY -eq 0 ]; then
     if bash "$SETUP_SCRIPT"; then
         print_success "Setup completed successfully"
         echo ""
+        
+        # Re-check system readiness after setup
+        SYSTEM_READY=1
+        MISSING_COMPONENTS=()
+        
+        # Re-check all components
+        # Check essential build tools
+        if ! command -v cmake &> /dev/null; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("CMake")
+        fi
+        
+        if ! command -v gcc &> /dev/null && ! command -v g++ &> /dev/null; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("GCC/G++ compiler")
+        fi
+        
+        if ! command -v python3 &> /dev/null; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Python3")
+        fi
+        
+        if ! command -v java &> /dev/null && [ -z "$JAVA_HOME" ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Java (JDK)")
+        fi
+        
+        # Check Node.js
+        if [ $NODEJS_INSTALLED -eq 0 ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Node.js")
+        fi
+        
+        # Check npm packages
+        if [ ! -d "$PROJECT_ROOT/demo/node_modules" ] && [ $NODEJS_INSTALLED -eq 1 ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Demo npm packages")
+        fi
+        
+        # Check Fast-DDS
+        if ! command -v fastddsgen &> /dev/null && [ ! -f "/usr/local/bin/fastddsgen" ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Fast-DDS")
+        fi
+        
+        # Check IDL modules
+        if [ -z "$(find "$PROJECT_ROOT/IDL" -maxdepth 1 -name "*_idl_generated" -type d 2>/dev/null)" ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("IDL generated modules")
+        fi
+        
+        # Check IDL executables
+        IDL_EXECUTABLES_FOUND=0
+        for idl_dir in "$PROJECT_ROOT/IDL"/*_idl_generated; do
+            if [ -d "$idl_dir" ]; then
+                MODULE_NAME=$(basename "$idl_dir" | sed 's/_idl_generated//')
+                MAIN_BINARY="$idl_dir/build/${MODULE_NAME}main"
+                if [ ! -f "$MAIN_BINARY" ]; then
+                    MAIN_BINARY="$idl_dir/${MODULE_NAME}main"
+                fi
+                if [ -f "$MAIN_BINARY" ] && [ -x "$MAIN_BINARY" ]; then
+                    IDL_EXECUTABLES_FOUND=$((IDL_EXECUTABLES_FOUND + 1))
+                fi
+            fi
+        done
+        
+        if [ $IDL_EXECUTABLES_FOUND -eq 0 ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("IDL module executables")
+        fi
+        
+        # Check monitoring executable
+        if [ ! -f "$PROJECT_ROOT/monitoring/build/monitor" ] || [ ! -x "$PROJECT_ROOT/monitoring/build/monitor" ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Monitoring executable")
+        fi
+        
+        # Check certificates
+        if [ ! -f "$CA_CERT" ] || [ ! -f "$PC_CERT" ]; then
+            SYSTEM_READY=0
+            MISSING_COMPONENTS+=("Security certificates")
+        fi
     else
         print_error "Setup failed!"
         echo ""
         exit 1
     fi
-else
-    print_success "System is ready"
-    echo ""
 fi
 
-# Now run the demo
-print_info "Starting tests and demo..."
-echo ""
-
-RUN_SCRIPT="$PROJECT_ROOT/init/sh/run_tests_and_demo.sh"
-
-if [ ! -f "$RUN_SCRIPT" ]; then
-    print_error "Run script not found: $RUN_SCRIPT"
+# ========================================
+# PHASE 5: Start Tests and Demo (Only if system is ready)
+# ========================================
+if [ $SYSTEM_READY -eq 1 ]; then
+    print_info "========================================"
+    print_info "PHASE 5: Starting Tests and Demo"
+    print_info "========================================"
+    echo ""
+    
+    RUN_SCRIPT="$PROJECT_ROOT/init/sh/run_tests_and_demo.sh"
+    
+    if [ ! -f "$RUN_SCRIPT" ]; then
+        print_error "Run script not found: $RUN_SCRIPT"
+        echo ""
+        exit 1
+    fi
+    
+    # Make script executable
+    chmod +x "$RUN_SCRIPT"
+    
+    # Run tests and demo
+    bash "$RUN_SCRIPT"
+else
+    echo ""
+    print_error "========================================"
+    print_error "System is not ready. Cannot start tests and demo."
+    print_error "========================================"
+    echo ""
+    print_warning "Missing components:"
+    for component in "${MISSING_COMPONENTS[@]}"; do
+        echo "  ✗ $component"
+    done
+    echo ""
+    
+    # Provide specific guidance based on missing components
+    if [[ " ${MISSING_COMPONENTS[@]} " =~ " Node.js " ]]; then
+        print_info "========================================"
+        print_info "Node.js Installation Guide"
+        print_info "========================================"
+        echo ""
+        print_info "Node.js installation may have failed. This is common on first run."
+        echo ""
+        print_info "Option 1: Run this AppImage again (recommended)"
+        print_info "  The installation will be retried automatically."
+        echo ""
+        print_info "Option 2: Install Node.js manually"
+        print_info "  sudo apt-get update"
+        print_info "  sudo apt-get install -y curl"
+        print_info "  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -"
+        print_info "  sudo apt-get install -y nodejs"
+        echo ""
+    fi
+    
+    if [[ " ${MISSING_COMPONENTS[@]} " =~ " FUSE2 " ]]; then
+        print_info "========================================"
+        print_info "FUSE2 Installation Guide"
+        print_info "========================================"
+        echo ""
+        print_info "Install FUSE2 manually:"
+        print_info "  sudo apt-get update"
+        print_info "  sudo apt-get install -y libfuse2"
+        echo ""
+    fi
+    
+    print_info "After fixing the missing components, run this AppImage again."
     echo ""
     exit 1
 fi
-
-# Make script executable
-chmod +x "$RUN_SCRIPT"
-
-# Run tests and demo
-bash "$RUN_SCRIPT"
 
 exit 0
 APPRUN_EOF
@@ -584,16 +965,8 @@ if [ -d "$PROJECT_ROOT/include" ]; then
     cp -r "$PROJECT_ROOT/include" AppDir/usr/share/dds-project/
 fi
 
-# Copy setup scripts
-if [ -f "$PROJECT_ROOT/v1.0.0_alpha_setup.sh" ]; then
-    cp "$PROJECT_ROOT/v1.0.0_alpha_setup.sh" AppDir/usr/share/dds-project/
-    chmod +x AppDir/usr/share/dds-project/v1.0.0_alpha_setup.sh
-fi
-
-if [ -f "$PROJECT_ROOT/v1.0.0_alpha_run.sh" ]; then
-    cp "$PROJECT_ROOT/v1.0.0_alpha_run.sh" AppDir/usr/share/dds-project/
-    chmod +x AppDir/usr/share/dds-project/v1.0.0_alpha_run.sh
-fi
+# Note: v1.0.0_alpha_setup.sh and v1.0.0_alpha_run.sh were removed
+# Their functionality is now integrated into AppRun and other modular scripts
 
 # Create secure_dds directory structure (will be populated at runtime)
 mkdir -p AppDir/usr/share/dds-project/secure_dds/CA/private
@@ -603,7 +976,8 @@ print_success "Project files copied"
 
 # Build AppImage
 print_info "[6/6] Building AppImage..."
-APPIMAGE_NAME="DDS-Project-v1.0.0_alpha-x86_64.AppImage"
+# AppImage name
+APPIMAGE_NAME="DDS-v1.0.0_beta-x86_64.AppImage"
 
 # Remove old AppImage if exists
 rm -f "$IMAGE_DIR/$APPIMAGE_NAME"

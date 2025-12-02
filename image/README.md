@@ -18,7 +18,9 @@ AppImage is a format for distributing portable applications on Linux without nee
 
 - **Bash shell**
 - **Internet connection** (for downloading appimagetool if needed)
-- **Optional**: FUSE library (for direct AppImage execution, otherwise appimagetool will be extracted)
+- **Optional**: FUSE library (FUSE3 preferred, FUSE2 fallback)
+  - For direct AppImage execution: `libfuse3-tools fuse3` (preferred) or `libfuse2`
+  - If FUSE is not available, appimagetool will be extracted automatically
 
 ## Building the AppImage
 
@@ -38,7 +40,7 @@ That's it! The `build.sh` script will:
 6. ✅ Build the AppImage package
 
 **Output**: The AppImage will be created in the `image/` directory:
-- `image/DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+- `image/DDS-v1.0.0_beta-x86_64.AppImage`
 
 **No other files needed** - `build.sh` creates everything automatically!
 
@@ -50,13 +52,29 @@ The AppImage is **completely self-contained** and contains:
 - **AppRun** script that:
   1. Extracts project files to `~/.dds-project-runtime` on first run
   2. Uses the extracted files as the project root
-  3. **Checks system dependencies** (cmake, gcc, python3, java, Fast-DDS, etc.)
-  4. **Installs missing dependencies automatically** (via `init/sh/install_system_dependencies.sh`)
-  5. **Checks post-install build requirements** (Fast-DDS manual installation, monitoring build)
-  6. **Runs post-install build if needed** (via `init/sh/post_install_build.sh`)
-  7. Checks if the system is ready (built executables, certificates, etc.)
-  8. Runs setup automatically if needed (via `init/sh/project_setup.sh`)
-  9. Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
+  3. **PHASE 1: JavaScript/Node.js Setup** (Priority)
+     - Checks and installs FUSE2 (required for AppImage execution)
+     - Checks and installs Node.js (Ubuntu repos or NodeSource)
+     - Installs demo npm packages automatically
+  4. **PHASE 2: System Dependencies**
+     - Checks system dependencies (cmake, gcc, python3, java, Fast-DDS, etc.)
+     - Installs missing dependencies automatically (via `init/sh/install_system_dependencies.sh`)
+  5. **PHASE 3: Fast-DDS and Monitoring Build**
+     - Runs Fast-DDS manual installation (via `init/sh/fastdds_and_npm_auto_install.sh`)
+     - Builds monitoring application (via `monitoring/build_monitoring/build_monitoring.sh`)
+  6. **PHASE 4: System Readiness Check**
+     - Comprehensive check of all components:
+       - Build tools (CMake, GCC/G++, Python3, Java)
+       - Node.js and npm packages
+       - Fast-DDS installation
+       - IDL generated modules and executables
+       - Monitoring executable
+       - Security certificates
+     - If any component is missing, runs setup automatically (via `init/sh/project_setup.sh`)
+     - Re-checks system readiness after setup
+  7. **PHASE 5: Start Tests and Demo** (Only if system is ready)
+     - **Tests and demo will NOT start if any component is missing**
+     - Runs tests and demo automatically only when all components are ready (via `init/sh/run_tests_and_demo.sh`)
 
 **Key Features:**
 - ✅ **Portable**: Can be placed anywhere (Desktop, Downloads, etc.)
@@ -72,7 +90,7 @@ The AppImage is **completely self-contained** and contains:
 
 The AppImage is **completely self-contained** and can be placed **anywhere**!
 
-1. **Download** the AppImage file from GitHub releases
+1. **Download** the AppImage file from [GitHub releases](https://github.com/mercethem/DDS/releases)
 2. **Place it anywhere** you want:
    - Desktop
    - Downloads folder
@@ -81,25 +99,39 @@ The AppImage is **completely self-contained** and can be placed **anywhere**!
 
 3. **Make executable**:
    ```bash
-   chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage
+   chmod +x DDS-v1.0.0_beta-x86_64.AppImage
    ```
 
 4. **Run**:
    - Double-click the file in your file manager, OR
-   - Run from terminal: `./DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+   - Run from terminal: `./DDS-v1.0.0_beta-x86_64.AppImage`
 
 5. **First Run**:
    - AppImage extracts project files to `~/.dds-project-runtime`
-   - **Automatically checks system dependencies** (cmake, gcc, python3, java, Fast-DDS libraries, fastddsgen, etc.)
-   - **Automatically installs missing dependencies** if needed (via `init/sh/install_system_dependencies.sh`)
-     - This script installs all required system packages and libraries
-     - Automatically calls `init/sh/post_install_build.sh` to complete Fast-DDS manual installation and monitoring build
-   - **Checks post-install build requirements** (Fast-DDS manual installation, monitoring application build)
-   - **Runs post-install build if needed** (via `init/sh/post_install_build.sh`)
-   - Automatically detects if setup is needed
-   - Runs setup automatically if needed (via `init/sh/project_setup.sh`)
-   - After setup completes, runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
-   - Subsequent runs skip setup and run directly
+   - **PHASE 1: JavaScript/Node.js Setup** (Priority)
+     - Checks and installs FUSE2 (required for AppImage execution)
+     - Checks and installs Node.js (Ubuntu repos or NodeSource)
+     - Installs demo npm packages automatically
+   - **PHASE 2: System Dependencies**
+     - Automatically checks system dependencies (cmake, gcc, python3, java, Fast-DDS libraries, fastddsgen, etc.)
+     - Automatically installs missing dependencies (via `init/sh/install_system_dependencies.sh`)
+   - **PHASE 3: Fast-DDS and Monitoring Build**
+     - Runs Fast-DDS manual installation (via `init/sh/fastdds_and_npm_auto_install.sh`)
+     - Builds monitoring application (via `monitoring/build_monitoring/build_monitoring.sh`)
+   - **PHASE 4: System Readiness Check**
+     - Comprehensive check of all components:
+       - Build tools (CMake, GCC/G++, Python3, Java)
+       - Node.js and npm packages
+       - Fast-DDS installation
+       - IDL generated modules and executables
+       - Monitoring executable
+       - Security certificates
+     - If any component is missing, runs setup automatically (via `init/sh/project_setup.sh`)
+     - Re-checks system readiness after setup
+   - **PHASE 5: Start Tests and Demo** (Only if system is ready)
+     - **Tests and demo will NOT start if any component is missing**
+     - Runs tests and demo automatically only when all components are ready (via `init/sh/run_tests_and_demo.sh`)
+   - Subsequent runs skip setup and run directly if system is ready
 
 **Working Directory:**
 - Project files are extracted to: `~/.dds-project-runtime`
@@ -131,15 +163,15 @@ When creating a GitHub release:
    ```
 
 2. **Upload to release**:
-   - Go to GitHub releases page
-   - Create a new release (e.g., v1.0.0_alpha)
-   - Upload `image/DDS-Project-v1.0.0_alpha-x86_64.AppImage` as a binary asset
+   - Go to [GitHub releases page](https://github.com/mercethem/DDS/releases)
+   - Create a new release (e.g., v1.0.0_beta)
+   - Upload `image/DDS-v1.0.0_beta-x86_64.AppImage` as a binary asset
 
 3. **Users download and run**:
-   - Download the AppImage from releases
+   - Download the AppImage from [releases](https://github.com/mercethem/DDS/releases)
    - Place it **anywhere** (Desktop, Downloads, etc.) - it's completely self-contained!
-   - Make executable: `chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage`
-   - Run: `./DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+   - Make executable: `chmod +x DDS-v1.0.0_beta-x86_64.AppImage`
+   - Run: `./DDS-v1.0.0_beta-x86_64.AppImage`
    - On first run, setup will run automatically if needed
 
 ## Notes
@@ -148,13 +180,29 @@ When creating a GitHub release:
 - **Can be placed anywhere** - Desktop, Downloads, any directory (no project directory needed)
 - On first run, it will automatically:
   1. Extract project files to `~/.dds-project-runtime`
-  2. Check system dependencies (cmake, gcc, python3, java, Fast-DDS, etc.)
-  3. Install missing dependencies if needed (via `init/sh/install_system_dependencies.sh`)
-  4. Check post-install build requirements (Fast-DDS manual installation, monitoring build)
-  5. Run post-install build if needed (via `init/sh/post_install_build.sh`)
-  6. Check if system is ready (built executables, certificates, etc.)
-  7. Run setup automatically if needed (via `init/sh/project_setup.sh`)
-  8. Run tests and demo (via `init/sh/run_tests_and_demo.sh`)
+  2. **PHASE 1: JavaScript/Node.js Setup** (Priority)
+     - Check and install FUSE2 (required for AppImage execution)
+     - Check and install Node.js (Ubuntu repos or NodeSource)
+     - Install demo npm packages automatically
+  3. **PHASE 2: System Dependencies**
+     - Check system dependencies (cmake, gcc, python3, java, Fast-DDS, etc.)
+     - Install missing dependencies if needed (via `init/sh/install_system_dependencies.sh`)
+  4. **PHASE 3: Fast-DDS and Monitoring Build**
+     - Run Fast-DDS manual installation (via `init/sh/fastdds_and_npm_auto_install.sh`)
+     - Build monitoring application (via `monitoring/build_monitoring/build_monitoring.sh`)
+  5. **PHASE 4: System Readiness Check**
+     - Comprehensive check of all components:
+       - Build tools (CMake, GCC/G++, Python3, Java)
+       - Node.js and npm packages
+       - Fast-DDS installation
+       - IDL generated modules and executables
+       - Monitoring executable
+       - Security certificates
+     - If any component is missing, run setup automatically (via `init/sh/project_setup.sh`)
+     - Re-check system readiness after setup
+  6. **PHASE 5: Start Tests and Demo** (Only if system is ready)
+     - **Tests and demo will NOT start if any component is missing**
+     - Run tests and demo automatically only when all components are ready (via `init/sh/run_tests_and_demo.sh`)
 - The AppImage is portable and doesn't require installation
 - No root/sudo permissions needed to **run** (but automatic dependency installation requires sudo for installing system packages)
 - Setup will only run once - subsequent runs skip setup and run directly
@@ -170,13 +218,17 @@ bash uninstall.sh
 ```
 
 The uninstall script will:
-- Detect what's installed (project directory, system packages, environment variables)
+- Detect what's installed (project directory, system packages, environment variables, AppImage runtime, Node.js, manual Fast-DDS)
 - Ask what you want to remove:
   - **Project directory** - Removes the entire DDS project folder
   - **System packages** - Removes Fast-DDS, CMake, Python, Java, etc. (⚠ may affect other projects)
   - **Environment variables** - Removes DDS-related variables from ~/.bashrc
+  - **AppImage runtime directory** - Removes `~/.dds-project-runtime` (created by AppImage)
+  - **Node.js and npm** - Removes Node.js, npm, and related files (⚠ may affect other projects)
+  - **Manual Fast-DDS installation** - Removes manually installed Fast-DDS from common locations
 - Create backups before making changes
 - Provide clear confirmation prompts
+- Warn about potential impact on other projects
 
 ### Quick Uninstall
 
@@ -199,7 +251,39 @@ To remove environment variables manually:
 - If errors occur, try deleting `~/.dds-project-runtime` and running again
 
 ### Permission denied
-- Make sure the AppImage is executable: `chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+- Make sure the AppImage is executable: `chmod +x DDS-v1.0.0_beta-x86_64.AppImage`
+
+### FUSE errors when running AppImage
+- **FUSE2 (required)**: The AppImage automatically checks and installs FUSE2 on first run
+  - If installation fails, install manually:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install libfuse2
+    ```
+- Modern Linux distributions usually have FUSE2 pre-installed
+- If FUSE2 installation fails, the AppImage will show an error message with manual installation instructions
+- If FUSE is not available, the AppImage can still be extracted manually:
+  ```bash
+  ./DDS-v1.0.0_beta-x86_64.AppImage --appimage-extract
+  cd squashfs-root
+  ./AppRun
+  ```
+
+### Node.js installation issues
+- **First run may fail**: Node.js installation may fail on first run (common issue)
+  - **Solution**: Simply run the AppImage again - it will retry Node.js installation automatically
+  - The AppImage will show clear error messages if Node.js installation fails
+  - Manual installation instructions are provided in the error message
+- **NodeSource repository**: If Ubuntu repositories fail, NodeSource repository is tried automatically
+  - Requires `curl` - automatically installed if missing
+  - Node.js v18.x is installed from NodeSource
+
+### System readiness check failures
+- **Tests and demo won't start**: If any component is missing, tests and demo will NOT start
+  - Missing components are listed clearly in the error message
+  - Setup is run automatically to fix missing components
+  - After setup, system readiness is re-checked
+  - If components are still missing, manual installation instructions are provided
 
 ### Setup fails
 - Ensure you have sudo access (setup may require installing dependencies)

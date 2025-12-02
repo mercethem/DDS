@@ -189,10 +189,12 @@ The server uses sophisticated regex-based parsing to extract structured data fro
 ### System Requirements
 
 - **Operating System**: Linux (Ubuntu/Debian recommended), Windows (with WSL)
-- **Node.js**: Version 14.0 or higher
+- **Node.js**: Version 14.0 or higher (v18.x recommended)
 - **npm**: Version 6.0 or higher (comes with Node.js)
 - **Memory**: Minimum 2GB RAM (4GB+ recommended)
 - **Network**: Internet connection for map tiles (Leaflet)
+
+**Note**: When using the AppImage, Node.js and npm packages are automatically installed with priority during PHASE 1. If installation fails on first run, simply run the AppImage again - it will retry automatically.
 
 ### DDS Requirements
 
@@ -212,6 +214,27 @@ The server uses sophisticated regex-based parsing to extract structured data fro
 
 ### Initial Setup
 
+#### Option A: Using AppImage (Easiest - Recommended)
+
+When using the AppImage, all dependencies are installed automatically:
+
+1. **Node.js Installation** (PHASE 1 - Priority):
+   - Automatically checks and installs Node.js (Ubuntu repos or NodeSource)
+   - Installs demo npm packages automatically
+   - If installation fails on first run, simply run the AppImage again
+
+2. **System Readiness Check** (PHASE 4):
+   - Verifies Node.js is installed
+   - Verifies npm packages are installed (`demo/node_modules/`)
+   - Tests and demo will NOT start if Node.js or npm packages are missing
+
+3. **Automatic Setup**:
+   - If any component is missing, setup runs automatically
+   - After setup, system readiness is re-checked
+   - Tests and demo start only when all components are ready
+
+#### Option B: Manual Setup
+
 #### 1. Install Dependencies
 
 ```bash
@@ -228,10 +251,13 @@ npm install
 
 This installs all required Node.js packages listed in `package.json`.
 
+**Note**: When using `init/sh/install_system_dependencies.sh`, Node.js installation is handled automatically. When using `init/sh/post_install_build.sh`, demo npm packages are installed automatically.
+
 #### 2. Verify DDS Components
 
 Ensure DDS components are built. Components are built automatically in these scenarios:
 
+- **If you ran the AppImage**: All components are built automatically during PHASE 3 (Fast-DDS and Monitoring Build) and PHASE 4 (System Readiness Check with automatic setup if needed).
 - **If you ran `bash init/sh/install_system_dependencies.sh`**: The monitoring application is automatically built via `init/sh/post_install_build.sh` at the end of dependency installation.
 - **If you ran `bash init/sh/project_setup.sh`**: All components including the monitoring application are built automatically during setup.
 

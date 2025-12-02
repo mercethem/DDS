@@ -100,11 +100,9 @@ The system includes:
 Clone the project repository to your local machine:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/mercethem/DDS
 cd DDS
 ```
-
-Replace `<repository-url>` with the actual repository URL.
 
 ### Step 2: Complete Installation (Linux - Currently Supported)
 
@@ -114,10 +112,10 @@ Replace `<repository-url>` with the actual repository URL.
 
 #### Option A: Using AppImage (Easiest - Recommended)
 
-1. **Download AppImage** from GitHub releases (`DDS-Project-v1.0.0_alpha-x86_64.AppImage`)
+1. **Download AppImage** from [GitHub releases](https://github.com/mercethem/DDS/releases) (`DDS-v1.0.0_beta-x86_64.AppImage`)
 2. **Place it anywhere** (Desktop, Downloads, etc.) - it's completely self-contained!
-3. **Make executable**: `chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage`
-4. **Run**: `./DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+3. **Make executable**: `chmod +x DDS-v1.0.0_beta-x86_64.AppImage`
+4. **Run**: `./DDS-v1.0.0_beta-x86_64.AppImage`
    - Setup runs automatically on first run if needed
    - Tests and demo start automatically
 
@@ -462,17 +460,17 @@ All checks should show files exist. If any are missing, review the setup steps a
 <a id="running-the-system"></a>
 ## Running the System
 
-### Quick Start: Run Tests and Demo (v1.0.0_alpha)
+### Quick Start: Run Tests and Demo (v1.0.0_beta)
 
-**For Linux users**, there are two ways to run the alpha version:
+**For Linux users**, there are two ways to run the beta version:
 
 #### Option A: Using AppImage (Easiest - Recommended)
 
 The AppImage is **completely self-contained** and contains all project files!
 
-1. **Download AppImage** from GitHub releases:
-   - Go to the latest release page
-   - Download `DDS-Project-v1.0.0_alpha-x86_64.AppImage`
+1. **Download AppImage** from [GitHub releases](https://github.com/mercethem/DDS/releases):
+   - Go to the [latest release page](https://github.com/mercethem/DDS/releases)
+   - Download `DDS-v1.0.0_beta-x86_64.AppImage`
 
 2. **Place AppImage anywhere** you want:
    - Desktop
@@ -482,25 +480,45 @@ The AppImage is **completely self-contained** and contains all project files!
 
 3. **Make executable and run**:
    ```bash
-   chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage
-   ./DDS-Project-v1.0.0_alpha-x86_64.AppImage
+   chmod +x DDS-v1.0.0_beta-x86_64.AppImage
+   ./DDS-v1.0.0_beta-x86_64.AppImage
    ```
 
 4. **First Run**:
    - AppImage extracts project files to `~/.dds-project-runtime` automatically
-   - **Automatically checks system dependencies** (cmake, gcc, python3, java, Fast-DDS, etc.)
-   - **Automatically installs missing dependencies** if needed (via `init/sh/install_system_dependencies.sh`)
-   - **Automatically runs post-install build** (Fast-DDS manual installation and monitoring build via `init/sh/post_install_build.sh`)
-   - Checks if system is ready (built executables, certificates, etc.)
-   - Runs setup automatically if needed (via `init/sh/project_setup.sh`)
-   - Runs tests and demo automatically (via `init/sh/run_tests_and_demo.sh`)
-   - Subsequent runs skip setup and run directly
+   - **PHASE 1: JavaScript/Node.js Setup** (Priority)
+     - Checks and installs FUSE2 (required for AppImage execution)
+     - Checks and installs Node.js (Ubuntu repos or NodeSource)
+     - Installs demo npm packages automatically
+   - **PHASE 2: System Dependencies**
+     - Automatically checks system dependencies (cmake, gcc, python3, java, Fast-DDS, etc.)
+     - Automatically installs missing dependencies (via `init/sh/install_system_dependencies.sh`)
+   - **PHASE 3: Fast-DDS and Monitoring Build**
+     - Automatically runs Fast-DDS manual installation (via `init/sh/fastdds_and_npm_auto_install.sh`)
+     - Automatically builds monitoring application (via `monitoring/build_monitoring/build_monitoring.sh`)
+   - **PHASE 4: System Readiness Check**
+     - Comprehensive check of all components:
+       - Build tools (CMake, GCC/G++, Python3, Java)
+       - Node.js and npm packages
+       - Fast-DDS installation
+       - IDL generated modules and executables
+       - Monitoring executable
+       - Security certificates
+     - If any component is missing, runs setup automatically (via `init/sh/project_setup.sh`)
+     - Re-checks system readiness after setup
+   - **PHASE 5: Start Tests and Demo** (Only if system is ready)
+     - **Tests and demo will NOT start if any component is missing**
+     - Runs tests and demo automatically only when all components are ready (via `init/sh/run_tests_and_demo.sh`)
+   - Subsequent runs skip setup and run directly if system is ready
 
 **Advantages of AppImage:**
 - ✅ **Completely self-contained** - contains all project files
 - ✅ **Portable** - can be placed anywhere (Desktop, Downloads, etc.)
 - ✅ **No installation required** - just download and run
 - ✅ **Automatic dependency installation** - checks and installs system dependencies automatically
+- ✅ **JavaScript-first approach** - Node.js and npm packages installed with priority
+- ✅ **Comprehensive system checks** - verifies all components before running tests/demo
+- ✅ **Safe execution** - tests and demo only start when all components are ready
 - ✅ **Automatic setup** - detects and runs setup if needed
 - ✅ **Independent** - no external project directory needed
 - ✅ **Double-click to run** - GUI support
@@ -566,9 +584,9 @@ Press Ctrl+C to stop the demo when finished.
 
 **Using AppImage (Recommended):**
 ```bash
-# Download AppImage from GitHub releases
-chmod +x DDS-Project-v1.0.0_alpha-x86_64.AppImage
-./DDS-Project-v1.0.0_alpha-x86_64.AppImage
+# Download AppImage from https://github.com/mercethem/DDS/releases
+chmod +x DDS-v1.0.0_beta-x86_64.AppImage
+./DDS-v1.0.0_beta-x86_64.AppImage
 # Setup runs automatically on first run if needed
 ```
 
@@ -589,7 +607,7 @@ If you want to build the AppImage yourself:
 ```bash
 cd image
 bash build.sh  # Single script that does everything
-# Output: image/DDS-Project-v1.0.0_alpha-x86_64.AppImage
+# Output: image/DDS-v1.0.0_beta-x86_64.AppImage
 ```
 
 See `image/README.md` for detailed AppImage build instructions.
@@ -892,8 +910,9 @@ If you encounter issues not covered here:
 <a id="additional-documentation"></a>
 ## Additional Documentation
 
-Comprehensive documentation is available in the `docs/` directory:
+Comprehensive documentation is available:
 
+- **version_beta_readme.md**: Beta release notes and installation guide for AppImage users
 - **docs/demo.md**: Complete demo dashboard documentation
 - **docs/IDL.md**: IDL system and code generation documentation
 - **docs/monitoring.md**: Monitoring system documentation
@@ -909,5 +928,5 @@ See the LICENSE file for license information.
 
 ## Support
 
-For issues, questions, or contributions, please refer to the project repository or contact the development team.
+For issues, questions, or contributions, please refer to the [project repository](https://github.com/mercethem/DDS) or contact the development team.
 
